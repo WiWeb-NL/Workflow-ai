@@ -9,54 +9,54 @@ import {
   Row,
   Section,
   Text,
-} from '@react-email/components'
-import { env } from '@/lib/env'
-import { baseStyles } from './base-styles'
-import EmailFooter from './footer'
+} from "@react-email/components";
+import { env } from "@/lib/env";
+import { baseStyles } from "./base-styles";
+import EmailFooter from "./footer";
 
 interface OTPVerificationEmailProps {
-  otp: string
-  email?: string
-  type?: 'sign-in' | 'email-verification' | 'forget-password' | 'chat-access'
-  chatTitle?: string
+  otp: string;
+  email?: string;
+  type?: "sign-in" | "email-verification" | "forget-password" | "chat-access";
+  chatTitle?: string;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflowai.ai";
 
 const getSubjectByType = (type: string, chatTitle?: string) => {
   switch (type) {
-    case 'sign-in':
-      return 'Sign in to Visual Workflow AI'
-    case 'email-verification':
-      return 'Verify your email for Visual Workflow AI'
-    case 'forget-password':
-      return 'Reset your Visual Workflow AI password'
-    case 'chat-access':
-      return `Verification code for ${chatTitle || 'Chat'}`
+    case "sign-in":
+      return "Sign in to Visual Workflow AI";
+    case "email-verification":
+      return "Verify your email for Visual Workflow AI";
+    case "forget-password":
+      return "Reset your Visual Workflow AI password";
+    case "chat-access":
+      return `Verification code for ${chatTitle || "Chat"}`;
     default:
-      return 'Verification code for Visual Workflow AI'
+      return "Verification code for Visual Workflow AI";
   }
-}
+};
 
 export const OTPVerificationEmail = ({
   otp,
-  email = '',
-  type = 'email-verification',
+  email = "",
+  type = "email-verification",
   chatTitle,
 }: OTPVerificationEmailProps) => {
   // Get a message based on the type
   const getMessage = () => {
     switch (type) {
-      case 'sign-in':
-        return 'Sign in to Visual Workflow AI'
-      case 'forget-password':
-        return 'Reset your password for Visual Workflow AI'
-      case 'chat-access':
-        return `Access ${chatTitle || 'the chat'}`
+      case "sign-in":
+        return "Sign in to Visual Workflow AI";
+      case "forget-password":
+        return "Reset your password for Visual Workflow AI";
+      case "chat-access":
+        return `Access ${chatTitle || "the chat"}`;
       default:
-        return 'Welcome to Visual Workflow AI'
+        return "Welcome to Visual Workflow AI";
     }
-  }
+  };
 
   return (
     <Html>
@@ -64,15 +64,15 @@ export const OTPVerificationEmail = ({
       <Body style={baseStyles.main}>
         <Preview>{getSubjectByType(type, chatTitle)}</Preview>
         <Container style={baseStyles.container}>
-          <Section style={{ padding: '30px 0', textAlign: 'center' }}>
+          <Section style={{ padding: "30px 0", textAlign: "center" }}>
             <Row>
-              <Column style={{ textAlign: 'center' }}>
+              <Column style={{ textAlign: "center" }}>
                 <Img
-                  src={`${baseUrl}/static/sim.png`}
-                  width='114'
-                  alt='Visual Workflow AI'
+                  src={`${baseUrl}/static/flowai.jpg`}
+                  width="114"
+                  alt="Visual Workflow AI"
                   style={{
-                    margin: '0 auto',
+                    margin: "0 auto",
                   }}
                 />
               </Column>
@@ -91,7 +91,9 @@ export const OTPVerificationEmail = ({
             <Section style={baseStyles.codeContainer}>
               <Text style={baseStyles.code}>{otp}</Text>
             </Section>
-            <Text style={baseStyles.paragraph}>This code will expire in 15 minutes.</Text>
+            <Text style={baseStyles.paragraph}>
+              This code will expire in 15 minutes.
+            </Text>
             <Text style={baseStyles.paragraph}>
               If you didn't request this code, you can safely ignore this email.
             </Text>
@@ -106,7 +108,7 @@ export const OTPVerificationEmail = ({
         <EmailFooter baseUrl={baseUrl} />
       </Body>
     </Html>
-  )
-}
+  );
+};
 
-export default OTPVerificationEmail
+export default OTPVerificationEmail;
