@@ -51,12 +51,12 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /app/apps/sim/public ./apps/sim/public
-COPY --from=builder /app/apps/sim/.next/standalone ./
-COPY --from=builder /app/apps/sim/.next/static ./apps/sim/.next/static
+COPY --from=builder /app/apps/flowai/public ./apps/flowai/public
+COPY --from=builder /app/apps/flowai/.next/standalone ./
+COPY --from=builder /app/apps/flowai/.next/static ./apps/flowai/.next/static
 
 EXPOSE 3000
 ENV PORT=3000 \
     HOSTNAME="0.0.0.0"
 
-CMD ["bun", "apps/sim/server.js"]
+CMD ["bun", "apps/flowai/server.js"]
