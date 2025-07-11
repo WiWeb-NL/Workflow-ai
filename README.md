@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="apps/sim/public/static/sim.png" alt="Visual Workflow AI Logo" width="500"/>
+  <img src="apps/sim/public/static/flowai.jpg" alt="Visual Workflow AI Logo" width="500"/>
 </p>
 
 <p align="center">

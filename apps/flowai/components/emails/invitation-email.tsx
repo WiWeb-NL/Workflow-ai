@@ -10,42 +10,42 @@ import {
   Row,
   Section,
   Text,
-} from '@react-email/components'
-import { format } from 'date-fns'
-import { env } from '@/lib/env'
-import { baseStyles } from './base-styles'
-import EmailFooter from './footer'
+} from "@react-email/components";
+import { format } from "date-fns";
+import { env } from "@/lib/env";
+import { baseStyles } from "./base-styles";
+import EmailFooter from "./footer";
 
 interface InvitationEmailProps {
-  inviterName?: string
-  organizationName?: string
-  inviteLink?: string
-  invitedEmail?: string
-  updatedDate?: Date
+  inviterName?: string;
+  organizationName?: string;
+  inviteLink?: string;
+  invitedEmail?: string;
+  updatedDate?: Date;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflowai.ai";
 
 export const InvitationEmail = ({
-  inviterName = 'A team member',
-  organizationName = 'an organization',
-  inviteLink = '',
-  invitedEmail = '',
+  inviterName = "A team member",
+  organizationName = "an organization",
+  inviteLink = "",
+  invitedEmail = "",
   updatedDate = new Date(),
 }: InvitationEmailProps) => {
   // Extract invitation ID or token from inviteLink if present
-  let enhancedLink = inviteLink
+  let enhancedLink = inviteLink;
 
   // Check if link contains an ID (old format) and append token parameter if needed
-  if (inviteLink && !inviteLink.includes('token=')) {
+  if (inviteLink && !inviteLink.includes("token=")) {
     try {
-      const url = new URL(inviteLink)
-      const invitationId = url.pathname.split('/').pop()
+      const url = new URL(inviteLink);
+      const invitationId = url.pathname.split("/").pop();
       if (invitationId) {
-        enhancedLink = `${baseUrl}/invite/${invitationId}?token=${invitationId}`
+        enhancedLink = `${baseUrl}/invite/${invitationId}?token=${invitationId}`;
       }
     } catch (e) {
-      console.error('Error parsing invite link:', e)
+      console.error("Error parsing invite link:", e);
     }
   }
 
@@ -53,17 +53,19 @@ export const InvitationEmail = ({
     <Html>
       <Head />
       <Body style={baseStyles.main}>
-        <Preview>You've been invited to join {organizationName} on Visual Workflow AI</Preview>
+        <Preview>
+          You've been invited to join {organizationName} on Visual Workflow AI
+        </Preview>
         <Container style={baseStyles.container}>
-          <Section style={{ padding: '30px 0', textAlign: 'center' }}>
+          <Section style={{ padding: "30px 0", textAlign: "center" }}>
             <Row>
-              <Column style={{ textAlign: 'center' }}>
+              <Column style={{ textAlign: "center" }}>
                 <Img
-                  src={`${baseUrl}/static/sim.png`}
-                  width='114'
-                  alt='Visual Workflow AI'
+                  src={`${baseUrl}/static/flowai.jpg`}
+                  width="114"
+                  alt="Visual Workflow AI"
                   style={{
-                    margin: '0 auto',
+                    margin: "0 auto",
                   }}
                 />
               </Column>
@@ -81,16 +83,17 @@ export const InvitationEmail = ({
           <Section style={baseStyles.content}>
             <Text style={baseStyles.paragraph}>Hello,</Text>
             <Text style={baseStyles.paragraph}>
-              <strong>{inviterName}</strong> has invited you to join{' '}
-              <strong>{organizationName}</strong> on Visual Workflow AI. Visual Workflow AI is a powerful,
-              user-friendly platform for building, testing, and optimizing agentic workflows.
+              <strong>{inviterName}</strong> has invited you to join{" "}
+              <strong>{organizationName}</strong> on Visual Workflow AI. Visual
+              Workflow AI is a powerful, user-friendly platform for building,
+              testing, and optimizing agentic workflows.
             </Text>
-            <Link href={enhancedLink} style={{ textDecoration: 'none' }}>
+            <Link href={enhancedLink} style={{ textDecoration: "none" }}>
               <Text style={baseStyles.button}>Accept Invitation</Text>
             </Link>
             <Text style={baseStyles.paragraph}>
-              This invitation will expire in 48 hours. If you believe this invitation was sent in
-              error, please ignore this email.
+              This invitation will expire in 48 hours. If you believe this
+              invitation was sent in error, please ignore this email.
             </Text>
             <Text style={baseStyles.paragraph}>
               Best regards,
@@ -100,13 +103,14 @@ export const InvitationEmail = ({
             <Text
               style={{
                 ...baseStyles.footerText,
-                marginTop: '40px',
-                textAlign: 'left',
-                color: '#666666',
+                marginTop: "40px",
+                textAlign: "left",
+                color: "#666666",
               }}
             >
-              This email was sent on {format(updatedDate, 'MMMM do, yyyy')} to {invitedEmail} with
-              an invitation to join {organizationName} on Visual Workflow AI.
+              This email was sent on {format(updatedDate, "MMMM do, yyyy")} to{" "}
+              {invitedEmail} with an invitation to join {organizationName} on
+              Visual Workflow AI.
             </Text>
           </Section>
         </Container>
@@ -114,7 +118,7 @@ export const InvitationEmail = ({
         <EmailFooter baseUrl={baseUrl} />
       </Body>
     </Html>
-  )
-}
+  );
+};
 
-export default InvitationEmail
+export default InvitationEmail;
