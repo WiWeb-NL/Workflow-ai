@@ -9,8 +9,8 @@ services:
     command: sleep infinity
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/simstudio
-      - POSTGRES_URL=postgresql://postgres:postgres@db:5432/simstudio
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/visualworkflowai
+      - POSTGRES_URL=postgresql://postgres:postgres@db:5432/visualworkflowai
       - BETTER_AUTH_URL=http://localhost:3000
       - NEXT_PUBLIC_APP_URL=http://localhost:3000
       - BUN_INSTALL_CACHE_DIR=/home/bun/.bun/cache
@@ -39,7 +39,7 @@ services:
     command: sleep infinity
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/simstudio
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/visualworkflowai
       - BETTER_AUTH_URL=http://localhost:3000
       - NEXT_PUBLIC_APP_URL=http://localhost:3000
     depends_on:
@@ -60,7 +60,7 @@ services:
       context: ..
       dockerfile: docker/db.Dockerfile
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/simstudio
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/visualworkflowai
     depends_on:
       db:
         condition: service_healthy
@@ -75,7 +75,7 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=simstudio
+      - POSTGRES_DB=visualworkflowai
     ports:
       - "5432:5432"
     healthcheck:

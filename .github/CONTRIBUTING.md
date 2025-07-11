@@ -1,9 +1,9 @@
-# Contributing to Sim Studio
+# Contributing to Visual Workflow AI
 
-Thank you for your interest in contributing to Sim Studio! Our goal is to provide developers with a powerful, user-friendly platform for building, testing, and optimizing agentic workflows. We welcome contributions in all forms—from bug fixes and design improvements to brand-new features.
+Thank you for your interest in contributing to Visual Workflow AI! Our goal is to provide developers with a powerful, user-friendly platform for building, testing, and optimizing agentic workflows. We welcome contributions in all forms—from bug fixes and design improvements to brand-new features.
 
 > **Project Overview:**  
-> Sim Studio is a monorepo using Turborepo, containing the main application (`apps/sim/`), documentation (`apps/docs/`), and shared packages (`packages/`). The main application is built with Next.js (app router), ReactFlow, Zustand, Shadcn, and Tailwind CSS. Please ensure your contributions follow our best practices for clarity, maintainability, and consistency.
+> Visual Workflow AI is a monorepo using Turborepo, containing the main application (`apps/sim/`), documentation (`apps/docs/`), and shared packages (`packages/`). The main application is built with Next.js (app router), ReactFlow, Zustand, Shadcn, and Tailwind CSS. Please ensure your contributions follow our best practices for clarity, maintainability, and consistency.
 
 ---
 
@@ -132,17 +132,17 @@ To set up your local development environment:
 
 ### Option 1: Using NPM Package (Simplest)
 
-The easiest way to run Sim Studio locally is using our NPM package:
+The easiest way to run Visual Workflow AI locally is using our NPM package:
 
 ```bash
-npx simstudio
+npx visualworkflowai
 ```
 
 After running this command, open [http://localhost:3000/](http://localhost:3000/) in your browser.
 
 #### Options
 
-- `-p, --port <port>`: Specify the port to run Sim Studio on (default: 3000)
+- `-p, --port <port>`: Specify the port to run Visual Workflow AI on (default: 3000)
 - `--no-pull`: Skip pulling the latest Docker images
 
 #### Requirements
@@ -156,7 +156,7 @@ After running this command, open [http://localhost:3000/](http://localhost:3000/
 git clone https://github.com/<your-username>/sim.git
 cd sim
 
-# Start Sim Studio
+# Start Visual Workflow AI
 docker compose -f docker-compose.prod.yml up -d
 ```
 
@@ -164,7 +164,7 @@ Access the application at [http://localhost:3000/](http://localhost:3000/)
 
 #### Using Local Models
 
-To use local models with Sim Studio:
+To use local models with Visual Workflow AI:
 
 1. Pull models using our helper script:
 
@@ -172,7 +172,7 @@ To use local models with Sim Studio:
 ./apps/sim/scripts/ollama_docker.sh pull <model_name>
 ```
 
-2. Start Sim Studio with local model support:
+2. Start Visual Workflow AI with local model support:
 
 ```bash
 # With NVIDIA GPU support
@@ -275,7 +275,7 @@ When working on email templates, you can preview them using a local email previe
 
 ## Adding New Blocks and Tools
 
-Sim Studio is built in a modular fashion where blocks and tools extend the platform's functionality. To maintain consistency and quality, please follow the guidelines below when adding a new block or tool.
+Visual Workflow AI is built in a modular fashion where blocks and tools extend the platform's functionality. To maintain consistency and quality, please follow the guidelines below when adding a new block or tool.
 
 ### Where to Add Your Code
 
@@ -451,7 +451,7 @@ This project is licensed under the Apache License 2.0. By contributing, you agre
 
 By contributing to this repository, you agree that your contributions are provided under the terms of the Apache License Version 2.0, as included in the LICENSE file of this repository.
 
-In addition, by submitting your contributions, you grant Sim Studio, Inc. ("The Licensor") a perpetual, irrevocable, worldwide, royalty-free, sublicensable right and license to:
+In addition, by submitting your contributions, you grant Visual Workflow AI, Inc. ("The Licensor") a perpetual, irrevocable, worldwide, royalty-free, sublicensable right and license to:
 
 - Use, copy, modify, distribute, publicly display, publicly perform, and prepare derivative works of your contributions.
 - Incorporate your contributions into other works or products.
@@ -463,4 +463,4 @@ If you do not agree with these terms, you must not contribute your work to this 
 
 ---
 
-Thank you for taking the time to contribute to Sim Studio. We truly appreciate your efforts and look forward to collaborating with you!
+Thank you for taking the time to contribute to Visual Workflow AI. We truly appreciate your efforts and look forward to collaborating with you!

@@ -13,11 +13,11 @@ jobs:
       matrix:
         include:
           - dockerfile: ./docker/app.Dockerfile
-            image: ghcr.io/simstudioai/simstudio
+            image: ghcr.io/visualworkflowaiai/visualworkflowai
           - dockerfile: ./docker/db.Dockerfile
-            image: ghcr.io/simstudioai/migrations
+            image: ghcr.io/visualworkflowaiai/migrations
           - dockerfile: ./docker/realtime.Dockerfile
-            image: ghcr.io/simstudioai/realtime
+            image: ghcr.io/visualworkflowaiai/realtime
     permissions:
       contents: read
       packages: write
