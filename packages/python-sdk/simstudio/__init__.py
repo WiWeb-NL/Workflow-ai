@@ -1,7 +1,7 @@
 """
-Sim Studio SDK for Python
+Visual Workflow AI SDK for Python
 
-Official Python SDK for Sim Studio, allowing you to execute workflows programmatically.
+Official Python SDK for Visual Workflow AI, allowing you to execute workflows programmatically.
 """
 
 from typing import Any, Dict, Optional
@@ -11,7 +11,7 @@ import requests
 
 
 __version__ = "0.1.0"
-__all__ = ["SimStudioClient", "SimStudioError", "WorkflowExecutionResult", "WorkflowStatus"]
+__all__ = ["visualworkflowaiClient", "visualworkflowaiError", "WorkflowExecutionResult", "WorkflowStatus"]
 
 
 @dataclass
@@ -35,8 +35,8 @@ class WorkflowStatus:
     needs_redeployment: bool = False
 
 
-class SimStudioError(Exception):
-    """Exception raised for Sim Studio API errors."""
+class visualworkflowaiError(Exception):
+    """Exception raised for Visual Workflow AI API errors."""
     
     def __init__(self, message: str, code: Optional[str] = None, status: Optional[int] = None):
         super().__init__(message)
@@ -44,16 +44,16 @@ class SimStudioError(Exception):
         self.status = status
 
 
-class SimStudioClient:
+class visualworkflowaiClient:
     """
-    Sim Studio API client for executing workflows programmatically.
+    Visual Workflow AI API client for executing workflows programmatically.
     
     Args:
-        api_key: Your Sim Studio API key
-        base_url: Base URL for the Sim Studio API (defaults to https://simstudio.ai)
+        api_key: Your Visual Workflow AI API key
+        base_url: Base URL for the Visual Workflow AI API (defaults to https://visualworkflowai.ai)
     """
     
-    def __init__(self, api_key: str, base_url: str = "https://simstudio.ai"):
+    def __init__(self, api_key: str, base_url: str = "https://visualworkflowai.ai"):
         self.api_key = api_key
         self.base_url = base_url.rstrip('/')
         self._session = requests.Session()
@@ -80,7 +80,7 @@ class SimStudioClient:
             WorkflowExecutionResult object containing the execution result
             
         Raises:
-            SimStudioError: If the workflow execution fails
+            visualworkflowaiError: If the workflow execution fails
         """
         url = f"{self.base_url}/api/workflows/{workflow_id}/execute"
         
@@ -100,7 +100,7 @@ class SimStudioClient:
                     error_message = f'HTTP {response.status_code}: {response.reason}'
                     error_code = None
                 
-                raise SimStudioError(error_message, error_code, response.status_code)
+                raise visualworkflowaiError(error_message, error_code, response.status_code)
             
             result_data = response.json()
             
@@ -115,9 +115,9 @@ class SimStudioClient:
             )
             
         except requests.Timeout:
-            raise SimStudioError(f'Workflow execution timed out after {timeout} seconds', 'TIMEOUT')
+            raise visualworkflowaiError(f'Workflow execution timed out after {timeout} seconds', 'TIMEOUT')
         except requests.RequestException as e:
-            raise SimStudioError(f'Failed to execute workflow: {str(e)}', 'EXECUTION_ERROR')
+            raise visualworkflowaiError(f'Failed to execute workflow: {str(e)}', 'EXECUTION_ERROR')
     
     def get_workflow_status(self, workflow_id: str) -> WorkflowStatus:
         """
@@ -130,7 +130,7 @@ class SimStudioClient:
             WorkflowStatus object containing the workflow status
             
         Raises:
-            SimStudioError: If getting the status fails
+            visualworkflowaiError: If getting the status fails
         """
         url = f"{self.base_url}/api/workflows/{workflow_id}/status"
         
@@ -146,7 +146,7 @@ class SimStudioClient:
                     error_message = f'HTTP {response.status_code}: {response.reason}'
                     error_code = None
                 
-                raise SimStudioError(error_message, error_code, response.status_code)
+                raise visualworkflowaiError(error_message, error_code, response.status_code)
             
             status_data = response.json()
             
@@ -158,7 +158,7 @@ class SimStudioClient:
             )
             
         except requests.RequestException as e:
-            raise SimStudioError(f'Failed to get workflow status: {str(e)}', 'STATUS_ERROR')
+            raise visualworkflowaiError(f'Failed to get workflow status: {str(e)}', 'STATUS_ERROR')
     
     def validate_workflow(self, workflow_id: str) -> bool:
         """
@@ -173,7 +173,7 @@ class SimStudioClient:
         try:
             status = self.get_workflow_status(workflow_id)
             return status.is_deployed
-        except SimStudioError:
+        except visualworkflowaiError:
             return False
     
     def execute_workflow_sync(
@@ -197,7 +197,7 @@ class SimStudioClient:
             WorkflowExecutionResult object containing the execution result
             
         Raises:
-            SimStudioError: If the workflow execution fails
+            visualworkflowaiError: If the workflow execution fails
         """
         # For now, the API is synchronous, so we just execute directly
         # In the future, if async execution is added, this method can be enhanced
@@ -236,4 +236,4 @@ class SimStudioClient:
 
 
 # For backward compatibility
-Client = SimStudioClient 
+Client = visualworkflowaiClient 
