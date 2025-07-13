@@ -227,10 +227,28 @@ jwt({
 
 ### Common Issues
 
-1. **Privy Modal Not Showing**: Check that `NEXT_PUBLIC_PRIVY_APP_ID` is set and valid
-2. **JWT Verification Fails**: Ensure your JWKS endpoint is accessible at `/api/auth/jwks`
-3. **User Sync Issues**: Check network tab for API call errors to `/api/auth/privy/sync`
-4. **Environment Variables**: Verify all required environment variables are set
+1. **CSP (Content Security Policy) Errors**:
+
+   ```
+   Refused to connect to 'https://auth.privy.io/...' because it violates the following Content Security Policy directive
+   ```
+
+   **Solution**: The CSP configuration in `next.config.ts` has been updated to include Privy domains. If you encounter CSP errors, ensure these domains are whitelisted:
+
+   - `https://auth.privy.io`
+   - `https://*.privy.io`
+   - `https://*.ethereum.org` (for Web3 functionality)
+   - `https://*.infura.io` and `wss://*.infura.io` (for Ethereum RPC)
+   - `https://*.alchemy.com` and `wss://*.alchemy.com` (for Ethereum RPC)
+   - `https://*.walletconnect.org` and `wss://*.walletconnect.org` (for WalletConnect)
+
+2. **Privy Modal Not Showing**: Check that `NEXT_PUBLIC_PRIVY_APP_ID` is set and valid
+
+3. **JWT Verification Fails**: Ensure your JWKS endpoint is accessible at `/api/auth/jwks`
+
+4. **User Sync Issues**: Check network tab for API call errors to `/api/auth/privy/sync`
+
+5. **Environment Variables**: Verify all required environment variables are set
 
 ### Debug Logging
 
