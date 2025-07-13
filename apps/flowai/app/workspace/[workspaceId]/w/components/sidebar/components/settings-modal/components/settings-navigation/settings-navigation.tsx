@@ -24,15 +24,10 @@ interface SettingsNavigationProps {
 }
 
 type NavigationItem = {
-  id:
-    | "general"
-    | "environment"
-    | "account"
-    | "credentials"
-    | "apikeys"
-    | "subscription"
-    | "team"
-    | "privacy";
+  id: "general" | "environment" | "account" | "credentials" | "apikeys";
+  // | "subscription"
+  // | "team"
+  // | "privacy";
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   hideInDev?: boolean;
