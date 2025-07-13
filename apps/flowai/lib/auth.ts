@@ -6,7 +6,6 @@ import {
   createAuthMiddleware,
   emailOTP,
   genericOAuth,
-  jwt,
   oneTimeToken,
   organization,
 } from "better-auth/plugins";
@@ -26,6 +25,7 @@ import * as schema from "@/db/schema";
 import { getBaseURL } from "./auth-client";
 import { env, isTruthy } from "./env";
 import { getEmailDomain } from "./urls/utils";
+import { createUserSolanaWallet } from "./solana/wallet-storage";
 
 const logger = createLogger("Auth");
 
@@ -89,6 +89,28 @@ export const auth = betterAuth({
     freshAge: 60 * 60, // 1 hour (or set to 0 to disable completely)
   },
   databaseHooks: {
+    user: {
+      create: {
+        after: async (user: any) => {
+          try {
+            // Create a Solana wallet for the new user
+            await createUserSolanaWallet(user.id);
+            logger.info("Created Solana wallet for new user", {
+              userId: user.id,
+              email: user.email,
+            });
+          } catch (error) {
+            logger.error("Failed to create Solana wallet for new user", {
+              error,
+              userId: user.id,
+              email: user.email,
+            });
+            // Don't throw here as we don't want to break user creation
+            // The wallet can be created later if needed
+          }
+        },
+      },
+    },
     session: {
       create: {
         before: async (session) => {
@@ -150,12 +172,12 @@ export const auth = betterAuth({
     github: {
       clientId: env.GITHUB_CLIENT_ID as string,
       clientSecret: env.GITHUB_CLIENT_SECRET as string,
-      scopes: ["user:email", "repo"],
+      scope: ["user:email", "repo"],
     },
     google: {
       clientId: env.GOOGLE_CLIENT_ID as string,
       clientSecret: env.GOOGLE_CLIENT_SECRET as string,
-      scopes: [
+      scope: [
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile",
       ],
@@ -164,7 +186,6 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
-    sendVerificationOnSignUp: false,
     throwOnMissingCredentials: true,
     throwOnInvalidCredentials: true,
     sendResetPassword: async ({ user, url, token }, request) => {
@@ -173,7 +194,7 @@ export const auth = betterAuth({
       const html = await renderPasswordResetEmail(username, url);
 
       const result = await resend.emails.send({
-        from: `Visual Workflow AI <team@${getEmailDomain()}>`,
+        from: `Sim Studio <team@${getEmailDomain()}>`,
         to: user.email,
         subject: getEmailSubject("reset-password"),
         html,
@@ -226,7 +247,7 @@ export const auth = betterAuth({
 
           // In production, send an actual email
           const result = await resend.emails.send({
-            from: `Visual Workflow AI <onboarding@${getEmailDomain()}>`,
+            from: `Sim Studio <onboarding@${getEmailDomain()}>`,
             to: data.email,
             subject: getEmailSubject(data.type),
             html,
@@ -268,7 +289,7 @@ export const auth = betterAuth({
                 {
                   headers: {
                     Authorization: `Bearer ${tokens.accessToken}`,
-                    "User-Agent": "visual-workflow-ai",
+                    "User-Agent": "sim-studio",
                   },
                 }
               );
@@ -292,7 +313,7 @@ export const auth = betterAuth({
                   {
                     headers: {
                       Authorization: `Bearer ${tokens.accessToken}`,
-                      "User-Agent": "visual-workflow-ai",
+                      "User-Agent": "sim-studio",
                     },
                   }
                 );
@@ -918,7 +939,7 @@ export const auth = betterAuth({
                 {
                   headers: {
                     Authorization: `Bearer ${tokens.accessToken}`,
-                    "User-Agent": "visual-workflow-ai/1.0",
+                    "User-Agent": "sim-studio/1.0",
                   },
                 }
               );
@@ -1106,19 +1127,19 @@ export const auth = betterAuth({
             ) => {
               logger.info("Stripe customer created", {
                 customerId: customer.id,
-                userId: user.id,
+                userId: (user as any).id,
               });
 
               // Initialize usage limits for new user
               try {
                 const { initializeUserUsageLimit } = await import("./billing");
-                await initializeUserUsageLimit(user.id);
+                await initializeUserUsageLimit((user as any).id);
                 logger.info("Usage limits initialized for new user", {
-                  userId: user.id,
+                  userId: (user as any).id,
                 });
               } catch (error) {
                 logger.error("Failed to initialize usage limits for new user", {
-                  userId: user.id,
+                  userId: (user as any).id,
                   error,
                 });
               }
@@ -1512,9 +1533,9 @@ export const auth = betterAuth({
                 );
 
                 await resend.emails.send({
-                  from: `Visual Workflow AI <team@${getEmailDomain()}>`,
+                  from: `Sim Studio <team@${getEmailDomain()}>`,
                   to: invitation.email,
-                  subject: `${inviterName} has invited you to join ${organization.name} on Visual Workflow AI`,
+                  subject: `${inviterName} has invited you to join ${organization.name} on Sim Studio`,
                   html,
                 });
               } catch (error) {
@@ -1532,27 +1553,6 @@ export const auth = betterAuth({
           }),
         ]
       : []),
-    jwt({
-      jwt: {
-        issuer: getBaseURL(),
-        audience: getBaseURL(),
-        expirationTime: "15m", // 15 minutes
-        definePayload: ({ user, session }) => ({
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
-          emailVerified: user.emailVerified,
-          sessionId: session.id,
-        }),
-      },
-      jwks: {
-        keyPairConfig: {
-          alg: "EdDSA",
-          crv: "Ed25519",
-        },
-      },
-    }),
   ],
   pages: {
     signIn: "/login",
