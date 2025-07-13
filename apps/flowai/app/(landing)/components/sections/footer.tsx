@@ -89,14 +89,14 @@ function Footer() {
               {/* Links section - flex row on mobile, part of flex row in md */}
               <div className="flex w-full flex-row justify-between gap-4 md:w-auto md:justify-start md:gap-16">
                 <div className="flex flex-col gap-2">
-                  <Link
+                  {/* <Link
                     href={"https://docs.visualworkflowai.ai/"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-light text-[#9E91AA] text-xl transition-all duration-500 hover:text-[#bdaecb] md:text-2xl"
                   >
                     Docs
-                  </Link>
+                  </Link> */}
                 </div>
                 <div className="flex flex-col gap-2"></div>
               </div>
@@ -126,16 +126,16 @@ function Footer() {
                       />
                     </svg>
                   </Link> */}
-                  <Link
+                  {/* <Link
                     href={"https://discord.gg/Hr4UWYEcTT"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-2xl transition-all duration-500"
                   >
                     <DiscordIcon className="h-9 w-9 fill-[#9E91AA] hover:fill-[#bdaecb] md:h-10 md:w-10" />
-                  </Link>
+                  </Link> */}
                   <Link
-                    href={"https://x.com/visualworkflowaiai"}
+                    href={"https://x.com/work_flow_ai"}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-2xl transition-all duration-500"
