@@ -108,8 +108,7 @@ const nextConfig: NextConfig = {
       },
       {
         // For main app routes, Google Drive Picker, and Vercel resources - use permissive policies
-        source:
-          "/(w/.*|workspace/.*|api/tools/drive|_next/.*|_vercel/.*|login|signup)",
+        source: "/(w/.*|workspace/.*|api/tools/drive|_next/.*|_vercel/.*)",
         headers: [
           {
             key: "Cross-Origin-Embedder-Policy",
@@ -118,6 +117,20 @@ const nextConfig: NextConfig = {
           {
             key: "Cross-Origin-Opener-Policy",
             value: "same-origin",
+          },
+        ],
+      },
+      {
+        // For authentication routes - use policies compatible with Coinbase Wallet SDK
+        source: "/(login|signup|auth/.*)",
+        headers: [
+          {
+            key: "Cross-Origin-Embedder-Policy",
+            value: "unsafe-none",
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "unsafe-none",
           },
         ],
       },

@@ -15,6 +15,12 @@ const PrivyAuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   // Create a callback to get the token from Better Auth
   const getCustomToken = useCallback(async () => {
     try {
+      // Only try to get token if user is authenticated
+      if (!session?.user) {
+        logger.info("No authenticated session, skipping token request");
+        return undefined;
+      }
+
       // Get the JWT token from Better Auth
       const response = await fetch("/api/auth/token", {
         method: "GET",
@@ -33,12 +39,13 @@ const PrivyAuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       }
 
       const data = await response.json();
+      logger.info("Successfully retrieved auth token for Privy");
       return data.token;
     } catch (error) {
       logger.error("Error getting auth token:", error);
       return undefined;
     }
-  }, []);
+  }, [session?.user]);
 
   // Don't render Privy if no app ID is configured
   if (!env.NEXT_PUBLIC_PRIVY_APP_ID) {
@@ -54,7 +61,7 @@ const PrivyAuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       config={{
         customAuth: {
           // Indicates if Better Auth is currently updating auth state
-          isLoading: false, // Better Auth handles its own loading states
+          isLoading: !session && session !== null, // Loading if session is undefined
           // Callback to get the user's JWT token from Better Auth
           getCustomAccessToken: getCustomToken,
         },

@@ -8,7 +8,18 @@ This integration allows you to use Privy's authentication modal and embedded wal
 - **Embedded Wallets**: Privy provides embedded wallets for users who authenticate through it
 - **JWT Integration**: Better Auth generates JWTs that Privy can verify for seamless integration
 - **Wallet Address Storage**: User wallet addresses are stored in your existing database schema
-- **Seamless User Sync**: Users authenticated via Privy are automatically synced with your Better Auth database
+- **Automatic User Sync**: Users authenticated via Privy are automatically synced with your Better Auth database
+- **Seamless Redirect**: After Privy authentication, users are automatically redirected to the workspace
+
+## How It Works
+
+1. **User clicks "Connect with Privy"** - Opens Privy's authentication modal
+2. **User authenticates** - Via Google, GitHub, email, or wallet connection
+3. **Automatic sync happens** - User data is synced with Better Auth database
+4. **Session is created** - A Better Auth session is established
+5. **User is redirected** - To the workspace or specified callback URL
+
+The integration handles all the complexity of syncing between Privy and Better Auth automatically.
 
 ## Setup Instructions
 

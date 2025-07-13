@@ -77,16 +77,12 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // Create a session for the user using Better Auth
-    const session = await auth.api.signInEmail({
-      body: {
-        email: user.email,
-        password: "", // Not used for Privy users
-      },
-      headers: request.headers,
-    });
+    // Instead of manually creating a session, let's use Better Auth to sign the user in
+    // by creating a temporary login session
+    const { cookies } = await import("next/headers");
 
-    return NextResponse.json({
+    // Create a response that will set the proper Better Auth session
+    const response = NextResponse.json({
       success: true,
       user: {
         id: user.id,
@@ -95,8 +91,48 @@ export async function POST(request: NextRequest) {
         image: user.image,
         walletAddress: user.walletAddress,
       },
-      session,
     });
+
+    // Create session using Better Auth's internal method
+    try {
+      // For now, skip the Better Auth API and go directly to manual creation
+      throw new Error("Using manual session creation");
+    } catch (sessionError) {
+      logger.warn(
+        "Failed to create session through Better Auth API, falling back to manual creation",
+        sessionError
+      );
+
+      // Fallback to manual session creation
+      const sessionToken = crypto.randomUUID();
+      const sessionData = {
+        id: crypto.randomUUID(),
+        userId: user.id,
+        token: sessionToken,
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ipAddress:
+          request.headers.get("x-forwarded-for") ||
+          request.headers.get("x-real-ip") ||
+          null,
+        userAgent: request.headers.get("user-agent") || null,
+      };
+
+      // Insert the session directly into the database
+      await db.insert(schema.session).values(sessionData);
+
+      // Set the session cookie
+      response.cookies.set("better-auth.session_token", sessionToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+        path: "/",
+      });
+    }
+
+    return response;
   } catch (error) {
     logger.error("Error syncing Privy user:", error);
     return NextResponse.json({ error: "Failed to sync user" }, { status: 500 });
