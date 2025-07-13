@@ -4,9 +4,10 @@ import type { Metadata, Viewport } from "next";
 import { PublicEnvScript } from "next-runtime-env";
 import { createLogger } from "@/lib/logs/console-logger";
 import { TelemetryConsentDialog } from "@/app/telemetry-consent-dialog";
+import { AuthProviders } from "./auth-providers";
 import "./globals.css";
 
-import { ZoomPrevention } from "./zoom-prevention";
+import { ZoomPrevention } from "@/blocks/zoom-prevention";
 
 const logger = createLogger("RootLayout");
 
@@ -232,9 +233,11 @@ export default function RootLayout({
         <PublicEnvScript />
       </head>
       <body suppressHydrationWarning>
-        <ZoomPrevention />
-        <TelemetryConsentDialog />
-        {children}
+        <AuthProviders>
+          <ZoomPrevention />
+          <TelemetryConsentDialog />
+          {children}
+        </AuthProviders>
         <SpeedInsights />
         <Analytics />
       </body>
