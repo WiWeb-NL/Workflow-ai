@@ -85,7 +85,6 @@ const NavLinks = ({
       external: true,
     },
     // { href: '/', label: 'Blog' },
-    { href: "/contributors", label: "Contributors" },
   ];
 
   const handleContributorsHover = usePrefetchOnHover();

@@ -69,7 +69,7 @@ function Footer() {
             {/* Right side content */}
             <div className="relative mt-8 flex w-full flex-col gap-6 md:mt-0 md:w-auto md:flex-row md:items-end md:justify-end md:gap-16">
               {/* See repo button positioned absolutely to align with the top text - desktop only */}
-              <div className="absolute top-0 right-0 hidden md:block">
+              {/* <div className="absolute top-0 right-0 hidden md:block">
                 <Link
                   href="https://github.com/visualworkflowaiai/sim"
                   target="_blank"
@@ -84,7 +84,7 @@ function Footer() {
                     See repo
                   </Button>
                 </Link>
-              </div>
+              </div> */}
 
               {/* Links section - flex row on mobile, part of flex row in md */}
               <div className="flex w-full flex-row justify-between gap-4 md:w-auto md:justify-start md:gap-16">
@@ -97,38 +97,14 @@ function Footer() {
                   >
                     Docs
                   </Link>
-                  <Link
-                    href={"/contributors"}
-                    className="font-light text-[#9E91AA] text-xl transition-all duration-500 hover:text-[#bdaecb] md:text-2xl"
-                    onMouseEnter={handleContributorsHover}
-                  >
-                    Contributors
-                  </Link>
                 </div>
-                <div className="flex flex-col gap-2">
-                  <Link
-                    href={"/terms"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-light text-[#9E91AA] text-xl transition-all duration-500 hover:text-[#bdaecb] md:text-2xl"
-                  >
-                    Terms and Conditions
-                  </Link>
-                  <Link
-                    href={"/privacy"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-light text-[#9E91AA] text-xl transition-all duration-500 hover:text-[#bdaecb] md:text-2xl"
-                  >
-                    Privacy Policy
-                  </Link>
-                </div>
+                <div className="flex flex-col gap-2"></div>
               </div>
 
               {/* Social icons */}
               <div className="mt-4 flex items-center md:mt-0 md:justify-end">
                 <div className="flex gap-4">
-                  <Link
+                  {/* <Link
                     href={"https://github.com/visualworkflowaiai/sim"}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -149,7 +125,7 @@ function Footer() {
                         fill="#9E91AA"
                       />
                     </svg>
-                  </Link>
+                  </Link> */}
                   <Link
                     href={"https://discord.gg/Hr4UWYEcTT"}
                     target="_blank"
@@ -242,7 +218,7 @@ function Footer() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
             >
-              <Link
+              {/* <Link
                 href="https://github.com/visualworkflowaiai/sim"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -255,7 +231,7 @@ function Footer() {
                   <GithubIcon className="h-5 w-5" />
                   See repo
                 </Button>
-              </Link>
+              </Link> */}
             </motion.div>
 
             {/* Links section - flex row on mobile, part of flex row in md */}
@@ -267,7 +243,7 @@ function Footer() {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.7, delay: 0.32, ease: "easeOut" }}
               >
-                <Link
+                {/* <Link
                   href={"https://docs.visualworkflowai.ai/"}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -305,7 +281,7 @@ function Footer() {
                   className="font-light text-[#9E91AA] text-xl transition-all duration-500 hover:text-[#bdaecb] md:text-2xl"
                 >
                   Privacy Policy
-                </Link>
+                </Link> */}
               </motion.div>
             </div>
 
@@ -318,7 +294,7 @@ function Footer() {
               transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
             >
               <div className="flex gap-4">
-                <Link
+                {/* <Link
                   href={"https://github.com/visualworkflowaiai/sim"}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -339,17 +315,17 @@ function Footer() {
                       fill="#9E91AA"
                     />
                   </svg>
-                </Link>
-                <Link
+                </Link> */}
+                {/* <Link
                   href={"https://discord.gg/Hr4UWYEcTT"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-2xl transition-all duration-500"
                 >
                   <DiscordIcon className="h-9 w-9 fill-[#9E91AA] hover:fill-[#bdaecb] md:h-10 md:w-10" />
-                </Link>
+                </Link> */}
                 <Link
-                  href={"https://x.com/visualworkflowaiai"}
+                  href={"https://x.com/work_flow_ai"}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-2xl transition-all duration-500"
