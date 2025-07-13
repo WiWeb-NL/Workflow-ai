@@ -18,13 +18,13 @@ export function PrivyLoginButton({
   callbackUrl,
   className,
 }: PrivyLoginButtonProps) {
-  const { login } = usePrivy();
+  const { login, isAuthenticating } = usePrivyAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      await login();
+      await login(callbackUrl);
     } catch (error) {
       logger.error("Error during Privy login:", error);
     } finally {
@@ -32,20 +32,39 @@ export function PrivyLoginButton({
     }
   };
 
+  const loading = isLoading || isAuthenticating;
+
   return (
     <Button
       onClick={handleLogin}
-      disabled={isLoading}
+      disabled={loading}
       className={className}
       variant="default"
     >
-      {isLoading ? "Connecting..." : "Connect with Privy"}
+      {loading ? "Connecting..." : "Connect with Privy"}
     </Button>
   );
 }
 
 export function PrivyLoginCard({ callbackUrl }: { callbackUrl?: string }) {
-  const { authenticated, user } = usePrivyAuth();
+  const { authenticated, user, isAuthenticating } = usePrivyAuth();
+
+  if (isAuthenticating) {
+    return (
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle>Authenticating...</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2 text-center">
+            <p className="text-sm text-muted-foreground">
+              Setting up your account...
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   if (authenticated && user) {
     return (

@@ -2,6 +2,7 @@
 
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { client } from "@/lib/auth-client";
 import { createLogger } from "@/lib/logs/console-logger";
 
@@ -25,6 +26,42 @@ export function usePrivyAuth() {
     logout,
   } = usePrivy();
   const { data: session } = client.useSession();
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+
+  // Auto-sync when Privy user becomes authenticated
+  useEffect(() => {
+    async function handlePrivyAuth() {
+      if (
+        privyAuthenticated &&
+        privyUser &&
+        !session?.user &&
+        !isAuthenticating
+      ) {
+        logger.info("Privy user authenticated, syncing with Better Auth", {
+          privyUserId: privyUser.id,
+          email: privyUser.email?.address,
+        });
+
+        setIsAuthenticating(true);
+        try {
+          await syncAuth(privyUser);
+
+          // Get callback URL and redirect
+          const callbackUrl =
+            sessionStorage.getItem("privy-callback-url") || "/workspace";
+          sessionStorage.removeItem("privy-callback-url");
+
+          // Force a reload to get the updated session
+          window.location.href = callbackUrl;
+        } catch (error) {
+          logger.error("Failed to sync Privy user with Better Auth:", error);
+          setIsAuthenticating(false);
+        }
+      }
+    }
+
+    handlePrivyAuth();
+  }, [privyAuthenticated, privyUser, session?.user, isAuthenticating]);
 
   // Sync Better Auth session with Privy user
   const syncAuth = async (privyUser: any) => {
@@ -62,10 +99,10 @@ export function usePrivyAuth() {
   const handleLogin = async (callbackUrl?: string) => {
     try {
       await login();
-
-      if (privyUser) {
-        await syncAuth(privyUser);
-        router.push(callbackUrl || "/workspace");
+      // The useEffect will handle syncing automatically
+      // Just set the callback URL for after sync completes
+      if (callbackUrl) {
+        sessionStorage.setItem("privy-callback-url", callbackUrl);
       }
     } catch (error) {
       logger.error("Error during Privy login:", error);
@@ -108,7 +145,8 @@ export function usePrivyAuth() {
     authenticated: isAuthenticated,
     privyAuthenticated,
     betterAuthSession: session,
-    ready,
+    ready: ready && !isAuthenticating,
+    isAuthenticating,
     login: handleLogin,
     logout: handleLogout,
     syncAuth,
