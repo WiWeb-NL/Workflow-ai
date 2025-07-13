@@ -25,8 +25,9 @@ export function usePrivyAuth() {
     login,
     logout,
   } = usePrivy();
-  const { data: session } = client.useSession();
+  const { data: session, refetch: refetchSession } = client.useSession();
   const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false); // Prevent duplicate sync calls
 
   // Auto-sync when Privy user becomes authenticated
   useEffect(() => {
@@ -35,7 +36,8 @@ export function usePrivyAuth() {
         privyAuthenticated &&
         privyUser &&
         !session?.user &&
-        !isAuthenticating
+        !isAuthenticating &&
+        !isSyncing // Prevent duplicate sync calls
       ) {
         logger.info("Privy user authenticated, syncing with Better Auth", {
           privyUserId: privyUser.id,
@@ -43,47 +45,157 @@ export function usePrivyAuth() {
         });
 
         setIsAuthenticating(true);
+        setIsSyncing(true);
         try {
           await syncAuth(privyUser);
 
-          // Get callback URL and redirect
-          const callbackUrl =
+          logger.info("Refreshing session after Privy sync");
+
+          let retries = 5;
+          let delay = 1000; // Start with 1 second delay
+          while (retries > 0) {
+            await refetchSession();
+            if (session?.user) {
+              logger.info("Session successfully refreshed after sync", {
+                userId: session.user.id,
+                email: session.user.email,
+              });
+              break;
+            }
+            logger.warn("Session not found, retrying...", {
+              remainingRetries: retries,
+              delay,
+            });
+            await new Promise((resolve) => setTimeout(resolve, delay));
+            delay *= 2; // Double the delay for exponential backoff
+            retries--;
+          }
+
+          if (!session?.user) {
+            logger.error("Session refresh failed after multiple attempts", {
+              retriesAttempted: 5,
+              finalDelay: delay,
+            });
+
+            // Fallback: Force a full page reload to reinitialize the session
+            logger.warn("Attempting full page reload as a fallback");
+            window.location.reload();
+            return;
+          }
+
+          let callbackUrl =
             sessionStorage.getItem("privy-callback-url") || "/workspace";
           sessionStorage.removeItem("privy-callback-url");
 
-          // Force a reload to get the updated session
+          if (!callbackUrl.startsWith("/")) {
+            logger.warn("Invalid callback URL, defaulting to /workspace", {
+              callbackUrl,
+            });
+            callbackUrl = "/workspace";
+          }
+
+          logger.info("Redirecting after successful Privy sync", {
+            callbackUrl,
+            hasSession: !!session?.user,
+          });
+
           window.location.href = callbackUrl;
         } catch (error) {
           logger.error("Failed to sync Privy user with Better Auth:", error);
           setIsAuthenticating(false);
+          setIsSyncing(false);
         }
       }
     }
 
     handlePrivyAuth();
-  }, [privyAuthenticated, privyUser, session?.user, isAuthenticating]);
+  }, [
+    privyAuthenticated,
+    privyUser,
+    session?.user,
+    isAuthenticating,
+    isSyncing,
+  ]);
 
   // Sync Better Auth session with Privy user
   const syncAuth = async (privyUser: any) => {
     try {
+      // Log the Privy user data to understand its structure
+      logger.info("Syncing Privy user - user data:", {
+        id: privyUser.id,
+        email: privyUser.email,
+        emailAddress: privyUser.email?.address,
+        google: privyUser.google,
+        github: privyUser.github,
+        wallet: privyUser.wallet,
+        fullUserObject: privyUser,
+      });
+
+      // Extract email from various possible sources in Privy user object
+      const extractEmail = (privyUser: any): string | null => {
+        // Try Google OAuth email first
+        if (privyUser.google?.email) return privyUser.google.email;
+
+        // Try GitHub OAuth email
+        if (privyUser.github?.email) return privyUser.github.email;
+
+        // Try direct email property
+        if (privyUser.email?.address) return privyUser.email.address;
+        if (privyUser.email) return privyUser.email;
+
+        // Try linked accounts array
+        const emailAccount = privyUser.linkedAccounts?.find(
+          (account: any) =>
+            account.type === "google_oauth" ||
+            account.type === "github_oauth" ||
+            account.type === "email"
+        );
+        if (emailAccount?.email) return emailAccount.email;
+
+        return null;
+      };
+
+      const syncData = {
+        privyUserId: privyUser.id,
+        email: extractEmail(privyUser),
+        name:
+          privyUser.google?.name ||
+          privyUser.github?.name ||
+          privyUser.displayName ||
+          "User",
+        image: privyUser.google?.picture || privyUser.github?.profilePictureUrl,
+        walletAddress: privyUser.wallet?.address,
+      };
+
+      logger.info("Sending sync data:", syncData);
+
+      // Validate required fields before sending
+      if (!syncData.privyUserId) {
+        throw new Error("Missing Privy user ID");
+      }
+      if (!syncData.email) {
+        throw new Error("Missing email address");
+      }
+
       // Check if user exists in Better Auth
       const userCheckResponse = await fetch("/api/auth/privy/sync", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          privyUserId: privyUser.id,
-          email: privyUser.email?.address,
-          name: privyUser.google?.name || privyUser.github?.name || "User",
-          image:
-            privyUser.google?.picture || privyUser.github?.profilePictureUrl,
-          walletAddress: privyUser.wallet?.address,
-        }),
+        body: JSON.stringify(syncData),
       });
 
       if (!userCheckResponse.ok) {
-        throw new Error("Failed to sync user with Better Auth");
+        const errorText = await userCheckResponse.text();
+        logger.error("Sync request failed:", {
+          status: userCheckResponse.status,
+          statusText: userCheckResponse.statusText,
+          error: errorText,
+        });
+        throw new Error(
+          `Failed to sync user with Better Auth: ${userCheckResponse.status} - ${errorText}`
+        );
       }
 
       const result = await userCheckResponse.json();
