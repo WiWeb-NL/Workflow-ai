@@ -13,7 +13,7 @@ export default function Landing() {
 
   return (
     <main className="relative min-h-screen bg-[#0C0C0C] font-geist-sans">
-      <NavWrapper onOpenTypeformLink={handleOpenTypeformLink} />
+      {/* <NavWrapper onOpenTypeformLink={handleOpenTypeformLink} /> */}
 
       <Hero />
       {/* <Testimonials /> */}
