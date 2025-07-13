@@ -1,5 +1,5 @@
 /**
- * Visual Workflow AI Telemetry
+ * Sim Studio Telemetry
  *
  * This file can be customized in forked repositories:
  * - Set TELEMETRY_ENDPOINT in telemetry.config.ts to your collector
@@ -26,11 +26,11 @@ export type TelemetryStatus = {
   notifiedUser: boolean
 }
 
-const TELEMETRY_STATUS_KEY = 'visualworkflowai-telemetry-status'
+const TELEMETRY_STATUS_KEY = 'simstudio-telemetry-status'
 
 let telemetryConfig = {
-  endpoint: env.TELEMETRY_ENDPOINT || 'https://telemetry.visualworkflowai.ai/v1/traces',
-  serviceName: 'visual-workflow-ai',
+  endpoint: env.TELEMETRY_ENDPOINT || 'https://telemetry.simstudio.ai/v1/traces',
+  serviceName: 'sim-studio',
   serviceVersion: '0.1.0',
 }
 

@@ -55,7 +55,7 @@ export const getCommentsTool: ToolConfig<RedditCommentsParams, RedditCommentsRes
 
       return {
         Authorization: `Bearer ${params.accessToken}`,
-        'User-Agent': 'visual-workflow-ai/1.0 (https://github.com/visualworkflowaiai/sim)',
+        'User-Agent': 'sim-studio/1.0 (https://github.com/simstudioai/sim)',
         Accept: 'application/json',
       }
     },

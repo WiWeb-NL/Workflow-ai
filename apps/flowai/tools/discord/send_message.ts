@@ -67,7 +67,7 @@ export const discordSendMessageTool: ToolConfig<
       }
 
       if (!body.content) {
-        body.content = 'Message sent from Visual Workflow AI'
+        body.content = 'Message sent from Sim Studio'
       }
 
       return body

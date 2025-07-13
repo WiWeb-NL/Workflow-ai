@@ -15,19 +15,29 @@ import { useSubscriptionStore } from "@/stores/subscription/store";
 interface SettingsNavigationProps {
   activeSection: string;
   onSectionChange: (
-    section: "general" | "environment" | "account" | "credentials" | "apikeys"
-    // | 'subscription'
-    // | 'team'
-    // | 'privacy'
+    section:
+      | "general"
+      | "environment"
+      | "account"
+      | "credentials"
+      | "apikeys"
+      | "subscription"
+      | "team"
+      | "privacy"
   ) => void;
   hasOrganization: boolean;
 }
 
 type NavigationItem = {
-  id: "general" | "environment" | "account" | "credentials" | "apikeys";
-  // | "subscription"
-  // | "team"
-  // | "privacy";
+  id:
+    | "general"
+    | "environment"
+    | "account"
+    | "credentials"
+    | "apikeys"
+    | "subscription"
+    | "team"
+    | "privacy";
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   hideInDev?: boolean;
@@ -61,19 +71,19 @@ const allNavigationItems: NavigationItem[] = [
     icon: KeySquare,
   },
   // {
-  //   id: "privacy",
-  //   label: "Privacy",
+  //   id: 'privacy',
+  //   label: 'Privacy',
   //   icon: Shield,
   // },
   // {
-  //   id: "subscription",
-  //   label: "Subscription",
+  //   id: 'subscription',
+  //   label: 'Subscription',
   //   icon: CreditCard,
   //   hideInDev: true,
   // },
   // {
-  //   id: "team",
-  //   label: "Team",
+  //   id: 'team',
+  //   label: 'Team',
   //   icon: Users,
   //   hideInDev: true,
   //   requiresTeam: true,

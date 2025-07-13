@@ -20,7 +20,7 @@ async function getGitHubStars() {
   const token = env.GITHUB_TOKEN
 
   try {
-    const response = await fetch('https://api.github.com/repos/visualworkflowaiai/sim', {
+    const response = await fetch('https://api.github.com/repos/simstudioai/sim', {
       headers: {
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
@@ -48,7 +48,7 @@ export default async function GitHubStars() {
 
   return (
     <a
-      href='https://github.com/visualworkflowaiai/sim'
+      href='https://github.com/simstudioai/sim'
       className='flex items-center gap-2 rounded-md p-1.5 text-white/80 transition-colors duration-200 hover:text-white/100'
       aria-label='GitHub'
       target='_blank'

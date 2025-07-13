@@ -42,7 +42,7 @@ async function processDocsEmbeddings(options: ProcessingOptions = {}) {
         options.baseUrl ??
         (process.env.NODE_ENV === 'development'
           ? 'http://localhost:3001'
-          : 'https://docs.visualworkflowai.ai'),
+          : 'https://docs.simstudio.ai'),
       chunkSize: options.chunkSize ?? 300, // Max 300 tokens per chunk
       minChunkSize: options.minChunkSize ?? 100,
       overlap: options.overlap ?? 50,

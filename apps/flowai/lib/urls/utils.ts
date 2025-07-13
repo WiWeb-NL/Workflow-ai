@@ -25,7 +25,7 @@ export function getBaseUrl(): string {
 
 /**
  * Returns just the domain and port part of the application URL
- * @returns The domain with port if applicable (e.g., 'localhost:3000' or 'visualworkflowai.ai')
+ * @returns The domain with port if applicable (e.g., 'localhost:3000' or 'simstudio.ai')
  */
 export function getBaseDomain(): string {
   try {
@@ -37,14 +37,14 @@ export function getBaseDomain(): string {
       return new URL(fallbackUrl).host
     } catch {
       const isProd = env.NODE_ENV === 'production'
-      return isProd ? 'visualworkflowai.ai' : 'localhost:3000'
+      return isProd ? 'simstudio.ai' : 'localhost:3000'
     }
   }
 }
 
 /**
  * Returns the domain for email addresses, stripping www subdomain for Resend compatibility
- * @returns The email domain (e.g., 'visualworkflowai.ai' instead of 'www.visualworkflowai.ai')
+ * @returns The email domain (e.g., 'simstudio.ai' instead of 'www.simstudio.ai')
  */
 export function getEmailDomain(): string {
   try {
@@ -52,6 +52,6 @@ export function getEmailDomain(): string {
     return baseDomain.startsWith('www.') ? baseDomain.substring(4) : baseDomain
   } catch (_e) {
     const isProd = env.NODE_ENV === 'production'
-    return isProd ? 'visualworkflowai.ai' : 'localhost:3000'
+    return isProd ? 'simstudio.ai' : 'localhost:3000'
   }
 }

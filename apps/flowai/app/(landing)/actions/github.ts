@@ -22,11 +22,11 @@ export async function getFormattedGitHubStars(): Promise<string> {
   try {
     const token = env.GITHUB_TOKEN
 
-    const response = await fetch('https://api.github.com/repos/visualworkflowaiai/sim', {
+    const response = await fetch('https://api.github.com/repos/simstudioai/sim', {
       headers: {
         Accept: 'application/vnd.github+json',
         'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'visualworkflowai/1.0',
+        'User-Agent': 'SimStudio/1.0',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       next: { revalidate: 3600 },
@@ -83,17 +83,17 @@ export async function getRepositoryStats(): Promise<RepoStats> {
     const headers = {
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
-      'User-Agent': 'visualworkflowai/1.0',
+      'User-Agent': 'SimStudio/1.0',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     }
 
-    const repoResponse = await fetch('https://api.github.com/repos/visualworkflowaiai/sim', {
+    const repoResponse = await fetch('https://api.github.com/repos/simstudioai/sim', {
       headers,
       next: { revalidate: 3600 },
     })
 
     const prsResponse = await fetch(
-      'https://api.github.com/repos/visualworkflowaiai/sim/pulls?state=open',
+      'https://api.github.com/repos/simstudioai/sim/pulls?state=open',
       {
         headers,
         next: { revalidate: 3600 },
@@ -143,12 +143,12 @@ export async function getContributors(): Promise<Contributor[]> {
     const headers = {
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
-      'User-Agent': 'visualworkflowai/1.0',
+      'User-Agent': 'SimStudio/1.0',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     }
 
     const response = await fetch(
-      'https://api.github.com/repos/visualworkflowaiai/sim/contributors?per_page=100',
+      'https://api.github.com/repos/simstudioai/sim/contributors?per_page=100',
       {
         headers,
         next: { revalidate: 3600 },
@@ -178,12 +178,12 @@ export async function getCommitsData(): Promise<CommitData[]> {
     const headers = {
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
-      'User-Agent': 'visualworkflowai/1.0',
+      'User-Agent': 'SimStudio/1.0',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     }
 
     const response = await fetch(
-      'https://api.github.com/repos/visualworkflowaiai/sim/commits?per_page=100',
+      'https://api.github.com/repos/simstudioai/sim/commits?per_page=100',
       {
         headers,
         next: { revalidate: 3600 },

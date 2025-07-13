@@ -180,7 +180,7 @@ export default function Invite() {
             <CardTitle>You've been invited to join a workspace</CardTitle>
             <CardDescription>
               {isNewUser
-                ? 'Create an account to join this workspace on Visual Workflow AI'
+                ? 'Create an account to join this workspace on Sim Studio'
                 : 'Sign in to your account to accept this invitation'}
             </CardDescription>
           </CardHeader>

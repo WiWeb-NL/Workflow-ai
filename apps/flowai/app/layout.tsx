@@ -6,7 +6,7 @@ import { createLogger } from "@/lib/logs/console-logger";
 import { TelemetryConsentDialog } from "@/app/telemetry-consent-dialog";
 import "./globals.css";
 
-import { ZoomPrevention } from "@/blocks/zoom-prevention";
+import { ZoomPrevention } from "./zoom-prevention";
 
 const logger = createLogger("RootLayout");
 
@@ -51,11 +51,12 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: {
     template: "",
-    default: "Visual Workflow AI",
+    default: "Sim Studio",
   },
-  description: "Build powerful no-code AI workflows.",
-  applicationName: "Visual Workflow AI",
-  authors: [{ name: "Visual Workflow AI" }],
+  description:
+    "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
+  applicationName: "Sim Studio",
+  authors: [{ name: "Sim Studio" }],
   generator: "Next.js",
   keywords: [
     "AI agent",
@@ -74,9 +75,9 @@ export const metadata: Metadata = {
     "visual programming",
   ],
   referrer: "origin-when-cross-origin",
-  creator: "Visual Workflow AI",
-  publisher: "Visual Workflow AI",
-  metadataBase: new URL("https://www.visualworkflow.app"),
+  creator: "Sim Studio",
+  publisher: "Sim Studio",
+  metadataBase: new URL("https://simstudio.ai"),
   alternates: {
     canonical: "/",
     languages: {
@@ -97,26 +98,26 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://www.visualworkflow.app",
-    title: "Visual Workflow AI",
+    url: "https://simstudio.ai",
+    title: "Sim Studio",
     description:
       "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
-    siteName: "Visual Workflow AI",
+    siteName: "Sim Studio",
     images: [
       {
-        url: "https://www.visualworkflow.app/social/facebook.png",
+        url: "https://simstudio.ai/social/facebook.png",
         width: 1200,
         height: 630,
-        alt: "Visual Workflow AI",
+        alt: "Sim Studio",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Visual Workflow AI",
+    title: "Sim Studio",
     description:
       "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
-    images: ["https://www.visualworkflow.app/social/twitter.png"],
+    images: ["https://simstudio.ai/social/twitter.png"],
     creator: "@simstudioai",
     site: "@simstudioai",
   },
@@ -143,7 +144,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Visual Workflow AI",
+    title: "Sim Studio",
   },
   formatDetection: {
     telephone: false,
@@ -172,10 +173,10 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              name: "Visual Workflow AI",
+              name: "Sim Studio",
               description:
                 "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
-              url: "https://www.visualworkflow.app",
+              url: "https://simstudio.ai",
               applicationCategory: "BusinessApplication",
               operatingSystem: "Web Browser",
               offers: {
@@ -184,8 +185,8 @@ export default function RootLayout({
               },
               creator: {
                 "@type": "Organization",
-                name: "Visual Workflow AI",
-                url: "https://www.visualworkflow.app",
+                name: "Sim Studio",
+                url: "https://simstudio.ai",
               },
               featureList: [
                 "Visual AI Agent Builder",
@@ -208,9 +209,9 @@ export default function RootLayout({
         <meta property="og:image:height" content="630" />
         <meta
           property="og:image:alt"
-          content="Visual Workflow AI - AI Agent Builder with Visual Canvas Interface"
+          content="Sim Studio - AI Agent Builder with Visual Canvas Interface"
         />
-        <meta property="og:site_name" content="Visual Workflow AI" />
+        <meta property="og:site_name" content="Sim Studio" />
         <meta property="og:locale" content="en_US" />
 
         {/* Enhanced Twitter Card tags */}
@@ -218,16 +219,13 @@ export default function RootLayout({
         <meta name="twitter:image:height" content="675" />
         <meta
           name="twitter:image:alt"
-          content="Visual Workflow AI - AI Agent Builder"
+          content="Sim Studio - AI Agent Builder"
         />
-        <meta name="twitter:url" content="https://www.visualworkflow.app" />
-        <meta name="twitter:domain" content="www.visualworkflow.app" />
+        <meta name="twitter:url" content="https://simstudio.ai" />
+        <meta name="twitter:domain" content="simstudio.ai" />
 
         {/* Additional image sources */}
-        <link
-          rel="image_src"
-          href="https://www.visualworkflow.app/social/facebook.png"
-        />
+        <link rel="image_src" href="https://simstudio.ai/social/facebook.png" />
 
         <PublicEnvScript />
       </head>

@@ -24,7 +24,7 @@ interface InvitationEmailProps {
   updatedDate?: Date;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflowai.ai";
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://simstudio.ai";
 
 export const InvitationEmail = ({
   inviterName = "A team member",
@@ -54,7 +54,7 @@ export const InvitationEmail = ({
       <Head />
       <Body style={baseStyles.main}>
         <Preview>
-          You've been invited to join {organizationName} on Visual Workflow AI
+          You've been invited to join {organizationName} on Sim Studio
         </Preview>
         <Container style={baseStyles.container}>
           <Section style={{ padding: "30px 0", textAlign: "center" }}>
@@ -63,7 +63,7 @@ export const InvitationEmail = ({
                 <Img
                   src={`${baseUrl}/static/flowai.jpg`}
                   width="114"
-                  alt="Visual Workflow AI"
+                  alt="Sim Studio"
                   style={{
                     margin: "0 auto",
                   }}
@@ -84,9 +84,9 @@ export const InvitationEmail = ({
             <Text style={baseStyles.paragraph}>Hello,</Text>
             <Text style={baseStyles.paragraph}>
               <strong>{inviterName}</strong> has invited you to join{" "}
-              <strong>{organizationName}</strong> on Visual Workflow AI. Visual
-              Workflow AI is a powerful, user-friendly platform for building,
-              testing, and optimizing agentic workflows.
+              <strong>{organizationName}</strong> on Sim Studio. Sim Studio is a
+              powerful, user-friendly platform for building, testing, and
+              optimizing agentic workflows.
             </Text>
             <Link href={enhancedLink} style={{ textDecoration: "none" }}>
               <Text style={baseStyles.button}>Accept Invitation</Text>
@@ -98,7 +98,7 @@ export const InvitationEmail = ({
             <Text style={baseStyles.paragraph}>
               Best regards,
               <br />
-              The Visual Workflow AI Team
+              The Sim Studio Team
             </Text>
             <Text
               style={{
@@ -110,7 +110,7 @@ export const InvitationEmail = ({
             >
               This email was sent on {format(updatedDate, "MMMM do, yyyy")} to{" "}
               {invitedEmail} with an invitation to join {organizationName} on
-              Visual Workflow AI.
+              Sim Studio.
             </Text>
           </Section>
         </Container>

@@ -67,7 +67,7 @@ export const setChatAuthCookie = (
     sameSite: 'lax',
     path: '/',
     // Using subdomain for the domain in production
-    domain: isDevelopment ? undefined : '.visualworkflowai.ai',
+    domain: isDevelopment ? undefined : '.simstudio.ai',
     maxAge: 60 * 60 * 24, // 24 hours
   })
 }

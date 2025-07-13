@@ -75,7 +75,7 @@ export async function GET(_request: NextRequest, { params }: { params: Promise<{
 
     const chatUrl = isDevelopment
       ? `http://${chatInstance[0].subdomain}.${getBaseDomain()}`
-      : `https://${chatInstance[0].subdomain}.visualworkflowai.ai`
+      : `https://${chatInstance[0].subdomain}.simstudio.ai`
 
     const result = {
       ...safeData,
@@ -225,7 +225,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 
       const chatUrl = isDevelopment
         ? `http://${updatedSubdomain}.${getBaseDomain()}`
-        : `https://${updatedSubdomain}.visualworkflowai.ai`
+        : `https://${updatedSubdomain}.simstudio.ai`
 
       logger.info(`Chat "${chatId}" updated successfully`)
 

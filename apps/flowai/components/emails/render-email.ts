@@ -74,18 +74,18 @@ export function getEmailSubject(
 ): string {
   switch (type) {
     case 'sign-in':
-      return 'Sign in to Visual Workflow AI'
+      return 'Sign in to Sim Studio'
     case 'email-verification':
-      return 'Verify your email for Visual Workflow AI'
+      return 'Verify your email for Sim Studio'
     case 'forget-password':
-      return 'Reset your Visual Workflow AI password'
+      return 'Reset your Sim Studio password'
     case 'reset-password':
-      return 'Reset your Visual Workflow AI password'
+      return 'Reset your Sim Studio password'
     case 'invitation':
-      return "You've been invited to join a team on Visual Workflow AI"
+      return "You've been invited to join a team on Sim Studio"
     case 'batch-invitation':
-      return "You've been invited to join a team and workspaces on Visual Workflow AI"
+      return "You've been invited to join a team and workspaces on Sim Studio"
     default:
-      return 'Visual Workflow AI'
+      return 'Sim Studio'
   }
 }

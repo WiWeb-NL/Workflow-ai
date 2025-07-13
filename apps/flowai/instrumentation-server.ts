@@ -1,5 +1,5 @@
 /**
- * Visual Workflow AI Telemetry - Server-side Instrumentation
+ * Sim Studio Telemetry - Server-side Instrumentation
  *
  * This file contains all server-side instrumentation logic.
  */
@@ -14,8 +14,8 @@ const Sentry =
 const logger = createLogger('OtelInstrumentation')
 
 const DEFAULT_TELEMETRY_CONFIG = {
-  endpoint: env.TELEMETRY_ENDPOINT || 'https://telemetry.visualworkflowai.ai/v1/traces',
-  serviceName: 'visual-workflow-ai',
+  endpoint: env.TELEMETRY_ENDPOINT || 'https://telemetry.simstudio.ai/v1/traces',
+  serviceName: 'sim-studio',
   serviceVersion: '0.1.0',
   serverSide: { enabled: true },
   batchSettings: {

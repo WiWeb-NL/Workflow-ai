@@ -79,12 +79,9 @@ const NavLinks = ({
   const navigationLinks = [
     // { href: "/", label: "Marketplace" },
     ...(currentPath !== "/" ? [{ href: "/", label: "Home" }] : []),
-    {
-      href: "https://docs.visualworkflowai.ai/",
-      label: "Docs",
-      external: true,
-    },
-    // { href: '/', label: 'Blog' },
+    // { href: "https://docs.simstudio.ai/", label: "Docs", external: true },
+    // // { href: '/', label: 'Blog' },
+    // { href: "/contributors", label: "Contributors" },
   ];
 
   const handleContributorsHover = usePrefetchOnHover();
@@ -102,7 +99,7 @@ const NavLinks = ({
             variants={mobile ? mobileNavItemVariants : undefined}
             key={link.label}
           >
-            <Link
+            {/* <Link
               href={link.href}
               className={navItemClass}
               onMouseEnter={
@@ -115,7 +112,7 @@ const NavLinks = ({
                 : {})}
             >
               {link.label}
-            </Link>
+            </Link> */}
           </motion.div>
         );
 
@@ -134,14 +131,14 @@ const NavLinks = ({
         (mobile ? (
           <SheetClose asChild key="enterprise">
             <motion.div variants={mobileNavItemVariants}>
-              <Link
+              {/* <Link
                 href="https://form.typeform.com/to/jqCO12pF"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={navItemClass}
               >
                 Enterprise
-              </Link>
+              </Link> */}
             </motion.div>
           </SheetClose>
         ) : (
@@ -149,14 +146,14 @@ const NavLinks = ({
             variants={mobile ? mobileNavItemVariants : undefined}
             key="enterprise"
           >
-            <Link
+            {/* <Link
               href="https://form.typeform.com/to/jqCO12pF"
               target="_blank"
               rel="noopener noreferrer"
               className={navItemClass}
             >
               Enterprise
-            </Link>
+            </Link> */}
           </motion.div>
         ))}
     </>
@@ -164,7 +161,7 @@ const NavLinks = ({
 };
 
 interface NavClientProps {
-  children?: React.ReactNode;
+  children: React.ReactNode;
   initialIsMobile?: boolean;
   currentPath?: string;
   onContactClick?: () => void;
@@ -251,7 +248,7 @@ export default function NavClient({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
                 >
-                  <Link
+                  {/* <Link
                     href="https://form.typeform.com/to/jqCO12pF"
                     target="_blank"
                     rel="noopener noreferrer"
@@ -259,7 +256,7 @@ export default function NavClient({
                     <Button className="h-[43px] bg-[#701ffc] px-6 py-2 font-geist-sans font-medium text-base text-neutral-100 transition-colors duration-200 hover:bg-[#802FFF]">
                       Contact
                     </Button>
-                  </Link>
+                  </Link> */}
                 </motion.div>
               </>
             )}
@@ -319,7 +316,7 @@ export default function NavClient({
                             variants={mobileButtonVariants}
                             className="mt-auto pt-6"
                           >
-                            <SheetClose asChild>
+                            {/* <SheetClose asChild>
                               <Link
                                 href="https://form.typeform.com/to/jqCO12pF"
                                 target="_blank"
@@ -329,7 +326,7 @@ export default function NavClient({
                                   Contact
                                 </Button>
                               </Link>
-                            </SheetClose>
+                            </SheetClose> */}
                           </motion.div>
                         </motion.div>
                       </SheetContent>

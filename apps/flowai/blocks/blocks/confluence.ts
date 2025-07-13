@@ -10,7 +10,7 @@ export const ConfluenceBlock: BlockConfig<ConfluenceResponse> = {
   description: 'Interact with Confluence',
   longDescription:
     'Connect to Confluence workspaces to retrieve and search documentation. Access page content, metadata, and integrate Confluence documentation into your workflows.',
-  docsLink: 'https://docs.visualworkflowai.ai/tools/confluence',
+  docsLink: 'https://docs.simstudio.ai/tools/confluence',
   category: 'tools',
   bgColor: '#E0E0E0',
   icon: ConfluenceIcon,
@@ -31,7 +31,7 @@ export const ConfluenceBlock: BlockConfig<ConfluenceResponse> = {
       title: 'Domain',
       type: 'short-input',
       layout: 'full',
-      placeholder: 'Enter Confluence domain (e.g., visualworkflowai.atlassian.net)',
+      placeholder: 'Enter Confluence domain (e.g., simstudio.atlassian.net)',
     },
     {
       id: 'credential',

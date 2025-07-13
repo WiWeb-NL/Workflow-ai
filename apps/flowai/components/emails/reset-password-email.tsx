@@ -22,7 +22,7 @@ interface ResetPasswordEmailProps {
   updatedDate?: Date;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflowai.ai";
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://simstudio.ai";
 
 export const ResetPasswordEmail = ({
   username = "",
@@ -33,7 +33,7 @@ export const ResetPasswordEmail = ({
     <Html>
       <Head />
       <Body style={baseStyles.main}>
-        <Preview>Reset your Visual Workflow AI password</Preview>
+        <Preview>Reset your Sim Studio password</Preview>
         <Container style={baseStyles.container}>
           <Section style={{ padding: "30px 0", textAlign: "center" }}>
             <Row>
@@ -41,7 +41,7 @@ export const ResetPasswordEmail = ({
                 <Img
                   src={`${baseUrl}/static/flowai.jpg`}
                   width="114"
-                  alt="Visual Workflow AI"
+                  alt="Sim Studio"
                   style={{
                     margin: "0 auto",
                   }}
@@ -61,9 +61,9 @@ export const ResetPasswordEmail = ({
           <Section style={baseStyles.content}>
             <Text style={baseStyles.paragraph}>Hello {username},</Text>
             <Text style={baseStyles.paragraph}>
-              You recently requested to reset your password for your Visual
-              Workflow AI account. Use the button below to reset it. This
-              password reset is only valid for the next 24 hours.
+              You recently requested to reset your password for your Sim Studio
+              account. Use the button below to reset it. This password reset is
+              only valid for the next 24 hours.
             </Text>
             <Link href={resetLink} style={{ textDecoration: "none" }}>
               <Text style={baseStyles.button}>Reset Your Password</Text>
@@ -75,7 +75,7 @@ export const ResetPasswordEmail = ({
             <Text style={baseStyles.paragraph}>
               Best regards,
               <br />
-              The Visual Workflow AI Team
+              The Sim Studio Team
             </Text>
             <Text
               style={{

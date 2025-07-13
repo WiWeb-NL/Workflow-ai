@@ -12,7 +12,7 @@ interface EmailFooterProps {
 }
 
 export const EmailFooter = ({
-  baseUrl = env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai',
+  baseUrl = env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai',
   unsubscribe,
 }: EmailFooterProps) => {
   return (
@@ -24,7 +24,7 @@ export const EmailFooter = ({
               <table cellPadding={0} cellSpacing={0} style={{ border: 0 }}>
                 <tr>
                   <td align='center' style={{ padding: '0 8px' }}>
-                    <Link href='https://x.com/visualworkflowaiai' rel='noopener noreferrer'>
+                    <Link href='https://x.com/simstudioai' rel='noopener noreferrer'>
                       <Img src={`${baseUrl}/static/x-icon.png`} width='24' height='24' alt='X' />
                     </Link>
                   </td>
@@ -39,7 +39,7 @@ export const EmailFooter = ({
                     </Link>
                   </td>
                   <td align='center' style={{ padding: '0 8px' }}>
-                    <Link href='https://github.com/visualworkflowaiai/sim' rel='noopener noreferrer'>
+                    <Link href='https://github.com/simstudioai/sim' rel='noopener noreferrer'>
                       <Img
                         src={`${baseUrl}/static/github-icon.png`}
                         width='24'
@@ -61,11 +61,11 @@ export const EmailFooter = ({
                   margin: '8px 0 0 0',
                 }}
               >
-                © {new Date().getFullYear()} Visual Workflow AI, All Rights Reserved
+                © {new Date().getFullYear()} Sim Studio, All Rights Reserved
                 <br />
                 If you have any questions, please contact us at{' '}
                 <a
-                  href='mailto:help@visualworkflowai.ai'
+                  href='mailto:help@simstudio.ai'
                   style={{
                     color: '#706a7b !important',
                     textDecoration: 'underline',
@@ -73,7 +73,7 @@ export const EmailFooter = ({
                     fontFamily: 'HelveticaNeue, Helvetica, Arial, sans-serif',
                   }}
                 >
-                  help@visualworkflowai.ai
+                  help@simstudio.ai
                 </a>
               </Text>
               <table cellPadding={0} cellSpacing={0} style={{ width: '100%', marginTop: '4px' }}>
@@ -117,7 +117,7 @@ export const EmailFooter = ({
                         href={
                           unsubscribe?.unsubscribeToken && unsubscribe?.email
                             ? `${baseUrl}/unsubscribe?token=${unsubscribe.unsubscribeToken}&email=${encodeURIComponent(unsubscribe.email)}`
-                            : `mailto:help@visualworkflowai.ai?subject=Unsubscribe%20Request&body=Please%20unsubscribe%20me%20from%20all%20emails.`
+                            : `mailto:help@simstudio.ai?subject=Unsubscribe%20Request&body=Please%20unsubscribe%20me%20from%20all%20emails.`
                         }
                         style={{
                           color: '#706a7b !important',
