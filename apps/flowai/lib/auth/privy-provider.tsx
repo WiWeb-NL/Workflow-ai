@@ -39,7 +39,10 @@ const PrivyAuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       }
 
       const data = await response.json();
-      logger.info("Successfully retrieved auth token for Privy");
+      logger.info("Successfully retrieved auth token for Privy", {
+        hasToken: !!data.token,
+        tokenPreview: data.token ? `${data.token.substring(0, 10)}...` : null,
+      });
       return data.token;
     } catch (error) {
       logger.error("Error getting auth token:", error);

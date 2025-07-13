@@ -18,13 +18,18 @@ export async function GET(request: NextRequest) {
     }
 
     const token = response.token;
-    logger.info("Successfully generated JWT token");
+    logger.info("Successfully generated JWT token", {
+      tokenPreview: token ? `${token.substring(0, 10)}...` : null,
+    });
 
     return NextResponse.json(
       { token },
       {
         headers: {
           "set-auth-jwt": token, // Also set in header as mentioned in Better Auth docs
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
         },
       }
     );
