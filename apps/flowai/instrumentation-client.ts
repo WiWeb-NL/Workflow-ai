@@ -1,5 +1,5 @@
 /**
- * Visual Workflow AI Telemetry - Client-side Instrumentation
+ * Sim Studio Telemetry - Client-side Instrumentation
  *
  * This file initializes client-side telemetry when the app loads in the browser.
  * It respects the user's telemetry preferences stored in localStorage.
@@ -49,7 +49,7 @@ export const onRouterTransitionStart =
   clientEnv.NODE_ENV === 'production' ? captureRouterTransitionStart : () => {}
 
 if (typeof window !== 'undefined') {
-  const TELEMETRY_STATUS_KEY = 'visualworkflowai-telemetry-status'
+  const TELEMETRY_STATUS_KEY = 'simstudio-telemetry-status'
   let telemetryEnabled = true
 
   try {
@@ -126,7 +126,7 @@ if (typeof window !== 'undefined') {
   }
 
   if (telemetryEnabled) {
-    performance.mark('visual-workflow-ai-init')
+    performance.mark('sim-studio-init')
 
     let telemetryConfig
     try {
@@ -138,8 +138,8 @@ if (typeof window !== 'undefined') {
     }
 
     window.addEventListener('load', () => {
-      performance.mark('visual-workflow-ai-loaded')
-      performance.measure('page-load', 'visual-workflow-ai-init', 'visual-workflow-ai-loaded')
+      performance.mark('sim-studio-loaded')
+      performance.measure('page-load', 'sim-studio-init', 'sim-studio-loaded')
 
       if (typeof PerformanceObserver !== 'undefined') {
         const lcpObserver = new PerformanceObserver((list) => {

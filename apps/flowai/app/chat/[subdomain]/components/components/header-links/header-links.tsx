@@ -11,7 +11,7 @@ export default function HeaderLinks({ stars }: HeaderLinksProps) {
   return (
     <div className='flex items-center'>
       <motion.a
-        href='https://github.com/visualworkflowaiai/sim'
+        href='https://github.com/simstudioai/sim'
         className='flex items-center gap-1.5 rounded-md p-1 text-foreground/80 transition-colors duration-200 hover:text-foreground/100'
         aria-label='GitHub'
         target='_blank'

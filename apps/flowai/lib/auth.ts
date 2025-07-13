@@ -172,12 +172,12 @@ export const auth = betterAuth({
     github: {
       clientId: env.GITHUB_CLIENT_ID as string,
       clientSecret: env.GITHUB_CLIENT_SECRET as string,
-      scope: ["user:email", "repo"],
+      scopes: ["user:email", "repo"],
     },
     google: {
       clientId: env.GOOGLE_CLIENT_ID as string,
       clientSecret: env.GOOGLE_CLIENT_SECRET as string,
-      scope: [
+      scopes: [
         "https://www.googleapis.com/auth/userinfo.email",
         "https://www.googleapis.com/auth/userinfo.profile",
       ],
@@ -186,6 +186,7 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
+    sendVerificationOnSignUp: false,
     throwOnMissingCredentials: true,
     throwOnInvalidCredentials: true,
     sendResetPassword: async ({ user, url, token }, request) => {
@@ -1127,19 +1128,19 @@ export const auth = betterAuth({
             ) => {
               logger.info("Stripe customer created", {
                 customerId: customer.id,
-                userId: (user as any).id,
+                userId: user.id,
               });
 
               // Initialize usage limits for new user
               try {
                 const { initializeUserUsageLimit } = await import("./billing");
-                await initializeUserUsageLimit((user as any).id);
+                await initializeUserUsageLimit(user.id);
                 logger.info("Usage limits initialized for new user", {
-                  userId: (user as any).id,
+                  userId: user.id,
                 });
               } catch (error) {
                 logger.error("Failed to initialize usage limits for new user", {
-                  userId: (user as any).id,
+                  userId: user.id,
                   error,
                 });
               }

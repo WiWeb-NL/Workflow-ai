@@ -1141,10 +1141,3 @@ export const copilotChats = pgTable(
     updatedAtIdx: index("copilot_chats_updated_at_idx").on(table.updatedAt),
   })
 );
-
-export const jwks = pgTable("jwks", {
-  id: text("id").primaryKey(),
-  publicKey: text("public_key").notNull(),
-  privateKey: text("private_key").notNull(),
-  createdAt: timestamp("created_at").notNull(),
-});

@@ -161,7 +161,7 @@ export default function UnsubscribePage() {
               <Button
                 onClick={() =>
                   window.open(
-                    'mailto:help@visualworkflowai.ai?subject=Unsubscribe%20Help&body=Hi%2C%20I%20need%20help%20unsubscribing%20from%20emails.%20My%20unsubscribe%20link%20is%20not%20working.',
+                    'mailto:help@simstudio.ai?subject=Unsubscribe%20Help&body=Hi%2C%20I%20need%20help%20unsubscribing%20from%20emails.%20My%20unsubscribe%20link%20is%20not%20working.',
                     '_blank'
                   )
                 }
@@ -177,8 +177,8 @@ export default function UnsubscribePage() {
             <div className='mt-4 text-center'>
               <p className='text-muted-foreground text-xs'>
                 Need immediate help? Email us at{' '}
-                <a href='mailto:help@visualworkflowai.ai' className='text-primary hover:underline'>
-                  help@visualworkflowai.ai
+                <a href='mailto:help@simstudio.ai' className='text-primary hover:underline'>
+                  help@simstudio.ai
                 </a>
               </p>
             </div>
@@ -223,7 +223,7 @@ export default function UnsubscribePage() {
               <Button
                 onClick={() =>
                   window.open(
-                    'mailto:help@visualworkflowai.ai?subject=Account%20Help&body=Hi%2C%20I%20need%20help%20with%20my%20account%20emails.',
+                    'mailto:help@simstudio.ai?subject=Account%20Help&body=Hi%2C%20I%20need%20help%20with%20my%20account%20emails.',
                     '_blank'
                   )
                 }
@@ -257,8 +257,8 @@ export default function UnsubscribePage() {
             <p className='text-muted-foreground text-sm'>
               If you change your mind, you can always update your email preferences in your account
               settings or contact us at{' '}
-              <a href='mailto:help@visualworkflowai.ai' className='text-primary hover:underline'>
-                help@visualworkflowai.ai
+              <a href='mailto:help@simstudio.ai' className='text-primary hover:underline'>
+                help@simstudio.ai
               </a>
             </p>
           </CardContent>
@@ -275,7 +275,7 @@ export default function UnsubscribePage() {
           <CardTitle className='text-foreground'>We&apos;re sorry to see you go!</CardTitle>
           <CardDescription className='text-muted-foreground'>
             We understand email preferences are personal. Choose which emails you&apos;d like to
-            stop receiving from Visual Workflow AI.
+            stop receiving from Sim Studio.
           </CardDescription>
           <div className='mt-2 rounded-lg border bg-muted/50 p-3'>
             <p className='text-muted-foreground text-xs'>
@@ -370,8 +370,8 @@ export default function UnsubscribePage() {
 
             <p className='text-center text-muted-foreground text-xs'>
               Questions? Contact us at{' '}
-              <a href='mailto:help@visualworkflowai.ai' className='text-primary hover:underline'>
-                help@visualworkflowai.ai
+              <a href='mailto:help@simstudio.ai' className='text-primary hover:underline'>
+                help@simstudio.ai
               </a>
             </p>
           </div>

@@ -98,7 +98,7 @@ ${message}
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: `Visual Workflow AI <noreply@${getEmailDomain()}>`,
+      from: `Sim Studio <noreply@${getEmailDomain()}>`,
       to: [`help@${getEmailDomain()}`],
       subject: `[${type.toUpperCase()}] ${subject}`,
       replyTo: email,
@@ -121,7 +121,7 @@ ${message}
     // Send confirmation email to the user
     await resend.emails
       .send({
-        from: `Visual Workflow AI <noreply@${getEmailDomain()}>`,
+        from: `Sim Studio <noreply@${getEmailDomain()}>`,
         to: [email],
         subject: `Your ${type} request has been received: ${subject}`,
         text: `
@@ -135,7 +135,7 @@ ${message}
 ${images.length > 0 ? `You attached ${images.length} image(s).` : ''}
 
 Best regards,
-The Visual Workflow AI Team
+The Sim Studio Team
         `,
         replyTo: `help@${getEmailDomain()}`,
       })

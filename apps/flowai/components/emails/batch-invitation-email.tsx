@@ -70,10 +70,10 @@ export const BatchInvitationEmail = ({
         <Container style={container}>
           <Section style={logoContainer}>
             <Img
-              src='https://visualworkflowai.ai/logo.png'
+              src='https://simstudio.ai/logo.png'
               width='120'
               height='36'
-              alt='visualworkflowai'
+              alt='SimStudio'
               style={logo}
             />
           </Section>
@@ -82,7 +82,7 @@ export const BatchInvitationEmail = ({
 
           <Text style={text}>
             <strong>{inviterName}</strong> has invited you to join{' '}
-            <strong>{organizationName}</strong> on visualworkflowai.
+            <strong>{organizationName}</strong> on SimStudio.
           </Text>
 
           {/* Organization Invitation Details */}

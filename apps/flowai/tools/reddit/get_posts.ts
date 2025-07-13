@@ -62,7 +62,7 @@ export const getPostsTool: ToolConfig<RedditPostsParams, RedditPostsResponse> = 
 
       return {
         Authorization: `Bearer ${params.accessToken}`,
-        'User-Agent': 'visual-workflow-ai/1.0 (https://github.com/visualworkflowaiai/sim)',
+        'User-Agent': 'sim-studio/1.0 (https://github.com/simstudioai/sim)',
         Accept: 'application/json',
       }
     },

@@ -58,7 +58,7 @@ export function OrganizationCreationDialog({
             </label>
             <div className='flex items-center space-x-2'>
               <div className='rounded-l-md bg-muted px-3 py-2 text-muted-foreground text-sm'>
-                visualworkflowai.ai/team/
+                simstudio.ai/team/
               </div>
               <Input
                 value={orgSlug}

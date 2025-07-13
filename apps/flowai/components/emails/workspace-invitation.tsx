@@ -21,7 +21,7 @@ interface WorkspaceInvitationEmailProps {
   invitationLink?: string;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflowai.ai";
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://simstudio.ai";
 
 export const WorkspaceInvitationEmail = ({
   workspaceName = "Workspace",
@@ -49,8 +49,8 @@ export const WorkspaceInvitationEmail = ({
       <Head />
       <Body style={baseStyles.main}>
         <Preview>
-          You've been invited to join the "{workspaceName}" workspace on Visual
-          Workflow AI!
+          You've been invited to join the "{workspaceName}" workspace on Sim
+          Studio!
         </Preview>
         <Container style={baseStyles.container}>
           <Section style={{ padding: "30px 0", textAlign: "center" }}>
@@ -59,7 +59,7 @@ export const WorkspaceInvitationEmail = ({
                 <Img
                   src={`${baseUrl}/static/flowai.jpg`}
                   width="114"
-                  alt="Visual Workflow AI"
+                  alt="Sim Studio"
                   style={{
                     margin: "0 auto",
                   }}
@@ -80,12 +80,12 @@ export const WorkspaceInvitationEmail = ({
             <Text style={baseStyles.paragraph}>Hello,</Text>
             <Text style={baseStyles.paragraph}>
               {inviterName} has invited you to join the "{workspaceName}"
-              workspace on Visual Workflow AI!
+              workspace on Sim Studio!
             </Text>
             <Text style={baseStyles.paragraph}>
-              Visual Workflow AI is a powerful platform for building, testing,
-              and optimizing AI workflows. Join this workspace to collaborate
-              with your team.
+              Sim Studio is a powerful platform for building, testing, and
+              optimizing AI workflows. Join this workspace to collaborate with
+              your team.
             </Text>
             <Link href={enhancedLink} style={{ textDecoration: "none" }}>
               <Text style={baseStyles.button}>Accept Invitation</Text>
@@ -98,7 +98,7 @@ export const WorkspaceInvitationEmail = ({
             <Text style={baseStyles.paragraph}>
               Best regards,
               <br />
-              The Visual Workflow AI Team
+              The Sim Studio Team
             </Text>
           </Section>
         </Container>

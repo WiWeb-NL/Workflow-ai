@@ -297,7 +297,7 @@ export function CopilotModal({
                 <div className='space-y-2'>
                   <h3 className='font-medium text-lg'>Welcome to Documentation Copilot</h3>
                   <p className='text-muted-foreground text-sm'>
-                    Ask me anything about Visual Workflow AI features, workflows, tools, or how to get
+                    Ask me anything about Sim Studio features, workflows, tools, or how to get
                     started.
                   </p>
                 </div>
@@ -349,7 +349,7 @@ export function CopilotModal({
               value={copilotMessage}
               onChange={(e) => setCopilotMessage(e.target.value)}
               onKeyDown={handleKeyPress}
-              placeholder='Ask about Visual Workflow AI documentation...'
+              placeholder='Ask about Sim Studio documentation...'
               className='min-h-[50px] flex-1 rounded-2xl border-0 bg-transparent py-7 pr-16 pl-6 text-base focus-visible:ring-0 focus-visible:ring-offset-0'
               disabled={isLoading}
             />
@@ -364,7 +364,7 @@ export function CopilotModal({
           </div>
 
           <div className='mt-2 text-center text-muted-foreground text-xs'>
-            <p>Ask questions about Visual Workflow AI documentation and features</p>
+            <p>Ask questions about Sim Studio documentation and features</p>
           </div>
         </div>
       </div>

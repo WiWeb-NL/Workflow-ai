@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         '/invite/invite-error?reason=missing-invitation-id',
-        env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+        env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
       )
     )
   }
@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `/invite/organization?id=${invitationId}`,
-        env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+        env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
       )
     )
   }
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           '/invite/invite-error?reason=invalid-invitation',
-          env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
         )
       )
     }
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           '/invite/invite-error?reason=expired',
-          env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
         )
       )
     }
@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           '/invite/invite-error?reason=already-processed',
-          env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
         )
       )
     }
@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           '/invite/invite-error?reason=email-mismatch',
-          env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
         )
       )
     }
@@ -99,7 +99,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           '/invite/invite-error?reason=already-member',
-          env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
         )
       )
     }
@@ -206,7 +206,7 @@ export async function GET(req: NextRequest) {
 
     // Redirect to success page or main app
     return NextResponse.redirect(
-      new URL('/workspaces?invite=accepted', env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai')
+      new URL('/workspaces?invite=accepted', env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai')
     )
   } catch (error) {
     logger.error('Failed to accept organization invitation', {
@@ -218,7 +218,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         '/invite/invite-error?reason=server-error',
-        env.NEXT_PUBLIC_APP_URL || 'https://visualworkflowai.ai'
+        env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
       )
     )
   }

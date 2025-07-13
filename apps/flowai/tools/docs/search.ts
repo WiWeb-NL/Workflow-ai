@@ -27,7 +27,7 @@ export const docsSearchTool: ToolConfig<DocsSearchParams, DocsSearchResponse> = 
   id: 'docs_search_internal',
   name: 'Search Documentation',
   description:
-    'Search Visual Workflow AI documentation for information about features, tools, workflows, and functionality',
+    'Search Sim Studio documentation for information about features, tools, workflows, and functionality',
   version: '1.0.0',
 
   params: {

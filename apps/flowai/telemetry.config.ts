@@ -1,5 +1,5 @@
 /**
- * Visual Workflow AI Telemetry Configuration
+ * Sim Studio Telemetry Configuration
  *
  * PRIVACY NOTICE:
  * - Telemetry is enabled by default to help us improve the product
@@ -8,7 +8,7 @@
  *   2. Setting NEXT_TELEMETRY_DISABLED=1 environment variable
  *
  * This file allows you to configure telemetry collection for your
- * Visual Workflow AI instance. If you've forked the repository, you can modify
+ * Sim Studio instance. If you've forked the repository, you can modify
  * this file to send telemetry to your own collector.
  *
  * We only collect anonymous usage data to improve the product:
@@ -29,13 +29,13 @@ const config = {
    * Endpoint URL where telemetry data is sent
    * Change this if you want to send telemetry to your own collector
    */
-  endpoint: env.TELEMETRY_ENDPOINT || 'https://telemetry.visualworkflowai.ai/v1/traces',
+  endpoint: env.TELEMETRY_ENDPOINT || 'https://telemetry.simstudio.ai/v1/traces',
 
   /**
    * Service name used to identify this instance
    * You can change this
    */
-  serviceName: 'visual-workflow-ai',
+  serviceName: 'sim-studio',
 
   /**
    * Version of the service, defaults to the app version

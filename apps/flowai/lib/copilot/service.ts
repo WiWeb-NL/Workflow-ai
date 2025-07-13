@@ -241,7 +241,7 @@ export async function generateDocsResponse(
 
     if (searchResults.length === 0) {
       const fallbackResponse =
-        "I couldn't find any relevant documentation for your question. Please try rephrasing your query or check if you're asking about a feature that exists in Visual Workflow AI."
+        "I couldn't find any relevant documentation for your question. Please try rephrasing your query or check if you're asking about a feature that exists in Sim Studio."
       return {
         response: fallbackResponse,
         sources: [],
@@ -269,7 +269,7 @@ Content: ${result.content}`
       conversationContext += '\n'
     }
 
-    const systemPrompt = `You are a helpful assistant that answers questions about Visual Workflow AI documentation. You are having a conversation with the user, so refer to the conversation history when relevant.
+    const systemPrompt = `You are a helpful assistant that answers questions about Sim Studio documentation. You are having a conversation with the user, so refer to the conversation history when relevant.
 
 MANDATORY CITATION REQUIREMENT: You MUST include citations for ALL information derived from the provided sources.
 
@@ -416,7 +416,7 @@ export async function generateChatResponse(
         id: 'docs_search_internal',
         name: 'Search Documentation',
         description:
-          'Search Visual Workflow AI documentation for information about features, tools, workflows, and functionality',
+          'Search Sim Studio documentation for information about features, tools, workflows, and functionality',
         params: {},
         parameters: {
           type: 'object',
@@ -438,7 +438,7 @@ export async function generateChatResponse(
         id: 'get_user_workflow',
         name: "Get User's Specific Workflow",
         description:
-          'Get the user\'s current workflow - this shows ONLY the blocks they have actually built and configured in their specific workflow, not general Visual Workflow AI capabilities. Use this when the user asks about "my workflow", "this workflow", wants to know what blocks they currently have, OR when they ask "How do I..." questions about their workflow so you can give specific, actionable advice based on their actual setup.',
+          'Get the user\'s current workflow - this shows ONLY the blocks they have actually built and configured in their specific workflow, not general Sim Studio capabilities. Use this when the user asks about "my workflow", "this workflow", wants to know what blocks they currently have, OR when they ask "How do I..." questions about their workflow so you can give specific, actionable advice based on their actual setup.',
         params: {},
         parameters: {
           type: 'object',

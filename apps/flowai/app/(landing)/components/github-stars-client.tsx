@@ -10,7 +10,7 @@ interface GitHubStarsClientProps {
 export default function GitHubStarsClient({ stars }: GitHubStarsClientProps) {
   return (
     <motion.a
-      href='https://github.com/visualworkflowaiai/sim'
+      href='https://github.com/simstudioai/sim'
       className='flex items-center gap-2 rounded-md p-1.5 text-white/80 transition-colors duration-200 hover:text-white/100'
       aria-label='GitHub'
       target='_blank'

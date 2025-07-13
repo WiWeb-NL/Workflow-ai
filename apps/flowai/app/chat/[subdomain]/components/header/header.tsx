@@ -33,7 +33,7 @@ export function ChatHeader({ chatConfig, starCount }: ChatHeaderProps) {
       </div>
       <div className='flex items-center gap-2'>
         <a
-          href='https://github.com/visualworkflowaiai/sim'
+          href='https://github.com/simstudioai/sim'
           className='flex items-center gap-1 text-foreground'
           aria-label='GitHub'
           target='_blank'
@@ -43,7 +43,7 @@ export function ChatHeader({ chatConfig, starCount }: ChatHeaderProps) {
           <span className='hidden font-medium text-xs sm:inline-block'>{starCount}</span>
         </a>
         <a
-          href='https://visualworkflowai.ai'
+          href='https://simstudio.ai'
           target='_blank'
           rel='noopener noreferrer'
           className='flex items-center rounded-md p-1 text-foreground/80 transition-colors duration-200 hover:text-foreground/100'

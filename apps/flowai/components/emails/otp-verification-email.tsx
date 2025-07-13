@@ -21,20 +21,20 @@ interface OTPVerificationEmailProps {
   chatTitle?: string;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflowai.ai";
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://simstudio.ai";
 
 const getSubjectByType = (type: string, chatTitle?: string) => {
   switch (type) {
     case "sign-in":
-      return "Sign in to Visual Workflow AI";
+      return "Sign in to Sim Studio";
     case "email-verification":
-      return "Verify your email for Visual Workflow AI";
+      return "Verify your email for Sim Studio";
     case "forget-password":
-      return "Reset your Visual Workflow AI password";
+      return "Reset your Sim Studio password";
     case "chat-access":
       return `Verification code for ${chatTitle || "Chat"}`;
     default:
-      return "Verification code for Visual Workflow AI";
+      return "Verification code for Sim Studio";
   }
 };
 
@@ -48,13 +48,13 @@ export const OTPVerificationEmail = ({
   const getMessage = () => {
     switch (type) {
       case "sign-in":
-        return "Sign in to Visual Workflow AI";
+        return "Sign in to Sim Studio";
       case "forget-password":
-        return "Reset your password for Visual Workflow AI";
+        return "Reset your password for Sim Studio";
       case "chat-access":
         return `Access ${chatTitle || "the chat"}`;
       default:
-        return "Welcome to Visual Workflow AI";
+        return "Welcome to Sim Studio";
     }
   };
 
@@ -70,7 +70,7 @@ export const OTPVerificationEmail = ({
                 <Img
                   src={`${baseUrl}/static/flowai.jpg`}
                   width="114"
-                  alt="Visual Workflow AI"
+                  alt="Sim Studio"
                   style={{
                     margin: "0 auto",
                   }}
@@ -100,7 +100,7 @@ export const OTPVerificationEmail = ({
             <Text style={baseStyles.paragraph}>
               Best regards,
               <br />
-              The Visual Workflow AI Team
+              The Sim Studio Team
             </Text>
           </Section>
         </Container>
