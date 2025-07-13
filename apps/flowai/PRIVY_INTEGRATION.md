@@ -129,7 +129,26 @@ function LoginPage() {
 - `POST /api/auth/privy/sync` - Sync Privy user with Better Auth
 - `POST /api/auth/privy/verify` - Verify Privy JWT tokens
 - `GET /api/auth/token` - Get Better Auth JWT token
-- `GET /api/auth/jwks` - JWKS endpoint for token verification
+- `GET /api/auth/jwks` - JWKS endpoint for token verification (required for Privy)
+
+### Privy Dashboard Configuration
+
+After creating your Privy app, configure these settings:
+
+1. **JWT Verification Settings** (Settings → JWT Verification):
+
+   - **JWKS Endpoint**: `https://your-domain.com/api/auth/jwks`
+   - **JWT ID Claim**: `id`
+   - **Issuer**: Your domain (e.g., `https://your-domain.com`)
+   - **Audience**: Your domain (e.g., `https://your-domain.com`)
+
+2. **Authentication Methods** (Settings → Login Methods):
+
+   - Configure which login methods to enable (email, Google, GitHub, etc.)
+
+3. **Embedded Wallets** (Settings → Embedded Wallets):
+   - Enable embedded wallet creation
+   - Configure wallet settings as needed
 
 ### Database Schema
 
