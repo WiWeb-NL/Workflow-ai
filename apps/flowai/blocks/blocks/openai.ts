@@ -8,7 +8,7 @@ export const OpenAIBlock: BlockConfig = {
   longDescription:
     "Convert text into numerical vector representations using OpenAI's embedding models. Transform text data into embeddings for semantic search, clustering, and other vector-based operations.",
   category: "tools",
-  docsLink: "https://docs.visualworkflow.app/tools/openai",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/openai",
   bgColor: "#10a37f",
   icon: OpenAIIcon,
   subBlocks: [

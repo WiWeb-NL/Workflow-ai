@@ -19,7 +19,7 @@ export const ExaBlock: BlockConfig<ExaResponse> = {
   description: "Search with Exa AI",
   longDescription:
     "Search the web, retrieve content, find similar links, and answer questions using Exa's powerful AI search capabilities.",
-  docsLink: "https://docs.visualworkflow.app/tools/exa",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/exa",
   category: "tools",
   bgColor: "#1F40ED",
   icon: ExaAIIcon,

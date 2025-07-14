@@ -19,7 +19,7 @@ export const GitHubBlock: BlockConfig<GitHubResponse> = {
   description: "Interact with GitHub",
   longDescription:
     "Access GitHub repositories, pull requests, and comments through the GitHub API. Automate code reviews, PR management, and repository interactions within your workflow.",
-  docsLink: "https://docs.visualworkflow.app/tools/github",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/github",
   category: "tools",
   bgColor: "#181C1E",
   icon: GithubIcon,

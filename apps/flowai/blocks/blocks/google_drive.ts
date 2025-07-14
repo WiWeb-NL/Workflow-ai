@@ -17,7 +17,7 @@ export const GoogleDriveBlock: BlockConfig<GoogleDriveResponse> = {
   description: "Create, upload, and list files",
   longDescription:
     "Integrate Google Drive functionality to manage files and folders. Upload new files, get content from existing files, create new folders, and list contents of folders using OAuth authentication. Supports file operations with custom MIME types and folder organization.",
-  docsLink: "https://docs.visualworkflow.app/tools/google_drive",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/google_drive",
   category: "tools",
   bgColor: "#E0E0E0",
   icon: GoogleDriveIcon,

@@ -79,7 +79,7 @@ const NavLinks = ({
   const navigationLinks = [
     // { href: "/", label: "Marketplace" },
     ...(currentPath !== "/" ? [{ href: "/", label: "Home" }] : []),
-    // { href: "https://docs.visualworkflow.app/", label: "Docs", external: true },
+    // { href: "https://docs.flowai-tau.vercel.app/", label: "Docs", external: true },
     // // { href: '/', label: 'Blog' },
     // { href: "/contributors", label: "Contributors" },
   ];

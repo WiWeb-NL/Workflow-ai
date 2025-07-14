@@ -20,7 +20,7 @@ export const PerplexityBlock: BlockConfig<PerplexityChatResponse> = {
   description: "Use Perplexity AI chat models",
   longDescription:
     "Generate completions using Perplexity AI models with real-time knowledge and search capabilities. Create responses, answer questions, and generate content with customizable parameters.",
-  docsLink: "https://docs.visualworkflow.app/tools/perplexity",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/perplexity",
   category: "tools",
   bgColor: "#20808D", // Perplexity turquoise color
   icon: PerplexityIcon,

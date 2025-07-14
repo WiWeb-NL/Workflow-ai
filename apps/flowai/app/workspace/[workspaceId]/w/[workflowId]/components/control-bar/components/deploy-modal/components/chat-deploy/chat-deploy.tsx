@@ -58,7 +58,7 @@ const getDomainSuffix = (() => {
   const suffix =
     env.NODE_ENV === "development"
       ? `.${getBaseDomain()}`
-      : ".visualworkflow.app";
+      : ".flowai-tau.vercel.app";
   return () => suffix;
 })();
 
@@ -897,12 +897,12 @@ export function ChatDeploy({
         (baseDomain.includes(":") ? baseDomain.split(":")[1] : "3000");
       domainSuffix = `.${baseHost}:${port}`;
     } else {
-      domainSuffix = ".visualworkflow.app";
+      domainSuffix = ".flowai-tau.vercel.app";
     }
 
     const subdomainPart = isDevelopmentUrl
       ? hostname.split(".")[0]
-      : hostname.split(".visualworkflow.app")[0];
+      : hostname.split(".flowai-tau.vercel.app")[0];
 
     // Success view - simplified with no buttons
     return (
@@ -1415,7 +1415,7 @@ export function ChatDeploy({
             <AlertDialogDescription>
               This will permanently delete your chat deployment at{" "}
               <span className="font-mono text-destructive">
-                {subdomain}.visualworkflow.app
+                {subdomain}.flowai-tau.vercel.app
               </span>
               .
               <p className="mt-2">

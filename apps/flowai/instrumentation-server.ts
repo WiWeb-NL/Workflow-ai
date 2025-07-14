@@ -15,7 +15,8 @@ const logger = createLogger("OtelInstrumentation");
 
 const DEFAULT_TELEMETRY_CONFIG = {
   endpoint:
-    env.TELEMETRY_ENDPOINT || "https://telemetry.visualworkflow.app/v1/traces",
+    env.TELEMETRY_ENDPOINT ||
+    "https://telemetry.flowai-tau.vercel.app/v1/traces",
   serviceName: "sim-studio",
   serviceVersion: "0.1.0",
   serverSide: { enabled: true },

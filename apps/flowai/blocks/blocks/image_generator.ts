@@ -8,7 +8,7 @@ export const ImageGeneratorBlock: BlockConfig<DalleResponse> = {
   description: "Generate images",
   longDescription:
     "Create high-quality images using OpenAI's image generation models. Configure resolution, quality, style, and other parameters to get exactly the image you need.",
-  docsLink: "https://docs.visualworkflow.app/tools/image_generator",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/image_generator",
   category: "tools",
   bgColor: "#4D5FFF",
   icon: ImageIcon,

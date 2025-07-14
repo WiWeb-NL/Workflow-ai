@@ -13,7 +13,7 @@ export function ChatErrorState({ error, starCount }: ChatErrorStateProps) {
       <div className="mx-auto max-w-md rounded-xl bg-white p-6 shadow-md">
         <div className="mb-2 flex items-center justify-between">
           <a
-            href="https://visualworkflow.app"
+            href="https://flowai-tau.vercel.app"
             target="_blank"
             rel="noopener noreferrer"
           >

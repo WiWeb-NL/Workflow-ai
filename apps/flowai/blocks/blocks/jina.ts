@@ -8,7 +8,7 @@ export const JinaBlock: BlockConfig<ReadUrlResponse> = {
   description: "Convert website content into text",
   longDescription:
     "Transform web content into clean, readable text using Jina AI's advanced extraction capabilities. Extract meaningful content from websites while preserving important information and optionally gathering links.",
-  docsLink: "https://docs.visualworkflow.app/tools/jina",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/jina",
   category: "tools",
   bgColor: "#333333",
   icon: JinaAIIcon,

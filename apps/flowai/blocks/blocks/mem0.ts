@@ -11,7 +11,7 @@ export const Mem0Block: BlockConfig<Mem0Response> = {
   bgColor: "#181C1E",
   icon: Mem0Icon,
   category: "tools",
-  docsLink: "https://docs.visualworkflow.app/tools/mem0",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/mem0",
   subBlocks: [
     {
       id: "operation",

@@ -464,7 +464,7 @@ describe("HTTP Request Tool", () => {
       Object.defineProperty(global, "window", {
         value: {
           location: {
-            origin: "https://visualworkflow.app",
+            origin: "https://flowai-tau.vercel.app",
           },
         },
         writable: true,

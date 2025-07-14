@@ -14,7 +14,7 @@ export const OutlookBlock: BlockConfig<
   description: "Access Outlook",
   longDescription:
     "Integrate Outlook functionality to read, draft, andsend email messages within your workflow. Automate email communications and process email content using OAuth authentication.",
-  docsLink: "https://docs.visualworkflow.app/tools/outlook",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/outlook",
   category: "tools",
   bgColor: "#E0E0E0",
   icon: OutlookIcon,

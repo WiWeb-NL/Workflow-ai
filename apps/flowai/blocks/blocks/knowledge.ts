@@ -10,7 +10,7 @@ export const KnowledgeBlock: BlockConfig = {
   bgColor: "#00B0B0",
   icon: PackageSearchIcon,
   category: "blocks",
-  docsLink: "https://docs.visualworkflow.app/blocks/knowledge",
+  docsLink: "https://docs.flowai-tau.vercel.app/blocks/knowledge",
   tools: {
     access: [
       "knowledge_search",

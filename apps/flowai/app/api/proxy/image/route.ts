@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
           "image/webp,image/avif,image/apng,image/svg+xml,image/*,*/*;q=0.8",
         "Accept-Language": "en-US,en;q=0.9",
         "Accept-Encoding": "gzip, deflate, br",
-        Referer: "https://visualworkflow.app/",
+        Referer: "https://flowai-tau.vercel.app/",
         "Sec-Fetch-Dest": "image",
         "Sec-Fetch-Mode": "no-cors",
         "Sec-Fetch-Site": "cross-site",

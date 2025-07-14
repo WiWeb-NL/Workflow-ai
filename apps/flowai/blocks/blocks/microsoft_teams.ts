@@ -15,7 +15,7 @@ export const MicrosoftTeamsBlock: BlockConfig<MicrosoftTeamsResponse> = {
   description: "Read, write, and create messages",
   longDescription:
     "Integrate Microsoft Teams functionality to manage messages. Read content from existing messages and write to messages using OAuth authentication. Supports text content manipulation for message creation and editing.",
-  docsLink: "https://docs.visualworkflow.app/tools/microsoft_teams",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/microsoft_teams",
   category: "tools",
   bgColor: "#E0E0E0",
   icon: MicrosoftTeamsIcon,

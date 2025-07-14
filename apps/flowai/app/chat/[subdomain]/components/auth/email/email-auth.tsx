@@ -146,7 +146,7 @@ export default function EmailAuth({
         <DialogHeader className="border-b px-6 py-4">
           <div className="flex items-center justify-center">
             <a
-              href="https://visualworkflow.app"
+              href="https://flowai-tau.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="mb-2"

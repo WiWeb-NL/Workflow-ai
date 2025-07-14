@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         "/invite/invite-error?reason=missing-invitation-id",
-        env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+        env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
       )
     );
   }
@@ -35,7 +35,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         `/invite/organization?id=${invitationId}`,
-        env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+        env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
       )
     );
   }
@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           "/invite/invite-error?reason=invalid-invitation",
-          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+          env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
         )
       );
     }
@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           "/invite/invite-error?reason=expired",
-          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+          env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
         )
       );
     }
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           "/invite/invite-error?reason=already-processed",
-          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+          env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
         )
       );
     }
@@ -84,7 +84,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           "/invite/invite-error?reason=email-mismatch",
-          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+          env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
         )
       );
     }
@@ -105,7 +105,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.redirect(
         new URL(
           "/invite/invite-error?reason=already-member",
-          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+          env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
         )
       );
     }
@@ -220,7 +220,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         "/workspaces?invite=accepted",
-        env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+        env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
       )
     );
   } catch (error) {
@@ -233,7 +233,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(
       new URL(
         "/invite/invite-error?reason=server-error",
-        env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+        env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app"
       )
     );
   }

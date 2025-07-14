@@ -12,7 +12,7 @@ interface EmailFooterProps {
 }
 
 export const EmailFooter = ({
-  baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app",
+  baseUrl = env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app",
   unsubscribe,
 }: EmailFooterProps) => {
   return (
@@ -82,7 +82,7 @@ export const EmailFooter = ({
                 <br />
                 If you have any questions, please contact us at{" "}
                 <a
-                  href="mailto:help@visualworkflow.app"
+                  href="mailto:help@flowai-tau.vercel.app"
                   style={{
                     color: "#706a7b !important",
                     textDecoration: "underline",
@@ -90,7 +90,7 @@ export const EmailFooter = ({
                     fontFamily: "HelveticaNeue, Helvetica, Arial, sans-serif",
                   }}
                 >
-                  help@visualworkflow.app
+                  help@flowai-tau.vercel.app
                 </a>
               </Text>
               <table
@@ -141,7 +141,7 @@ export const EmailFooter = ({
                         href={
                           unsubscribe?.unsubscribeToken && unsubscribe?.email
                             ? `${baseUrl}/unsubscribe?token=${unsubscribe.unsubscribeToken}&email=${encodeURIComponent(unsubscribe.email)}`
-                            : `mailto:help@visualworkflow.app?subject=Unsubscribe%20Request&body=Please%20unsubscribe%20me%20from%20all%20emails.`
+                            : `mailto:help@flowai-tau.vercel.app?subject=Unsubscribe%20Request&body=Please%20unsubscribe%20me%20from%20all%20emails.`
                         }
                         style={{
                           color: "#706a7b !important",

@@ -80,7 +80,7 @@ export const TypeformBlock: BlockConfig<TypeformResponse> = {
   description: "Interact with Typeform",
   longDescription:
     "Access and retrieve responses from your Typeform forms. Integrate form submissions data into your workflow for analysis, storage, or processing.",
-  docsLink: "https://docs.visualworkflow.app/tools/typeform",
+  docsLink: "https://docs.flowai-tau.vercel.app/tools/typeform",
   category: "tools",
   bgColor: "#262627", // Typeform brand color
   icon: TypeformIcon,

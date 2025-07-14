@@ -210,7 +210,7 @@ export async function POST(request: NextRequest) {
           chatUrl = `http://${subdomain}.localhost:3000`;
         }
       } else {
-        chatUrl = `https://${subdomain}.visualworkflow.app`;
+        chatUrl = `https://${subdomain}.simstudio.ai`;
       }
 
       logger.info(`Chat "${title}" deployed successfully at ${chatUrl}`);

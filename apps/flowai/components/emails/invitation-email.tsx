@@ -24,7 +24,7 @@ interface InvitationEmailProps {
   updatedDate?: Date;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app";
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app";
 
 export const InvitationEmail = ({
   inviterName = "A team member",
