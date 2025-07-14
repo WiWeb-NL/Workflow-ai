@@ -1,0 +1,1 @@
+ALTER TABLE "user" ALTER COLUMN "private_key" DROP NOT NULL;
