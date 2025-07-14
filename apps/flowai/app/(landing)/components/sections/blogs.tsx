@@ -46,8 +46,8 @@ function Blogs() {
         >
           <BlogCard
             href="/blog/test"
-            title="How to Build an Agent in 5 Steps with SimStudio.ai"
-            description="Learn how to create a fully functional AI agent using SimStudio.ai's unified API and workflows."
+            title="How to Build an Agent in 5 Steps with visualworkflow.app"
+            description="Learn how to create a fully functional AI agent using visualworkflow.app's unified API and workflows."
             date={new Date("25 April 2025")}
             author="Emir Ayaz"
             authorRole="Designer"
@@ -57,8 +57,8 @@ function Blogs() {
           />
           <BlogCard
             href="/blog/test"
-            title="How to Build an Agent in 5 Steps with SimStudio.ai"
-            description="Learn how to create a fully functional AI agent using SimStudio.ai's unified API and workflows."
+            title="How to Build an Agent in 5 Steps with visualworkflow.app"
+            description="Learn how to create a fully functional AI agent using visualworkflow.app's unified API and workflows."
             date={new Date("25 April 2025")}
             author="Emir Ayaz"
             authorRole="Designer"
@@ -76,8 +76,8 @@ function Blogs() {
         >
           <BlogCard
             href="/blog/test"
-            title="How to Build an Agent in 5 Steps with SimStudio.ai"
-            description="Learn how to create a fully functional AI agent using SimStudio.ai's unified API and workflows."
+            title="How to Build an Agent in 5 Steps with visualworkflow.app"
+            description="Learn how to create a fully functional AI agent using visualworkflow.app's unified API and workflows."
             date={new Date("25 April 2025")}
             author="Emir Ayaz"
             authorRole="Designer"
@@ -88,8 +88,8 @@ function Blogs() {
           />
           <BlogCard
             href="/blog/test"
-            title="How to Build an Agent in 5 Steps with SimStudio.ai"
-            description="Learn how to create a fully functional AI agent using SimStudio.ai's unified API and workflows."
+            title="How to Build an Agent in 5 Steps with visualworkflow.app"
+            description="Learn how to create a fully functional AI agent using visualworkflow.app's unified API and workflows."
             author="Emir Ayaz"
             authorRole="Designer"
             avatar="/static/flowai.jpg"
@@ -106,8 +106,8 @@ function Blogs() {
         >
           <BlogCard
             href="/blog/test"
-            title="How to Build an Agent in 5 Steps with SimStudio.ai"
-            description="Learn how to create a fully functional AI agent using SimStudio.ai's unified API and workflows."
+            title="How to Build an Agent in 5 Steps with visualworkflow.app"
+            description="Learn how to create a fully functional AI agent using visualworkflow.app's unified API and workflows."
             date={new Date("25 April 2025")}
             author="Emir Ayaz"
             authorRole="Designer"
@@ -117,8 +117,8 @@ function Blogs() {
           />
           <BlogCard
             href="/blog/test"
-            title="How to Build an Agent in 5 Steps with SimStudio.ai"
-            description="Learn how to create a fully functional AI agent using SimStudio.ai's unified API and workflows."
+            title="How to Build an Agent in 5 Steps with visualworkflow.app"
+            description="Learn how to create a fully functional AI agent using visualworkflow.app's unified API and workflows."
             date={new Date("25 April 2025")}
             author="Emir Ayaz"
             authorRole="Designer"

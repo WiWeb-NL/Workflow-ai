@@ -195,7 +195,7 @@ export const auth = betterAuth({
       const html = await renderPasswordResetEmail(username, url);
 
       const result = await resend.emails.send({
-        from: `Sim Studio <team@${getEmailDomain()}>`,
+        from: `Visual Workflow AI <team@${getEmailDomain()}>`,
         to: user.email,
         subject: getEmailSubject("reset-password"),
         html,
@@ -248,7 +248,7 @@ export const auth = betterAuth({
 
           // In production, send an actual email
           const result = await resend.emails.send({
-            from: `Sim Studio <onboarding@${getEmailDomain()}>`,
+            from: `Visual Workflow AI <onboarding@${getEmailDomain()}>`,
             to: data.email,
             subject: getEmailSubject(data.type),
             html,
@@ -1534,9 +1534,9 @@ export const auth = betterAuth({
                 );
 
                 await resend.emails.send({
-                  from: `Sim Studio <team@${getEmailDomain()}>`,
+                  from: `Visual Workflow AI <team@${getEmailDomain()}>`,
                   to: invitation.email,
-                  subject: `${inviterName} has invited you to join ${organization.name} on Sim Studio`,
+                  subject: `${inviterName} has invited you to join ${organization.name} on Visual Workflow AI`,
                   html,
                 });
               } catch (error) {

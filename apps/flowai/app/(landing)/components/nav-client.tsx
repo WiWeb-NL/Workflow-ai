@@ -79,7 +79,7 @@ const NavLinks = ({
   const navigationLinks = [
     // { href: "/", label: "Marketplace" },
     ...(currentPath !== "/" ? [{ href: "/", label: "Home" }] : []),
-    // { href: "https://docs.simstudio.ai/", label: "Docs", external: true },
+    // { href: "https://docs.visualworkflow.app/", label: "Docs", external: true },
     // // { href: '/', label: 'Blog' },
     // { href: "/contributors", label: "Contributors" },
   ];
@@ -161,7 +161,7 @@ const NavLinks = ({
 };
 
 interface NavClientProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   initialIsMobile?: boolean;
   currentPath?: string;
   onContactClick?: () => void;
@@ -213,7 +213,7 @@ export default function NavClient({
               <Link href="/" className="inline-flex">
                 <Image
                   src="/flowai.jpg"
-                  alt="Sim Logo"
+                  alt="FlowAI Logo"
                   width={42}
                   height={42}
                 />

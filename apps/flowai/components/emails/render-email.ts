@@ -1,16 +1,19 @@
-import { render } from '@react-email/components'
-import { BatchInvitationEmail } from './batch-invitation-email'
-import { InvitationEmail } from './invitation-email'
-import { OTPVerificationEmail } from './otp-verification-email'
-import { ResetPasswordEmail } from './reset-password-email'
+import { render } from "@react-email/components";
+import { BatchInvitationEmail } from "./batch-invitation-email";
+import { InvitationEmail } from "./invitation-email";
+import { OTPVerificationEmail } from "./otp-verification-email";
+import { ResetPasswordEmail } from "./reset-password-email";
 
 export async function renderOTPEmail(
   otp: string,
   email: string,
-  type: 'sign-in' | 'email-verification' | 'forget-password' = 'email-verification',
+  type:
+    | "sign-in"
+    | "email-verification"
+    | "forget-password" = "email-verification",
   chatTitle?: string
 ): Promise<string> {
-  return await render(OTPVerificationEmail({ otp, email, type, chatTitle }))
+  return await render(OTPVerificationEmail({ otp, email, type, chatTitle }));
 }
 
 export async function renderPasswordResetEmail(
@@ -18,8 +21,12 @@ export async function renderPasswordResetEmail(
   resetLink: string
 ): Promise<string> {
   return await render(
-    ResetPasswordEmail({ username, resetLink: resetLink, updatedDate: new Date() })
-  )
+    ResetPasswordEmail({
+      username,
+      resetLink: resetLink,
+      updatedDate: new Date(),
+    })
+  );
 }
 
 export async function renderInvitationEmail(
@@ -36,19 +43,19 @@ export async function renderInvitationEmail(
       invitedEmail: email,
       updatedDate: new Date(),
     })
-  )
+  );
 }
 
 interface WorkspaceInvitation {
-  workspaceId: string
-  workspaceName: string
-  permission: 'admin' | 'write' | 'read'
+  workspaceId: string;
+  workspaceName: string;
+  permission: "admin" | "write" | "read";
 }
 
 export async function renderBatchInvitationEmail(
   inviterName: string,
   organizationName: string,
-  organizationRole: 'admin' | 'member',
+  organizationRole: "admin" | "member",
   workspaceInvitations: WorkspaceInvitation[],
   acceptUrl: string
 ): Promise<string> {
@@ -60,32 +67,32 @@ export async function renderBatchInvitationEmail(
       workspaceInvitations,
       acceptUrl,
     })
-  )
+  );
 }
 
 export function getEmailSubject(
   type:
-    | 'sign-in'
-    | 'email-verification'
-    | 'forget-password'
-    | 'reset-password'
-    | 'invitation'
-    | 'batch-invitation'
+    | "sign-in"
+    | "email-verification"
+    | "forget-password"
+    | "reset-password"
+    | "invitation"
+    | "batch-invitation"
 ): string {
   switch (type) {
-    case 'sign-in':
-      return 'Sign in to Sim Studio'
-    case 'email-verification':
-      return 'Verify your email for Sim Studio'
-    case 'forget-password':
-      return 'Reset your Sim Studio password'
-    case 'reset-password':
-      return 'Reset your Sim Studio password'
-    case 'invitation':
-      return "You've been invited to join a team on Sim Studio"
-    case 'batch-invitation':
-      return "You've been invited to join a team and workspaces on Sim Studio"
+    case "sign-in":
+      return "Sign in to Visual Workflow AI";
+    case "email-verification":
+      return "Verify your email for Visual Workflow AI";
+    case "forget-password":
+      return "Reset your Visual Workflow AI password";
+    case "reset-password":
+      return "Reset your Visual Workflow AI password";
+    case "invitation":
+      return "You've been invited to join a team on Visual Workflow AI";
+    case "batch-invitation":
+      return "You've been invited to join a team and workspaces on Visual Workflow AI";
     default:
-      return 'Sim Studio'
+      return "Visual Workflow AI";
   }
 }

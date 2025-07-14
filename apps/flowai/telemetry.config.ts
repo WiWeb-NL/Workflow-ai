@@ -1,5 +1,5 @@
 /**
- * Sim Studio Telemetry Configuration
+ * Visual Workflow AI Telemetry Configuration
  *
  * PRIVACY NOTICE:
  * - Telemetry is enabled by default to help us improve the product
@@ -8,7 +8,7 @@
  *   2. Setting NEXT_TELEMETRY_DISABLED=1 environment variable
  *
  * This file allows you to configure telemetry collection for your
- * Sim Studio instance. If you've forked the repository, you can modify
+ * Visual Workflow AI instance. If you've forked the repository, you can modify
  * this file to send telemetry to your own collector.
  *
  * We only collect anonymous usage data to improve the product:
@@ -22,25 +22,26 @@
  * - API keys or tokens
  * - IP addresses or geolocation data
  */
-import { env } from './lib/env'
+import { env } from "./lib/env";
 
 const config = {
   /**
    * Endpoint URL where telemetry data is sent
    * Change this if you want to send telemetry to your own collector
    */
-  endpoint: env.TELEMETRY_ENDPOINT || 'https://telemetry.simstudio.ai/v1/traces',
+  endpoint:
+    env.TELEMETRY_ENDPOINT || "https://telemetry.visualworkflow.app/v1/traces",
 
   /**
    * Service name used to identify this instance
    * You can change this
    */
-  serviceName: 'sim-studio',
+  serviceName: "sim-studio",
 
   /**
    * Version of the service, defaults to the app version
    */
-  serviceVersion: '0.1.0',
+  serviceVersion: "0.1.0",
 
   /**
    * Batch settings for sending telemetry
@@ -60,7 +61,14 @@ const config = {
    * Categories of events that can be collected
    * This is used for validation when events are sent
    */
-  allowedCategories: ['page_view', 'feature_usage', 'performance', 'error', 'workflow', 'consent'],
+  allowedCategories: [
+    "page_view",
+    "feature_usage",
+    "performance",
+    "error",
+    "workflow",
+    "consent",
+  ],
 
   /**
    * Client-side instrumentation settings
@@ -77,6 +85,6 @@ const config = {
   serverSide: {
     enabled: true,
   },
-}
+};
 
-export default config
+export default config;

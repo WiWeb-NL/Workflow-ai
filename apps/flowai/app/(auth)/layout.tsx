@@ -26,7 +26,7 @@ export default function AuthLayout({
       <div className="relative z-10 px-6 pt-9">
         <div className="mx-auto max-w-7xl">
           <Link href="/" className="inline-flex">
-            <Image src="/flowai.jpg" alt="Sim Logo" width={42} height={42} />
+            <Image src="/flowai.jpg" alt="FlowAI Logo" width={42} height={42} />
           </Link>
         </div>
       </div>

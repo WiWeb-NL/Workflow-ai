@@ -21,20 +21,20 @@ interface OTPVerificationEmailProps {
   chatTitle?: string;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://simstudio.ai";
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app";
 
 const getSubjectByType = (type: string, chatTitle?: string) => {
   switch (type) {
     case "sign-in":
-      return "Sign in to Sim Studio";
+      return "Sign in to Visual Workflow AI";
     case "email-verification":
-      return "Verify your email for Sim Studio";
+      return "Verify your email for Visual Workflow AI";
     case "forget-password":
-      return "Reset your Sim Studio password";
+      return "Reset your Visual Workflow AI password";
     case "chat-access":
       return `Verification code for ${chatTitle || "Chat"}`;
     default:
-      return "Verification code for Sim Studio";
+      return "Verification code for Visual Workflow AI";
   }
 };
 
@@ -48,13 +48,13 @@ export const OTPVerificationEmail = ({
   const getMessage = () => {
     switch (type) {
       case "sign-in":
-        return "Sign in to Sim Studio";
+        return "Sign in to Visual Workflow AI";
       case "forget-password":
-        return "Reset your password for Sim Studio";
+        return "Reset your password for Visual Workflow AI";
       case "chat-access":
         return `Access ${chatTitle || "the chat"}`;
       default:
-        return "Welcome to Sim Studio";
+        return "Welcome to Visual Workflow AI";
     }
   };
 
@@ -70,7 +70,7 @@ export const OTPVerificationEmail = ({
                 <Img
                   src={`${baseUrl}/static/flowai.jpg`}
                   width="114"
-                  alt="Sim Studio"
+                  alt="Visual Workflow AI"
                   style={{
                     margin: "0 auto",
                   }}
@@ -100,7 +100,7 @@ export const OTPVerificationEmail = ({
             <Text style={baseStyles.paragraph}>
               Best regards,
               <br />
-              The Sim Studio Team
+              The Visual Workflow AI Team
             </Text>
           </Section>
         </Container>

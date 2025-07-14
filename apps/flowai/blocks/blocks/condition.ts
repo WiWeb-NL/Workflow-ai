@@ -1,35 +1,35 @@
-import { ConditionalIcon } from '@/components/icons'
-import type { BlockConfig } from '../types'
+import { ConditionalIcon } from "@/components/icons";
+import type { BlockConfig } from "../types";
 
 interface ConditionBlockOutput {
-  success: boolean
+  success: boolean;
   output: {
-    content: string
-    conditionResult: boolean
+    content: string;
+    conditionResult: boolean;
     selectedPath: {
-      blockId: string
-      blockType: string
-      blockTitle: string
-    }
-    selectedConditionId: string
-  }
+      blockId: string;
+      blockType: string;
+      blockTitle: string;
+    };
+    selectedConditionId: string;
+  };
 }
 
 export const ConditionBlock: BlockConfig<ConditionBlockOutput> = {
-  type: 'condition',
-  name: 'Condition',
-  description: 'Add a condition',
+  type: "condition",
+  name: "Condition",
+  description: "Add a condition",
   longDescription:
-    'Add a condition to the workflow to branch the execution path based on a boolean expression.',
-  docsLink: 'https://docs.simstudio.ai/blocks/condition',
-  bgColor: '#FF752F',
+    "Add a condition to the workflow to branch the execution path based on a boolean expression.",
+  docsLink: "https://docs.visualworkflow.app/blocks/condition",
+  bgColor: "#FF752F",
   icon: ConditionalIcon,
-  category: 'blocks',
+  category: "blocks",
   subBlocks: [
     {
-      id: 'conditions',
-      type: 'condition-input',
-      layout: 'full',
+      id: "conditions",
+      type: "condition-input",
+      layout: "full",
     },
   ],
   tools: {
@@ -37,9 +37,9 @@ export const ConditionBlock: BlockConfig<ConditionBlockOutput> = {
   },
   inputs: {},
   outputs: {
-    content: 'string',
-    conditionResult: 'boolean',
-    selectedPath: 'json',
-    selectedConditionId: 'string',
+    content: "string",
+    conditionResult: "boolean",
+    selectedPath: "json",
+    selectedConditionId: "string",
   },
-}
+};

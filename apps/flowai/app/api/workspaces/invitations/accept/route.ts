@@ -1,33 +1,42 @@
-import { randomUUID } from 'crypto'
-import { and, eq } from 'drizzle-orm'
-import { type NextRequest, NextResponse } from 'next/server'
-import { getSession } from '@/lib/auth'
-import { env } from '@/lib/env'
-import { db } from '@/db'
-import { permissions, user, workspace, workspaceInvitation, workspaceMember } from '@/db/schema'
+import { randomUUID } from "crypto";
+import { and, eq } from "drizzle-orm";
+import { type NextRequest, NextResponse } from "next/server";
+import { getSession } from "@/lib/auth";
+import { env } from "@/lib/env";
+import { db } from "@/db";
+import {
+  permissions,
+  user,
+  workspace,
+  workspaceInvitation,
+  workspaceMember,
+} from "@/db/schema";
 
 // Accept an invitation via token
 export async function GET(req: NextRequest) {
-  const token = req.nextUrl.searchParams.get('token')
+  const token = req.nextUrl.searchParams.get("token");
 
   if (!token) {
     // Redirect to a page explaining the error
     return NextResponse.redirect(
       new URL(
-        '/invite/invite-error?reason=missing-token',
-        env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+        "/invite/invite-error?reason=missing-token",
+        env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
       )
-    )
+    );
   }
 
-  const session = await getSession()
+  const session = await getSession();
 
   if (!session?.user?.id) {
     // No need to encode API URL as callback, just redirect to invite page
     // The middleware will handle proper login flow and return to invite page
     return NextResponse.redirect(
-      new URL(`/invite/${token}?token=${token}`, env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai')
-    )
+      new URL(
+        `/invite/${token}?token=${token}`,
+        env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
+      )
+    );
   }
 
   try {
@@ -36,63 +45,64 @@ export async function GET(req: NextRequest) {
       .select()
       .from(workspaceInvitation)
       .where(eq(workspaceInvitation.token, token))
-      .then((rows) => rows[0])
+      .then((rows) => rows[0]);
 
     if (!invitation) {
       return NextResponse.redirect(
         new URL(
-          '/invite/invite-error?reason=invalid-token',
-          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+          "/invite/invite-error?reason=invalid-token",
+          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
         )
-      )
+      );
     }
 
     // Check if invitation has expired
     if (new Date() > new Date(invitation.expiresAt)) {
       return NextResponse.redirect(
         new URL(
-          '/invite/invite-error?reason=expired',
-          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+          "/invite/invite-error?reason=expired",
+          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
         )
-      )
+      );
     }
 
     // Check if invitation is already accepted
-    if (invitation.status !== 'pending') {
+    if (invitation.status !== "pending") {
       return NextResponse.redirect(
         new URL(
-          '/invite/invite-error?reason=already-processed',
-          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+          "/invite/invite-error?reason=already-processed",
+          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
         )
-      )
+      );
     }
 
     // Get the user's email from the session
-    const userEmail = session.user.email.toLowerCase()
-    const invitationEmail = invitation.email.toLowerCase()
+    const userEmail = session.user.email.toLowerCase();
+    const invitationEmail = invitation.email.toLowerCase();
 
     // Check if the logged-in user's email matches the invitation
     // We'll use exact matching as the primary check
-    const isExactMatch = userEmail === invitationEmail
+    const isExactMatch = userEmail === invitationEmail;
 
     // For SSO or company email variants, check domain and normalized username
     // This handles cases like john.doe@company.com vs john@company.com
     const normalizeUsername = (email: string): string => {
       return email
-        .split('@')[0]
-        .replace(/[^a-zA-Z0-9]/g, '')
-        .toLowerCase()
-    }
+        .split("@")[0]
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .toLowerCase();
+    };
 
-    const isSameDomain = userEmail.split('@')[1] === invitationEmail.split('@')[1]
-    const normalizedUserEmail = normalizeUsername(userEmail)
-    const normalizedInvitationEmail = normalizeUsername(invitationEmail)
+    const isSameDomain =
+      userEmail.split("@")[1] === invitationEmail.split("@")[1];
+    const normalizedUserEmail = normalizeUsername(userEmail);
+    const normalizedInvitationEmail = normalizeUsername(invitationEmail);
     const isSimilarUsername =
       normalizedUserEmail === normalizedInvitationEmail ||
       normalizedUserEmail.includes(normalizedInvitationEmail) ||
-      normalizedInvitationEmail.includes(normalizedUserEmail)
+      normalizedInvitationEmail.includes(normalizedUserEmail);
 
-    const isValidMatch = isExactMatch || (isSameDomain && isSimilarUsername)
+    const isValidMatch = isExactMatch || (isSameDomain && isSimilarUsername);
 
     if (!isValidMatch) {
       // Get user info to include in the error message
@@ -100,14 +110,14 @@ export async function GET(req: NextRequest) {
         .select()
         .from(user)
         .where(eq(user.id, session.user.id))
-        .then((rows) => rows[0])
+        .then((rows) => rows[0]);
 
       return NextResponse.redirect(
         new URL(
           `/invite/invite-error?reason=email-mismatch&details=${encodeURIComponent(`Invitation was sent to ${invitation.email}, but you're logged in as ${userData?.email || session.user.email}`)}`,
-          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
         )
-      )
+      );
     }
 
     // Get the workspace details
@@ -115,15 +125,15 @@ export async function GET(req: NextRequest) {
       .select()
       .from(workspace)
       .where(eq(workspace.id, invitation.workspaceId))
-      .then((rows) => rows[0])
+      .then((rows) => rows[0]);
 
     if (!workspaceDetails) {
       return NextResponse.redirect(
         new URL(
-          '/invite/invite-error?reason=workspace-not-found',
-          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+          "/invite/invite-error?reason=workspace-not-found",
+          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
         )
-      )
+      );
     }
 
     // Check if user is already a member
@@ -136,24 +146,24 @@ export async function GET(req: NextRequest) {
           eq(workspaceMember.userId, session.user.id)
         )
       )
-      .then((rows) => rows[0])
+      .then((rows) => rows[0]);
 
     if (existingMembership) {
       // User is already a member, just mark the invitation as accepted and redirect
       await db
         .update(workspaceInvitation)
         .set({
-          status: 'accepted',
+          status: "accepted",
           updatedAt: new Date(),
         })
-        .where(eq(workspaceInvitation.id, invitation.id))
+        .where(eq(workspaceInvitation.id, invitation.id));
 
       return NextResponse.redirect(
         new URL(
           `/workspace/${invitation.workspaceId}/w`,
-          env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+          env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
         )
-      )
+      );
     }
 
     // Add user to workspace, permissions, and mark invitation as accepted in a transaction
@@ -166,49 +176,49 @@ export async function GET(req: NextRequest) {
         role: invitation.role,
         joinedAt: new Date(),
         updatedAt: new Date(),
-      })
+      });
 
       // Create permissions for the user
       const permissionsToInsert = [
         {
           id: randomUUID(),
-          entityType: 'workspace' as const,
+          entityType: "workspace" as const,
           entityId: invitation.workspaceId,
           userId: session.user.id,
-          permissionType: invitation.permissions || 'read',
+          permissionType: invitation.permissions || "read",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-      ]
+      ];
 
       if (permissionsToInsert.length > 0) {
-        await tx.insert(permissions).values(permissionsToInsert)
+        await tx.insert(permissions).values(permissionsToInsert);
       }
 
       // Mark invitation as accepted
       await tx
         .update(workspaceInvitation)
         .set({
-          status: 'accepted',
+          status: "accepted",
           updatedAt: new Date(),
         })
-        .where(eq(workspaceInvitation.id, invitation.id))
-    })
+        .where(eq(workspaceInvitation.id, invitation.id));
+    });
 
     // Redirect to the workspace
     return NextResponse.redirect(
       new URL(
         `/workspace/${invitation.workspaceId}/w`,
-        env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+        env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
       )
-    )
+    );
   } catch (error) {
-    console.error('Error accepting invitation:', error)
+    console.error("Error accepting invitation:", error);
     return NextResponse.redirect(
       new URL(
-        '/invite/invite-error?reason=server-error',
-        env.NEXT_PUBLIC_APP_URL || 'https://simstudio.ai'
+        "/invite/invite-error?reason=server-error",
+        env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app"
       )
-    )
+    );
   }
 }

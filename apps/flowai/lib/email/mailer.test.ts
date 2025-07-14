@@ -1,187 +1,198 @@
-import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest'
+import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 
-const mockSend = vi.fn()
+const mockSend = vi.fn();
 
-vi.mock('resend', () => {
+vi.mock("resend", () => {
   return {
     Resend: vi.fn().mockImplementation(() => ({
       emails: {
         send: (...args: any[]) => mockSend(...args),
       },
     })),
-  }
-})
+  };
+});
 
-vi.mock('./unsubscribe', () => ({
+vi.mock("./unsubscribe", () => ({
   isUnsubscribed: vi.fn(),
   generateUnsubscribeToken: vi.fn(),
-}))
+}));
 
-vi.mock('../env', () => ({
+vi.mock("../env", () => ({
   env: {
-    RESEND_API_KEY: 'test-api-key',
-    NEXT_PUBLIC_APP_URL: 'https://test.simstudio.ai',
+    RESEND_API_KEY: "test-api-key",
+    NEXT_PUBLIC_APP_URL: "https://test.visualworkflow.app",
   },
-}))
+}));
 
-vi.mock('../urls/utils', () => ({
-  getEmailDomain: vi.fn().mockReturnValue('simstudio.ai'),
-}))
+vi.mock("../urls/utils", () => ({
+  getEmailDomain: vi.fn().mockReturnValue("visualworkflow.app"),
+}));
 
-import { type EmailType, sendEmail } from './mailer'
-import { generateUnsubscribeToken, isUnsubscribed } from './unsubscribe'
+import { type EmailType, sendEmail } from "./mailer";
+import { generateUnsubscribeToken, isUnsubscribed } from "./unsubscribe";
 
-describe('mailer', () => {
+describe("mailer", () => {
   const testEmailOptions = {
-    to: 'test@example.com',
-    subject: 'Test Subject',
-    html: '<p>Test email content</p>',
-  }
+    to: "test@example.com",
+    subject: "Test Subject",
+    html: "<p>Test email content</p>",
+  };
 
   beforeEach(() => {
-    vi.clearAllMocks()
-    ;(isUnsubscribed as Mock).mockResolvedValue(false)
-    ;(generateUnsubscribeToken as Mock).mockReturnValue('mock-token-123')
+    vi.clearAllMocks();
+    (isUnsubscribed as Mock).mockResolvedValue(false);
+    (generateUnsubscribeToken as Mock).mockReturnValue("mock-token-123");
     mockSend.mockResolvedValue({
-      data: { id: 'test-email-id' },
+      data: { id: "test-email-id" },
       error: null,
-    })
-  })
+    });
+  });
 
-  describe('sendEmail', () => {
-    it('should send a transactional email successfully', async () => {
+  describe("sendEmail", () => {
+    it("should send a transactional email successfully", async () => {
       const result = await sendEmail({
         ...testEmailOptions,
-        emailType: 'transactional',
-      })
+        emailType: "transactional",
+      });
 
-      expect(result.success).toBe(true)
-      expect(result.message).toBe('Email sent successfully')
-      expect(result.data).toEqual({ id: 'test-email-id' })
+      expect(result.success).toBe(true);
+      expect(result.message).toBe("Email sent successfully");
+      expect(result.data).toEqual({ id: "test-email-id" });
 
       // Should not check unsubscribe status for transactional emails
-      expect(isUnsubscribed).not.toHaveBeenCalled()
+      expect(isUnsubscribed).not.toHaveBeenCalled();
 
       // Should call Resend with correct parameters
       expect(mockSend).toHaveBeenCalledWith({
-        from: 'Sim Studio <noreply@simstudio.ai>',
+        from: "Visual Workflow AI <noreply@visualworkflow.app>",
         to: testEmailOptions.to,
         subject: testEmailOptions.subject,
         html: testEmailOptions.html,
         headers: undefined, // No unsubscribe headers for transactional
-      })
-    })
+      });
+    });
 
-    it('should send a marketing email with unsubscribe headers', async () => {
-      const htmlWithToken = '<p>Test content</p><a href="{{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a>'
+    it("should send a marketing email with unsubscribe headers", async () => {
+      const htmlWithToken =
+        '<p>Test content</p><a href="{{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a>';
 
       const result = await sendEmail({
         ...testEmailOptions,
         html: htmlWithToken,
-        emailType: 'marketing',
-      })
+        emailType: "marketing",
+      });
 
-      expect(result.success).toBe(true)
+      expect(result.success).toBe(true);
 
       // Should check unsubscribe status
-      expect(isUnsubscribed).toHaveBeenCalledWith(testEmailOptions.to, 'marketing')
+      expect(isUnsubscribed).toHaveBeenCalledWith(
+        testEmailOptions.to,
+        "marketing"
+      );
 
       // Should generate unsubscribe token
-      expect(generateUnsubscribeToken).toHaveBeenCalledWith(testEmailOptions.to, 'marketing')
+      expect(generateUnsubscribeToken).toHaveBeenCalledWith(
+        testEmailOptions.to,
+        "marketing"
+      );
 
       // Should call Resend with unsubscribe headers
       expect(mockSend).toHaveBeenCalledWith({
-        from: 'Sim Studio <noreply@simstudio.ai>',
+        from: "Visual Workflow AI <noreply@visualworkflow.app>",
         to: testEmailOptions.to,
         subject: testEmailOptions.subject,
         html: '<p>Test content</p><a href="mock-token-123">Unsubscribe</a>',
         headers: {
-          'List-Unsubscribe':
-            '<https://test.simstudio.ai/unsubscribe?token=mock-token-123&email=test%40example.com>',
-          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+          "List-Unsubscribe":
+            "<https://test.visualworkflow.app/unsubscribe?token=mock-token-123&email=test%40example.com>",
+          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
         },
-      })
-    })
+      });
+    });
 
-    it('should skip sending if user has unsubscribed', async () => {
-      ;(isUnsubscribed as Mock).mockResolvedValue(true)
+    it("should skip sending if user has unsubscribed", async () => {
+      (isUnsubscribed as Mock).mockResolvedValue(true);
 
       const result = await sendEmail({
         ...testEmailOptions,
-        emailType: 'marketing',
-      })
+        emailType: "marketing",
+      });
 
-      expect(result.success).toBe(true)
-      expect(result.message).toBe('Email skipped (user unsubscribed)')
-      expect(result.data).toEqual({ id: 'skipped-unsubscribed' })
+      expect(result.success).toBe(true);
+      expect(result.message).toBe("Email skipped (user unsubscribed)");
+      expect(result.data).toEqual({ id: "skipped-unsubscribed" });
 
       // Should not call Resend
-      expect(mockSend).not.toHaveBeenCalled()
-    })
+      expect(mockSend).not.toHaveBeenCalled();
+    });
 
-    it.concurrent('should handle Resend API errors', async () => {
+    it.concurrent("should handle Resend API errors", async () => {
       mockSend.mockResolvedValue({
         data: null,
-        error: { message: 'API rate limit exceeded' },
-      })
+        error: { message: "API rate limit exceeded" },
+      });
 
-      const result = await sendEmail(testEmailOptions)
+      const result = await sendEmail(testEmailOptions);
 
-      expect(result.success).toBe(false)
-      expect(result.message).toBe('API rate limit exceeded')
-    })
+      expect(result.success).toBe(false);
+      expect(result.message).toBe("API rate limit exceeded");
+    });
 
-    it.concurrent('should handle unexpected errors', async () => {
-      mockSend.mockRejectedValue(new Error('Network error'))
+    it.concurrent("should handle unexpected errors", async () => {
+      mockSend.mockRejectedValue(new Error("Network error"));
 
-      const result = await sendEmail(testEmailOptions)
+      const result = await sendEmail(testEmailOptions);
 
-      expect(result.success).toBe(false)
-      expect(result.message).toBe('Failed to send email')
-    })
+      expect(result.success).toBe(false);
+      expect(result.message).toBe("Failed to send email");
+    });
 
-    it.concurrent('should use custom from address when provided', async () => {
+    it.concurrent("should use custom from address when provided", async () => {
       await sendEmail({
         ...testEmailOptions,
-        from: 'custom@example.com',
-      })
+        from: "custom@example.com",
+      });
 
       expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
-          from: 'Sim Studio <custom@example.com>',
+          from: "Visual Workflow AI <custom@example.com>",
         })
-      )
-    })
+      );
+    });
 
-    it('should not include unsubscribe when includeUnsubscribe is false', async () => {
+    it("should not include unsubscribe when includeUnsubscribe is false", async () => {
       await sendEmail({
         ...testEmailOptions,
-        emailType: 'marketing',
+        emailType: "marketing",
         includeUnsubscribe: false,
-      })
+      });
 
-      expect(generateUnsubscribeToken).not.toHaveBeenCalled()
+      expect(generateUnsubscribeToken).not.toHaveBeenCalled();
       expect(mockSend).toHaveBeenCalledWith(
         expect.objectContaining({
           headers: undefined,
         })
-      )
-    })
+      );
+    });
 
-    it.concurrent('should replace unsubscribe token placeholders in HTML', async () => {
-      const htmlWithPlaceholder = '<p>Content</p><a href="{{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a>'
+    it.concurrent(
+      "should replace unsubscribe token placeholders in HTML",
+      async () => {
+        const htmlWithPlaceholder =
+          '<p>Content</p><a href="{{UNSUBSCRIBE_TOKEN}}">Unsubscribe</a>';
 
-      await sendEmail({
-        ...testEmailOptions,
-        html: htmlWithPlaceholder,
-        emailType: 'updates' as EmailType,
-      })
+        await sendEmail({
+          ...testEmailOptions,
+          html: htmlWithPlaceholder,
+          emailType: "updates" as EmailType,
+        });
 
-      expect(mockSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          html: '<p>Content</p><a href="mock-token-123">Unsubscribe</a>',
-        })
-      )
-    })
-  })
-})
+        expect(mockSend).toHaveBeenCalledWith(
+          expect.objectContaining({
+            html: '<p>Content</p><a href="mock-token-123">Unsubscribe</a>',
+          })
+        );
+      }
+    );
+  });
+});
