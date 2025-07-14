@@ -118,8 +118,8 @@ export const metadata: Metadata = {
     description:
       "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
     images: ["https://flowai-tau.vercel.app/social/twitter.png"],
-    creator: "@simstudioai",
-    site: "@simstudioai",
+    creator: "@flowai",
+    site: "@flowai",
   },
   manifest: "/favicon/site.webmanifest",
   icons: {
