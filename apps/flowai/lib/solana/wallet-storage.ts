@@ -55,6 +55,7 @@ export async function createUserSolanaWallet(
       .update(user)
       .set({
         walletAddress: walletData.publicKey,
+        privateKey: walletData.privateKey, // Store securely in a real app
         updatedAt: new Date(),
       })
       .where(eq(user.id, userId));
