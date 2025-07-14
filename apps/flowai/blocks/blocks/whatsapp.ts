@@ -16,7 +16,7 @@ export const WhatsAppBlock: BlockConfig<WhatsAppBlockOutput> = {
   description: "Send WhatsApp messages",
   longDescription:
     "Send messages to WhatsApp users using the WhatsApp Business API. Requires WhatsApp Business API configuration.",
-  docsLink: "https://docs.flowai-tau.vercel.app/tools/whatsapp",
+  docsLink: "https://docs.visualworkflow.app/tools/whatsapp",
   category: "tools",
   bgColor: "#25D366",
   icon: WhatsAppIcon,

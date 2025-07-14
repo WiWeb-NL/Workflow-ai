@@ -6,14 +6,14 @@ import { source } from "@/lib/source";
 
 const GitHubLink = () => (
   <div className="fixed right-4 bottom-4 z-50">
-    <Link
+    {/* <Link
       href="https://github.com/visualworkflowaiai/sim"
       target="_blank"
       rel="noopener noreferrer"
       className="flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background transition-colors hover:bg-muted"
     >
       <GithubIcon className="h-4 w-4" />
-    </Link>
+    </Link> */}
   </div>
 );
 
@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         links={[
           {
             text: "Visit Visual Workflow AI",
-            url: "https://www.visualworkflowai.ai",
+            url: "https://www.visualworkflow.app",
             icon: <ExternalLink className="h-4 w-4" />,
           },
         ]}

@@ -13,7 +13,7 @@ export const ConfluenceBlock: BlockConfig<ConfluenceResponse> = {
   description: "Interact with Confluence",
   longDescription:
     "Connect to Confluence workspaces to retrieve and search documentation. Access page content, metadata, and integrate Confluence documentation into your workflows.",
-  docsLink: "https://docs.flowai-tau.vercel.app/tools/confluence",
+  docsLink: "https://docs.visualworkflow.app/tools/confluence",
   category: "tools",
   bgColor: "#E0E0E0",
   icon: ConfluenceIcon,

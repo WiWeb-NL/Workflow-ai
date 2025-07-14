@@ -58,7 +58,7 @@ export const AgentBlock: BlockConfig<AgentResponse> = {
   description: "Build an agent",
   longDescription:
     "Create powerful AI agents using any LLM provider with customizable system prompts and tool integrations.",
-  docsLink: "https://docs.flowai-tau.vercel.app/blocks/agent",
+  docsLink: "https://docs.visualworkflow.app/blocks/agent",
   category: "blocks",
   bgColor: "#802FFF",
   icon: AgentIcon,

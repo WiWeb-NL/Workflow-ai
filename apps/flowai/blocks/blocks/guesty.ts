@@ -13,7 +13,7 @@ export const GuestyBlock: BlockConfig<
   description: "Interact with Guesty property management system",
   longDescription:
     "Access Guesty property management data including reservations and guest information. Retrieve reservation details by ID or search for guests by phone number.",
-  docsLink: "https://docs.flowai-tau.vercel.app/tools/guesty",
+  docsLink: "https://docs.visualworkflow.app/tools/guesty",
   category: "tools",
   bgColor: "#0051F8", // Guesty brand color
   icon: GuestyIcon,

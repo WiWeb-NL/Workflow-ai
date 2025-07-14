@@ -31,7 +31,7 @@ export class DocsChunker {
     const isDev = process.env.NODE_ENV === "development";
     this.baseUrl =
       options.baseUrl ??
-      (isDev ? "http://localhost:3001" : "https://docs.flowai-tau.vercel.app");
+      (isDev ? "http://localhost:3001" : "https://docs.visualworkflow.app");
   }
 
   /**

@@ -8,7 +8,7 @@ export const S3Block: BlockConfig<S3Response> = {
   description: "View S3 files",
   longDescription:
     "Retrieve and view files from Amazon S3 buckets using presigned URLs.",
-  docsLink: "https://docs.flowai-tau.vercel.app/tools/s3",
+  docsLink: "https://docs.visualworkflow.app/tools/s3",
   category: "tools",
   bgColor: "#E0E0E0",
   icon: S3Icon,

@@ -14,7 +14,7 @@ export const ElevenLabsBlock: BlockConfig<ElevenLabsBlockResponse> = {
   description: "Convert TTS using ElevenLabs",
   longDescription:
     "Generate realistic speech from text using ElevenLabs voices.",
-  docsLink: "https://docs.flowai-tau.vercel.app/tools/elevenlabs",
+  docsLink: "https://docs.visualworkflow.app/tools/elevenlabs",
   category: "tools",
   bgColor: "#181C1E",
   icon: ElevenLabsIcon,

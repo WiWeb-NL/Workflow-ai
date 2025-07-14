@@ -24,7 +24,7 @@ export const StagehandAgentBlock: BlockConfig<StagehandAgentResponse> = {
   description: "Autonomous web browsing agent",
   longDescription:
     "Use Stagehand to create an autonomous web browsing agent that can navigate across websites, perform tasks, and return structured data.",
-  docsLink: "https://docs.flowai-tau.vercel.app/tools/stagehand_agent",
+  docsLink: "https://docs.visualworkflow.app/tools/stagehand_agent",
   category: "tools",
   bgColor: "#FFC83C",
   icon: StagehandIcon,
