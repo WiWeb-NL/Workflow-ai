@@ -105,7 +105,7 @@ export const metadata: Metadata = {
     siteName: "Visual Workflow AI",
     images: [
       {
-        url: "https://flowai-tau.vercel.app/social/facebook.png",
+        url: "https://flowai-tau.vercel.app/flowai.jpg",
         width: 1200,
         height: 630,
         alt: "Visual Workflow AI",
@@ -117,7 +117,7 @@ export const metadata: Metadata = {
     title: "Visual Workflow AI",
     description:
       "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
-    images: ["https://flowai-tau.vercel.app/social/twitter.png"],
+    images: ["https://flowai-tau.vercel.app/flowai.jpg"],
     creator: "@flowai",
     site: "@flowai",
   },
@@ -138,7 +138,7 @@ export const metadata: Metadata = {
       },
       { url: "/flowai.jpg", sizes: "any", type: "image/png" },
     ],
-    apple: "/favicon/apple-touch-icon.png",
+    apple: "/favicon/flowai.jpg",
     shortcut: "/favicon/favicon.ico",
   },
   appleWebApp: {
