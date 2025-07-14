@@ -84,7 +84,7 @@ export async function GET(
 
     const chatUrl = isDevelopment
       ? `http://${chatInstance[0].subdomain}.${getBaseDomain()}`
-      : `https://${chatInstance[0].subdomain}.simstudio.ai`;
+      : `https://${chatInstance[0].subdomain}.flowai-tau.vercel.app`;
 
     const result = {
       ...safeData,
@@ -251,7 +251,7 @@ export async function PATCH(
 
       const chatUrl = isDevelopment
         ? `http://${updatedSubdomain}.${getBaseDomain()}`
-        : `https://${updatedSubdomain}.simstudio.ai`;
+        : `https://${updatedSubdomain}.flowai-tau.vercel.app`;
 
       logger.info(`Chat "${chatId}" updated successfully`);
 
