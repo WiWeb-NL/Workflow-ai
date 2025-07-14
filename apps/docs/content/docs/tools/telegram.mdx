@@ -3,9 +3,9 @@ title: Telegram
 description: Send a message through Telegram
 ---
 
-import { BlockInfoCard } from "@/components/ui/block-info-card"
+import { BlockInfoCard } from "@/components/ui/block-info-card";
 
-<BlockInfoCard 
+<BlockInfoCard
   type="telegram"
   color="#E0E0E0"
   icon={true}
@@ -45,27 +45,7 @@ Telegram's Bot API provides a robust framework for creating automated messaging 
 
 Learn how to create a webhook trigger in Visual Workflow AI that seamlessly initiates workflows from Telegram messages. This tutorial walks you through setting up a webhook, configuring it with Telegram's bot API, and triggering automated actions in real-time. Perfect for streamlining tasks directly from your chat!
 
-<iframe
-  width="100%"
-  height="400"
-  src="https://www.youtube.com/embed/9oKcJtQ0_IM"
-  title="Use Telegram with Visual Workflow AI"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-></iframe>
-
 Learn how to use the Telegram Tool in Visual Workflow AI to seamlessly automate message delivery to any Telegram group. This tutorial walks you through integrating the tool into your workflow, configuring group messaging, and triggering automated updates in real-time. Perfect for enhancing communication directly from your workspace!
-
-<iframe
-  width="100%"
-  height="400"
-  src="https://www.youtube.com/embed/AG55LpUreGI"
-  title="Use Telegram with Visual Workflow AI"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-></iframe>
 
 Key features of Telegram include:
 
@@ -77,12 +57,9 @@ Key features of Telegram include:
 In Visual Workflow AI, the Telegram integration enables your agents to leverage these powerful messaging capabilities as part of their workflows. This creates opportunities for automated notifications, alerts, and interactive conversations through Telegram's secure messaging platform. The integration allows agents to send messages programmatically to individuals or channels, enabling timely communication and updates. By connecting Visual Workflow AI with Telegram, you can build intelligent agents that engage users through a secure and widely-adopted messaging platform, perfect for delivering notifications, updates, and interactive communications.
 {/* MANUAL-CONTENT-END */}
 
-
 ## Usage Instructions
 
 Send messages to any Telegram channel using your Bot API key. Integrate automated notifications and alerts into your workflow to keep your team informed.
-
-
 
 ## Tools
 
@@ -92,38 +69,33 @@ Send messages to Telegram channels or users through the Telegram Bot API. Enable
 
 #### Input
 
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `botToken` | string | Yes | Your Telegram Bot API Token |
-| `chatId` | string | Yes | Target Telegram chat ID |
-| `text` | string | Yes | Message text to send |
+| Parameter  | Type   | Required | Description                 |
+| ---------- | ------ | -------- | --------------------------- |
+| `botToken` | string | Yes      | Your Telegram Bot API Token |
+| `chatId`   | string | Yes      | Target Telegram chat ID     |
+| `text`     | string | Yes      | Message text to send        |
 
 #### Output
 
-| Parameter | Type |
-| --------- | ---- |
-| `ok` | string |
-| `date` | string |
-
-
+| Parameter | Type   |
+| --------- | ------ |
+| `ok`      | string |
+| `date`    | string |
 
 ## Block Configuration
 
 ### Input
 
-| Parameter | Type | Required | Description | 
-| --------- | ---- | -------- | ----------- | 
-| `botToken` | string | Yes | Bot Token - Enter your Telegram Bot Token |
-
-
+| Parameter  | Type   | Required | Description                               |
+| ---------- | ------ | -------- | ----------------------------------------- |
+| `botToken` | string | Yes      | Bot Token - Enter your Telegram Bot Token |
 
 ### Outputs
 
-| Output | Type | Description |
-| ------ | ---- | ----------- |
-| `ok` | boolean | ok output from the block |
-| `result` | json | result output from the block |
-
+| Output   | Type    | Description                  |
+| -------- | ------- | ---------------------------- |
+| `ok`     | boolean | ok output from the block     |
+| `result` | json    | result output from the block |
 
 ## Notes
 
