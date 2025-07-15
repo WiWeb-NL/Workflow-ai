@@ -144,6 +144,7 @@ import {
   solanaSwapTool,
   solanaAccountsTool,
   solanaPriceTool,
+  solanaBalanceTool,
 } from "./solana";
 
 // Registry of all available tools
@@ -269,5 +270,6 @@ export const tools: Record<string, ToolConfig> = {
   solana_transfer: solanaTransferTool,
   solana_swap: solanaSwapTool,
   solana_accounts: solanaAccountsTool,
+  solana_balance: solanaBalanceTool,
   solana_price: solanaPriceTool,
 };

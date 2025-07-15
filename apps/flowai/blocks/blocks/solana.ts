@@ -44,10 +44,12 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
       title: "Private Key",
       type: "long-input",
       layout: "full",
-      placeholder:
-        "Base64 encoded private key, Base58 encoded, number array [1,2,3...], or Uint8Array",
+      placeholder: "Base64, Base58, or number array format",
       description: "Your wallet's private key (keep this secure)",
-      condition: { field: "operation", value: "solana_transfer" },
+      condition: {
+        field: "operation",
+        value: ["solana_transfer", "solana_swap"],
+      },
     },
     {
       id: "privateKeyFormat",
@@ -62,42 +64,10 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
       ],
       value: () => "auto",
       description: "Format of the private key input",
-      condition: { field: "operation", value: "solana_transfer" },
-    },
-    {
-      id: "privateKeySwap",
-      title: "Private Key",
-      type: "long-input",
-      layout: "full",
-      placeholder:
-        "Base64 encoded private key, Base58 encoded, number array [1,2,3...], or Uint8Array",
-      description: "Your wallet's private key (keep this secure)",
-      condition: { field: "operation", value: "solana_swap" },
-    },
-    {
-      id: "privateKeyFormatSwap",
-      title: "Private Key Format",
-      type: "dropdown",
-      layout: "half",
-      options: [
-        { label: "Auto-detect", id: "auto" },
-        { label: "Base64", id: "base64" },
-        { label: "Base58", id: "base58" },
-        { label: "Number Array", id: "array" },
-      ],
-      value: () => "auto",
-      description: "Format of the private key input",
-      condition: { field: "operation", value: "solana_swap" },
-    },
-    // Wallet Address Input (for accounts operation)
-    {
-      id: "walletAddress",
-      title: "Wallet Address",
-      type: "short-input",
-      layout: "full",
-      placeholder: "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
-      description: "Solana wallet address to query",
-      condition: { field: "operation", value: "solana_accounts" },
+      condition: {
+        field: "operation",
+        value: ["solana_transfer", "solana_swap"],
+      },
     },
     // Network selector (only for transfer and swap operations)
     {
@@ -137,21 +107,15 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
     },
     {
       id: "amount",
-      title: "Transfer Amount",
+      title: "Amount",
       type: "short-input",
       layout: "half",
       placeholder: "100",
-      description: "Amount of tokens to transfer",
-      condition: { field: "operation", value: "solana_transfer" },
-    },
-    {
-      id: "amountSwap",
-      title: "Swap Amount",
-      type: "short-input",
-      layout: "half",
-      placeholder: "0.001",
-      description: "Amount of tokens to swap (e.g., 0.001 for SOL)",
-      condition: { field: "operation", value: "solana_swap" },
+      description: "Amount of tokens to transfer/swap",
+      condition: {
+        field: "operation",
+        value: ["solana_transfer", "solana_swap"],
+      },
     },
     {
       id: "memo",
@@ -199,6 +163,16 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
       description: "Priority fee in micro lamports",
       condition: { field: "operation", value: "solana_swap" },
     },
+    // Wallet Address Input (for accounts operation)
+    {
+      id: "walletAddress",
+      title: "Wallet Address",
+      type: "short-input",
+      layout: "full",
+      placeholder: "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+      description: "Solana wallet address to query",
+      condition: { field: "operation", value: "solana_accounts" },
+    },
     // Price-specific fields
     {
       id: "tokenMints",
@@ -210,6 +184,27 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
       columns: ["Token Mint Address"],
     },
   ],
+  inputs: {
+    operation: { type: "string", required: true },
+    // Common fields
+    privateKey: { type: "string", required: false },
+    privateKeyFormat: { type: "string", required: false },
+    network: { type: "string", required: false },
+    amount: { type: "string", required: false },
+    // Transfer operation
+    recipientAddress: { type: "string", required: false },
+    tokenMint: { type: "string", required: false },
+    memo: { type: "string", required: false },
+    // Swap operation
+    inputMint: { type: "string", required: false },
+    outputMint: { type: "string", required: false },
+    slippageBps: { type: "string", required: false },
+    priorityFee: { type: "string", required: false },
+    // Accounts operation
+    walletAddress: { type: "string", required: false },
+    // Price operation
+    tokenMints: { type: "json", required: false },
+  },
   outputs: {
     transaction: "json",
     fee: "number",
@@ -221,28 +216,6 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
     inputAmount: "string",
     outputAmount: "string",
   },
-  inputs: {
-    operation: { type: "string", required: true },
-    // Transfer operation
-    privateKey: { type: "string", required: false },
-    recipientAddress: { type: "string", required: false },
-    tokenMint: { type: "string", required: false },
-    amount: { type: "string", required: false },
-    memo: { type: "string", required: false },
-    // Swap operation
-    privateKeySwap: { type: "string", required: false },
-    inputMint: { type: "string", required: false },
-    outputMint: { type: "string", required: false },
-    amountSwap: { type: "string", required: false },
-    slippageBps: { type: "string", required: false },
-    priorityFee: { type: "string", required: false },
-    // Accounts operation
-    walletAddress: { type: "string", required: false },
-    // Price operation
-    tokenMints: { type: "json", required: false },
-    // Common
-    network: { type: "string", required: false },
-  },
   tools: {
     access: [
       "solana_transfer",
@@ -252,8 +225,7 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
     ],
     config: {
       tool: (params: any) => {
-        const operation = params.operation;
-        return operation || "solana_transfer";
+        return params.operation || "solana_transfer";
       },
       params: (params: any) => {
         const operation = params.operation;
@@ -271,68 +243,25 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
             };
 
           case "solana_swap":
-            console.log("DEBUG: Swap params received:", {
-              privateKeySwap: params.privateKeySwap,
-              privateKeyFormatSwap: params.privateKeyFormatSwap,
-              amountSwap: params.amountSwap,
-              amount: params.amount, // Check if it's using the wrong field name
-              inputMint: params.inputMint,
-              outputMint: params.outputMint,
-              allParams: params,
-            });
-
-            // For swap operations, ONLY use amountSwap field - ignore amount field completely
-            let swapAmount = params.amountSwap;
-            console.log(
-              "DEBUG: Using ONLY amountSwap field for swap:",
-              swapAmount,
-              typeof swapAmount
-            );
-
-            // CRITICAL: Swap operations should NEVER use the transfer amount field
-            if (!params.amountSwap) {
-              console.error(
-                "CRITICAL ERROR: amountSwap field is missing for swap operation!",
-                {
-                  amountSwap: params.amountSwap,
-                  transferAmount: params.amount,
-                  operation: "solana_swap",
-                }
-              );
+            const amount = parseFloat(params.amount || "0");
+            if (!amount || amount <= 0) {
               throw new Error(
-                "amountSwap field is required for swap operations"
+                "Amount must be a positive number for swap operations"
               );
             }
 
-            if (typeof swapAmount === "string" && swapAmount.trim() !== "") {
-              swapAmount = parseFloat(swapAmount);
-              console.log("DEBUG: Parsed amountSwap string to:", swapAmount);
-            }
-
-            // Validate the parsed amount
-            if (!swapAmount || swapAmount === 0 || isNaN(swapAmount)) {
-              console.error("ERROR: Invalid amountSwap value:", {
-                original: params.amountSwap,
-                parsed: swapAmount,
-              });
-              throw new Error(`Invalid amountSwap value: ${params.amountSwap}`);
-            }
-
-            const result = {
+            return {
               network: params.network || "mainnet",
-              privateKey: params.privateKeySwap,
-              privateKeyFormat: params.privateKeyFormatSwap || "auto",
+              privateKey: params.privateKey,
+              privateKeyFormat: params.privateKeyFormat || "auto",
               inputMint: params.inputMint,
               outputMint: params.outputMint,
-              amount: swapAmount, // This will be 0.0001
+              amountSwap: amount, // Backend expects amountSwap
               slippageBps: parseInt(params.slippageBps || "50"),
               ...(params.priorityFee && {
                 priorityFee: parseInt(params.priorityFee),
               }),
             };
-
-            console.log("DEBUG: Final swap params to send:", result);
-            return result;
 
           case "solana_accounts":
             return {
@@ -343,14 +272,11 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
             const tokenMintsTable = params.tokenMints;
             let tokenMints: string[] = [];
 
-            // Handle different possible table data formats
             if (Array.isArray(tokenMintsTable)) {
               tokenMints = tokenMintsTable
                 .map((row: any) => {
-                  // Handle different table formats
                   if (typeof row === "string") return row.trim();
                   if (typeof row === "object" && row !== null) {
-                    // Handle table structure with cells property
                     if (row.cells && typeof row.cells === "object") {
                       return (
                         row.cells["Token Mint Address"] ||
@@ -359,7 +285,6 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
                         Object.values(row.cells)[0]
                       );
                     }
-                    // Handle direct object structure
                     return (
                       row["Token Mint Address"] ||
                       row.tokenMintAddress ||
@@ -371,8 +296,8 @@ export const SolanaBlock: BlockConfig<SolanaResponse> = {
                   return String(row).trim();
                 })
                 .filter(Boolean)
-                .filter((mint: string) => mint && mint.length > 20) // Basic validation for Solana addresses
-                .slice(0, 50); // Limit to prevent abuse (Jupiter allows max 50)
+                .filter((mint: string) => mint && mint.length > 20)
+                .slice(0, 50);
             }
 
             return {
