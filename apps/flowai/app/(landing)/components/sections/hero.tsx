@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Command, CornerDownLeft } from "lucide-react";
+import { Command, CornerDownLeft, Copy, Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useSession } from "@/lib/auth-client";
@@ -11,8 +11,11 @@ import HeroWorkflowProvider from "../hero-workflow";
 function Hero() {
   const router = useRouter();
   const [isTransitioning, setIsTransitioning] = useState(true);
+  const [copied, setCopied] = useState(false);
   const { data: session, isPending } = useSession();
   const isAuthenticated = !isPending && !!session?.user;
+
+  const CA_VALUE = "FpVBzhuQhY3uT1ijxwHRob4NjXQzbcpg1FsgNNTwwBLV";
 
   const handleNavigate = () => {
     if (typeof window !== "undefined") {
@@ -33,6 +36,16 @@ function Hero() {
           router.push("/signup");
         }
       }
+    }
+  };
+
+  const handleCopyCA = async () => {
+    try {
+      await navigator.clipboard.writeText(CA_VALUE);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy CA value:", err);
     }
   };
 
@@ -59,14 +72,44 @@ function Hero() {
       return <div className="h-[56px] md:h-[64px]" />;
     }
     return (
-      <Button
-        variant={"secondary"}
-        onClick={handleNavigate}
-        className="animate-fade-in items-center bg-[#701ffc] px-7 py-6 font-[420] font-geist-sans text-lg text-neutral-100 tracking-normal shadow-[#701ffc]/30 shadow-lg hover:bg-[#802FFF]"
-        aria-label="Start using the platform"
-      >
-        <div className="text-[1.15rem]">Login / Register</div>
-      </Button>
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-2">
+          <div className="flex items-center gap-2 rounded-lg bg-neutral-800/50 border border-neutral-700/50 p-3">
+            <code className="text-sm text-neutral-200 font-mono break-all">
+              CA:
+            </code>
+            <code className="text-sm text-neutral-200 font-mono break-all">
+              {CA_VALUE}
+            </code>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCopyCA}
+              className="h-8 w-8 p-0 text-neutral-400 hover:text-neutral-200 hover:bg-neutral-700/50"
+              aria-label="Copy CA value to clipboard"
+            >
+              {copied ? (
+                <Check className="h-4 w-4 text-green-400" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
+          {copied && (
+            <span className="text-xs text-green-400 animate-fade-in">
+              Copied to clipboard!
+            </span>
+          )}
+        </div>{" "}
+        <Button
+          variant={"secondary"}
+          onClick={handleNavigate}
+          className="animate-fade-in items-center bg-[#701ffc] px-7 py-6 font-[420] font-geist-sans text-lg text-neutral-100 tracking-normal shadow-[#701ffc]/30 shadow-lg hover:bg-[#802FFF]"
+          aria-label="Start using the platform"
+        >
+          <div className="text-[1.15rem]">Login / Register</div>
+        </Button>
+      </div>
     );
   };
 
