@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { useEffect, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useMemo } from "react";
+import { motion } from "framer-motion";
 import ReactFlow, {
   ConnectionLineType,
   type Edge,
@@ -14,201 +14,223 @@ import ReactFlow, {
   useNodesState,
   useReactFlow,
   type Viewport,
-} from 'reactflow'
-import 'reactflow/dist/style.css'
+} from "reactflow";
+import "reactflow/dist/style.css";
 
-import { HeroBlock } from './hero-block'
-import { HeroEdge } from './hero-edge'
-import { useWindowSize } from './use-window-size'
+import { HeroBlock } from "./hero-block";
+import { HeroEdge } from "./hero-edge";
+import { useWindowSize } from "./use-window-size";
 
-const nodeTypes: NodeTypes = { heroBlock: HeroBlock }
-const edgeTypes: EdgeTypes = { heroEdge: HeroEdge }
+const nodeTypes: NodeTypes = { heroBlock: HeroBlock };
+const edgeTypes: EdgeTypes = { heroEdge: HeroEdge };
 
 // Desktop layout
 const desktopNodes: Node[] = [
   {
-    id: 'function1',
-    type: 'heroBlock',
+    id: "function1",
+    type: "heroBlock",
     position: { x: 150, y: 400 },
-    data: { type: 'function', isHeroSection: true },
+    data: { type: "function", isHeroSection: true },
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
   },
   {
-    id: 'agent1',
-    type: 'heroBlock',
+    id: "agent1",
+    type: "heroBlock",
     position: { x: 600, y: 600 },
-    data: { type: 'agent' },
+    data: { type: "agent" },
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
   },
   {
-    id: 'router1',
-    type: 'heroBlock',
+    id: "router1",
+    type: "heroBlock",
     position: { x: 1050, y: 600 },
-    data: { type: 'router' },
+    data: { type: "router" },
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
   },
   {
-    id: 'slack1',
-    type: 'heroBlock',
+    id: "slack1",
+    type: "heroBlock",
     position: { x: 1500, y: 400 },
-    data: { type: 'slack' },
+    data: { type: "slack" },
     sourcePosition: Position.Right,
     targetPosition: Position.Left,
   },
-]
+];
 
 const desktopEdges: Edge[] = [
   {
-    id: 'func1-agent1',
-    source: 'function1',
-    target: 'agent1',
-    sourceHandle: 'source',
-    targetHandle: 'target',
-    type: 'heroEdge',
+    id: "func1-agent1",
+    source: "function1",
+    target: "agent1",
+    sourceHandle: "source",
+    targetHandle: "target",
+    type: "heroEdge",
     animated: true,
-    style: { stroke: '#404040', strokeWidth: 2, strokeDasharray: '5,5' },
+    style: { stroke: "#404040", strokeWidth: 2, strokeDasharray: "5,5" },
     zIndex: 5,
   },
   {
-    id: 'agent1-router1',
-    source: 'agent1',
-    target: 'router1',
-    sourceHandle: 'source',
-    targetHandle: 'target',
-    type: 'heroEdge',
+    id: "agent1-router1",
+    source: "agent1",
+    target: "router1",
+    sourceHandle: "source",
+    targetHandle: "target",
+    type: "heroEdge",
     animated: true,
-    style: { stroke: '#404040', strokeWidth: 2, strokeDasharray: '5,5' },
+    style: { stroke: "#404040", strokeWidth: 2, strokeDasharray: "5,5" },
     zIndex: 5,
   },
   {
-    id: 'router1-slack1',
-    source: 'router1',
-    target: 'slack1',
-    sourceHandle: 'source',
-    targetHandle: 'target',
-    type: 'heroEdge',
+    id: "router1-slack1",
+    source: "router1",
+    target: "slack1",
+    sourceHandle: "source",
+    targetHandle: "target",
+    type: "heroEdge",
     animated: true,
-    style: { stroke: '#404040', strokeWidth: 2, strokeDasharray: '5,5' },
+    style: { stroke: "#404040", strokeWidth: 2, strokeDasharray: "5,5" },
     zIndex: 5,
   },
-]
+];
 
 const tabletNodes: Node[] = [
   {
-    id: 'function1',
-    type: 'heroBlock',
+    id: "function1",
+    type: "heroBlock",
     position: { x: 50, y: 480 },
-    data: { type: 'function', isHeroSection: true },
+    data: { type: "function", isHeroSection: true },
   },
-  { id: 'agent1', type: 'heroBlock', position: { x: 300, y: 660 }, data: { type: 'agent' } },
-  { id: 'router1', type: 'heroBlock', position: { x: 550, y: 660 }, data: { type: 'router' } },
-  { id: 'slack1', type: 'heroBlock', position: { x: 800, y: 480 }, data: { type: 'slack' } },
-].map((n) => ({ ...n, sourcePosition: Position.Right, targetPosition: Position.Left }))
+  {
+    id: "agent1",
+    type: "heroBlock",
+    position: { x: 300, y: 660 },
+    data: { type: "agent" },
+  },
+  {
+    id: "router1",
+    type: "heroBlock",
+    position: { x: 550, y: 660 },
+    data: { type: "router" },
+  },
+  {
+    id: "slack1",
+    type: "heroBlock",
+    position: { x: 800, y: 480 },
+    data: { type: "slack" },
+  },
+].map((n) => ({
+  ...n,
+  sourcePosition: Position.Right,
+  targetPosition: Position.Left,
+}));
 
 const tabletEdges = desktopEdges.map((edge) => ({
   ...edge,
-  sourceHandle: 'source',
-  targetHandle: 'target',
-  type: 'heroEdge',
-}))
+  sourceHandle: "source",
+  targetHandle: "target",
+  type: "heroEdge",
+}));
 
 // Mobile: only the agent node, centered under text
 const makeMobileNodes = (w: number, h: number): Node[] => {
-  const BLOCK_HALF = 100
+  const BLOCK_HALF = 100;
   return [
     {
-      id: 'agent1',
-      type: 'heroBlock',
+      id: "agent1",
+      type: "heroBlock",
       position: { x: w / 2 - BLOCK_HALF - 180, y: h / 2 },
-      data: { type: 'agent' },
+      data: { type: "agent" },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
     {
-      id: 'slack1',
-      type: 'heroBlock',
+      id: "slack1",
+      type: "heroBlock",
       position: { x: w / 2 - BLOCK_HALF + 180, y: h / 2 + 200 },
-      data: { type: 'slack' },
+      data: { type: "slack" },
       sourcePosition: Position.Right,
       targetPosition: Position.Left,
     },
-  ]
-}
+  ];
+};
 
 const mobileEdges: Edge[] = [
   {
-    id: 'agent1-slack1',
-    source: 'agent1',
-    target: 'slack1',
-    sourceHandle: 'source',
-    targetHandle: 'target',
-    type: 'heroEdge',
+    id: "agent1-slack1",
+    source: "agent1",
+    target: "slack1",
+    sourceHandle: "source",
+    targetHandle: "target",
+    type: "heroEdge",
     animated: true,
-    style: { stroke: '#404040', strokeWidth: 2, strokeDasharray: '5,5' },
+    style: { stroke: "#404040", strokeWidth: 2, strokeDasharray: "5,5" },
     zIndex: 5,
   },
-]
+];
 
 const workflowVariants = {
   hidden: { opacity: 0, scale: 0.98 },
   visible: { opacity: 1, scale: 1 },
-}
+};
 
 export function HeroWorkflow() {
-  const { width = 0, height = 0 } = useWindowSize()
-  const isMobile = width < 768
-  const isTablet = width >= 768 && width < 1024
+  const { width = 0, height = 0 } = useWindowSize();
+  const isMobile = width < 768;
+  const isTablet = width >= 768 && width < 1024;
 
-  const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([])
-  const { fitView } = useReactFlow()
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node[]>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge[]>([]);
+  const { fitView } = useReactFlow();
 
   // Default viewport to make elements smaller
-  const defaultViewport: Viewport = useMemo(() => ({ x: 0, y: 0, zoom: 0.8 }), [])
+  const defaultViewport: Viewport = useMemo(
+    () => ({ x: 0, y: 0, zoom: 0.8 }),
+    []
+  );
 
   // Load layout
   useEffect(() => {
     if (isMobile) {
-      setNodes(makeMobileNodes(width, height))
-      setEdges(mobileEdges)
+      setNodes(makeMobileNodes(width, height));
+      setEdges(mobileEdges);
     } else if (isTablet) {
-      setNodes(tabletNodes)
-      setEdges(tabletEdges)
+      setNodes(tabletNodes);
+      setEdges(tabletEdges);
     } else {
-      setNodes(desktopNodes)
-      setEdges(desktopEdges)
+      setNodes(desktopNodes);
+      setEdges(desktopEdges);
     }
-  }, [width, height, isMobile, isTablet, setNodes, setEdges])
+  }, [width, height, isMobile, isTablet, setNodes, setEdges]);
 
   // Center and scale
   useEffect(() => {
     if (nodes.length) {
       if (isMobile) {
-        fitView({ padding: 0.2 }) // reduced padding to zoom in more
+        fitView({ padding: 0.2 }); // reduced padding to zoom in more
       } else {
-        fitView({ padding: 0.2 }) // added padding to create more space around elements
+        fitView({ padding: 0.2 }); // added padding to create more space around elements
       }
     }
-  }, [nodes, edges, fitView, isMobile])
+  }, [nodes, edges, fitView, isMobile]);
 
   return (
     <motion.div
-      className='pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden'
+      className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
       style={{
-        height: '100%',
-        width: '100%',
-        position: 'absolute',
-        top: isMobile ? '180px' : '160px',
+        height: "100%",
+        width: "100%",
+        position: "absolute",
+        top: isMobile ? "180px" : "160px",
         left: 0,
-        willChange: 'opacity, transform',
+        willChange: "opacity, transform",
       }}
       variants={workflowVariants}
-      initial='hidden'
-      animate='visible'
-      transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+      initial="hidden"
+      animate="visible"
+      transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
     >
       <style jsx global>{`
         .react-flow__edge-path {
@@ -248,9 +270,13 @@ export function HeroWorkflow() {
         onEdgesChange={onEdgesChange}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
-        defaultEdgeOptions={{ type: 'heroEdge', animated: true }}
+        defaultEdgeOptions={{ type: "heroEdge", animated: true }}
         connectionLineType={ConnectionLineType.SmoothStep}
-        connectionLineStyle={{ stroke: '#404040', strokeWidth: 2, strokeDasharray: '5,5' }}
+        connectionLineStyle={{
+          stroke: "#404040",
+          strokeWidth: 2,
+          strokeDasharray: "5,5",
+        }}
         minZoom={0.1}
         maxZoom={1.5}
         proOptions={{ hideAttribution: true }}
@@ -267,7 +293,7 @@ export function HeroWorkflow() {
         defaultViewport={defaultViewport}
       />
     </motion.div>
-  )
+  );
 }
 
 export default function HeroWorkflowProvider() {
@@ -275,5 +301,5 @@ export default function HeroWorkflowProvider() {
     <ReactFlowProvider>
       <HeroWorkflow />
     </ReactFlowProvider>
-  )
+  );
 }
