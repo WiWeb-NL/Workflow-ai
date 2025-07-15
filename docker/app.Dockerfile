@@ -15,7 +15,7 @@ RUN bun install -g turbo
 
 COPY package.json bun.lock ./
 RUN mkdir -p apps
-COPY apps/sim/package.json ./apps/sim/package.json
+COPY apps/flowai/package.json ./apps/flowai/package.json
 
 RUN bun install --omit dev --ignore-scripts
 
@@ -32,7 +32,7 @@ COPY . .
 RUN bun install --omit dev --ignore-scripts
 
 # Required for standalone nextjs build
-WORKDIR /app/apps/sim
+WORKDIR /app/apps/flowai
 RUN bun install sharp
 
 ENV NEXT_TELEMETRY_DISABLED=1 \
@@ -51,12 +51,12 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY --from=builder /app/apps/sim/public ./apps/sim/public
-COPY --from=builder /app/apps/sim/.next/standalone ./
-COPY --from=builder /app/apps/sim/.next/static ./apps/sim/.next/static
+COPY --from=builder /app/apps/flowai/public ./apps/flowai/public
+COPY --from=builder /app/apps/flowai/.next/standalone ./
+COPY --from=builder /app/apps/flowai/.next/static ./apps/flowai/.next/static
 
 EXPOSE 3000
 ENV PORT=3000 \
     HOSTNAME="0.0.0.0"
 
-CMD ["bun", "apps/sim/server.js"]
+CMD ["bun", "apps/flowai/server.js"]

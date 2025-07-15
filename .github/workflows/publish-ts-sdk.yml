@@ -44,7 +44,7 @@ jobs:
       - name: Check if version already exists
         id: version_check
         run: |
-          if npm view simstudio-ts-sdk@${{ steps.package_version.outputs.version }} version &> /dev/null; then
+          if npm view visualworkflowai-ts-sdk@${{ steps.package_version.outputs.version }} version &> /dev/null; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -72,14 +72,14 @@ jobs:
           body: |
             ## TypeScript SDK v${{ steps.package_version.outputs.version }}
             
-            Published simstudio-ts-sdk@${{ steps.package_version.outputs.version }} to npm.
+            Published visualworkflowai-ts-sdk@${{ steps.package_version.outputs.version }} to npm.
             
             ### Installation
             ```bash
-            npm install simstudio-ts-sdk@${{ steps.package_version.outputs.version }}
+            npm install visualworkflowai-ts-sdk@${{ steps.package_version.outputs.version }}
             ```
             
             ### Documentation
-            See the [README](https://github.com/simstudio/sim/tree/main/packages/ts-sdk) for usage instructions.
+            See the [README](https://github.com/visualworkflowai/sim/tree/main/packages/ts-sdk) for usage instructions.
           draft: false
           prerelease: false 

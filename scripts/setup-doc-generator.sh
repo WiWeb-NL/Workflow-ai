@@ -10,9 +10,9 @@ echo "Setting up documentation generator..."
 # Create package.json for scripts directory
 cat > package.json << EOF
 {
-  "name": "sim-doc-generator",
+  "name": "flows-doc-generator",
   "version": "1.0.0",
-  "description": "Documentation generator for Sim Studio blocks",
+  "description": "Documentation generator for Visual Workflow AI blocks",
   "type": "module",
   "private": true
 }
