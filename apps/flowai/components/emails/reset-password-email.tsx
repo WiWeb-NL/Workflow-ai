@@ -22,7 +22,7 @@ interface ResetPasswordEmailProps {
   updatedDate?: Date;
 }
 
-const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app";
+const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app";
 
 export const ResetPasswordEmail = ({
   username = "",

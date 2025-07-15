@@ -337,10 +337,10 @@ export default function TermsOfService() {
                   Arbitration Agreement by sending a timely written notice of
                   your decision to opt out to:{" "}
                   <Link
-                    href="mailto:legal@flowai-tau.vercel.app"
+                    href="mailto:legal@visualworkflow.app"
                     className="text-[#B5A1D4] hover:text-[#701ffc]"
                   >
-                    legal@flowai-tau.vercel.app{" "}
+                    legal@visualworkflow.app{" "}
                   </Link>
                   within 30 days after first becoming subject to this
                   Arbitration Agreement.
@@ -404,10 +404,10 @@ export default function TermsOfService() {
                 <p>
                   Our Copyright Agent can be reached at:{" "}
                   <Link
-                    href="mailto:copyright@flowai-tau.vercel.app"
+                    href="mailto:copyright@visualworkflow.app"
                     className="text-[#B5A1D4] hover:text-[#701ffc]"
                   >
-                    copyright@flowai-tau.vercel.app
+                    copyright@visualworkflow.app
                   </Link>
                 </p>
               </section>
@@ -420,10 +420,10 @@ export default function TermsOfService() {
                   If you have any questions about these Terms, please contact us
                   at:{" "}
                   <Link
-                    href="mailto:legal@flowai-tau.vercel.app"
+                    href="mailto:legal@visualworkflow.app"
                     className="text-[#B5A1D4] hover:text-[#701ffc]"
                   >
-                    legal@flowai-tau.vercel.app
+                    legal@visualworkflow.app
                   </Link>
                 </p>
               </section>

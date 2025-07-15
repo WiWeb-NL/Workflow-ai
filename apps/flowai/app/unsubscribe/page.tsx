@@ -179,7 +179,7 @@ export default function UnsubscribePage() {
               <Button
                 onClick={() =>
                   window.open(
-                    "mailto:help@flowai-tau.vercel.app?subject=Unsubscribe%20Help&body=Hi%2C%20I%20need%20help%20unsubscribing%20from%20emails.%20My%20unsubscribe%20link%20is%20not%20working.",
+                    "mailto:help@visualworkflow.app?subject=Unsubscribe%20Help&body=Hi%2C%20I%20need%20help%20unsubscribing%20from%20emails.%20My%20unsubscribe%20link%20is%20not%20working.",
                     "_blank"
                   )
                 }
@@ -200,10 +200,10 @@ export default function UnsubscribePage() {
               <p className="text-muted-foreground text-xs">
                 Need immediate help? Email us at{" "}
                 <a
-                  href="mailto:help@flowai-tau.vercel.app"
+                  href="mailto:help@visualworkflow.app"
                   className="text-primary hover:underline"
                 >
-                  help@flowai-tau.vercel.app
+                  help@visualworkflow.app
                 </a>
               </p>
             </div>
@@ -251,7 +251,7 @@ export default function UnsubscribePage() {
               <Button
                 onClick={() =>
                   window.open(
-                    "mailto:help@flowai-tau.vercel.app?subject=Account%20Help&body=Hi%2C%20I%20need%20help%20with%20my%20account%20emails.",
+                    "mailto:help@visualworkflow.app?subject=Account%20Help&body=Hi%2C%20I%20need%20help%20with%20my%20account%20emails.",
                     "_blank"
                   )
                 }
@@ -292,10 +292,10 @@ export default function UnsubscribePage() {
               If you change your mind, you can always update your email
               preferences in your account settings or contact us at{" "}
               <a
-                href="mailto:help@flowai-tau.vercel.app"
+                href="mailto:help@visualworkflow.app"
                 className="text-primary hover:underline"
               >
-                help@flowai-tau.vercel.app
+                help@visualworkflow.app
               </a>
             </p>
           </CardContent>
@@ -411,10 +411,10 @@ export default function UnsubscribePage() {
             <p className="text-center text-muted-foreground text-xs">
               Questions? Contact us at{" "}
               <a
-                href="mailto:help@flowai-tau.vercel.app"
+                href="mailto:help@visualworkflow.app"
                 className="text-primary hover:underline"
               >
-                help@flowai-tau.vercel.app
+                help@visualworkflow.app
               </a>
             </p>
           </div>

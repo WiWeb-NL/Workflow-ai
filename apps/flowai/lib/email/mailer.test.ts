@@ -20,12 +20,12 @@ vi.mock("./unsubscribe", () => ({
 vi.mock("../env", () => ({
   env: {
     RESEND_API_KEY: "test-api-key",
-    NEXT_PUBLIC_APP_URL: "https://test.flowai-tau.vercel.app",
+    NEXT_PUBLIC_APP_URL: "https://test.visualworkflow.app",
   },
 }));
 
 vi.mock("../urls/utils", () => ({
-  getEmailDomain: vi.fn().mockReturnValue("flowai-tau.vercel.app"),
+  getEmailDomain: vi.fn().mockReturnValue("visualworkflow.app"),
 }));
 
 import { type EmailType, sendEmail } from "./mailer";
@@ -64,7 +64,7 @@ describe("mailer", () => {
 
       // Should call Resend with correct parameters
       expect(mockSend).toHaveBeenCalledWith({
-        from: "Visual Workflow AI <noreply@flowai-tau.vercel.app>",
+        from: "Visual Workflow AI <noreply@visualworkflow.app>",
         to: testEmailOptions.to,
         subject: testEmailOptions.subject,
         html: testEmailOptions.html,
@@ -98,13 +98,13 @@ describe("mailer", () => {
 
       // Should call Resend with unsubscribe headers
       expect(mockSend).toHaveBeenCalledWith({
-        from: "Visual Workflow AI <noreply@flowai-tau.vercel.app>",
+        from: "Visual Workflow AI <noreply@visualworkflow.app>",
         to: testEmailOptions.to,
         subject: testEmailOptions.subject,
         html: '<p>Test content</p><a href="mock-token-123">Unsubscribe</a>',
         headers: {
           "List-Unsubscribe":
-            "<https://test.flowai-tau.vercel.app/unsubscribe?token=mock-token-123&email=test%40example.com>",
+            "<https://test.visualworkflow.app/unsubscribe?token=mock-token-123&email=test%40example.com>",
           "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
         },
       });

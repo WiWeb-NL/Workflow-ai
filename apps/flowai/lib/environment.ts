@@ -30,7 +30,7 @@ export const isTest = getNodeEnv() === "test";
  * Is this the hosted version of the application
  */
 export const isHosted =
-  env.NEXT_PUBLIC_APP_URL === "https://flowai-tau.vercel.app";
+  env.NEXT_PUBLIC_APP_URL === "https://visualworkflow.app";
 
 /**
  * Get cost multiplier based on environment

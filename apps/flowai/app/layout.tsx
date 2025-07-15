@@ -77,7 +77,7 @@ export const metadata: Metadata = {
   referrer: "origin-when-cross-origin",
   creator: "Visual Workflow AI",
   publisher: "Visual Workflow AI",
-  metadataBase: new URL("https://flowai-tau.vercel.app"),
+  metadataBase: new URL("https://visualworkflow.app"),
   alternates: {
     canonical: "/",
     languages: {
@@ -98,14 +98,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://flowai-tau.vercel.app",
+    url: "https://visualworkflow.app",
     title: "Visual Workflow AI",
     description:
       "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
     siteName: "Visual Workflow AI",
     images: [
       {
-        url: "https://flowai-tau.vercel.app/flowai.jpg",
+        url: "https://visualworkflow.app/flowai.jpg",
         width: 1200,
         height: 630,
         alt: "Visual Workflow AI",
@@ -117,7 +117,7 @@ export const metadata: Metadata = {
     title: "Visual Workflow AI",
     description:
       "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
-    images: ["https://flowai-tau.vercel.app/flowai.jpg"],
+    images: ["https://visualworkflow.app/flowai.jpg"],
     creator: "@flowai",
     site: "@flowai",
   },
@@ -176,7 +176,7 @@ export default function RootLayout({
               name: "Visual Workflow AI",
               description:
                 "Build and deploy AI agents using our Figma-like canvas. Build, write evals, and deploy AI agent workflows that automate workflows and streamline your business processes.",
-              url: "https://flowai-tau.vercel.app",
+              url: "https://visualworkflow.app",
               applicationCategory: "BusinessApplication",
               operatingSystem: "Web Browser",
               offers: {
@@ -186,7 +186,7 @@ export default function RootLayout({
               creator: {
                 "@type": "Organization",
                 name: "Visual Workflow AI",
-                url: "https://flowai-tau.vercel.app",
+                url: "https://visualworkflow.app",
               },
               featureList: [
                 "Visual AI Agent Builder",
@@ -221,13 +221,13 @@ export default function RootLayout({
           name="twitter:image:alt"
           content="Visual Workflow AI - AI Agent Builder"
         />
-        <meta name="twitter:url" content="https://flowai-tau.vercel.app" />
-        <meta name="twitter:domain" content="flowai-tau.vercel.app" />
+        <meta name="twitter:url" content="https://visualworkflow.app" />
+        <meta name="twitter:domain" content="visualworkflow.app" />
 
         {/* Additional image sources */}
         <link
           rel="image_src"
-          href="https://flowai-tau.vercel.app/social/facebook.png"
+          href="https://visualworkflow.app/social/facebook.png"
         />
 
         <PublicEnvScript />

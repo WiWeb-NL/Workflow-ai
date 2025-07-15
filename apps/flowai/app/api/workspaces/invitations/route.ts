@@ -244,7 +244,7 @@ async function sendInvitationEmail({
   token: string;
 }) {
   try {
-    const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app";
+    const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app";
     // Always use the client-side invite route with token parameter
     const invitationLink = `${baseUrl}/invite/${token}?token=${token}`;
 

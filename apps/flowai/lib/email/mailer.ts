@@ -96,8 +96,7 @@ export async function sendEmail({
 
     if (includeUnsubscribe && emailType !== "transactional") {
       const unsubscribeToken = generateUnsubscribeToken(to, emailType);
-      const baseUrl =
-        env.NEXT_PUBLIC_APP_URL || "https://flowai-tau.vercel.app";
+      const baseUrl = env.NEXT_PUBLIC_APP_URL || "https://visualworkflow.app";
       const unsubscribeUrl = `${baseUrl}/unsubscribe?token=${unsubscribeToken}&email=${encodeURIComponent(to)}`;
 
       headers["List-Unsubscribe"] = `<${unsubscribeUrl}>`;

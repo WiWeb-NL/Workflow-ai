@@ -77,7 +77,7 @@ export const setChatAuthCookie = (
     sameSite: "lax",
     path: "/",
     // Using subdomain for the domain in production
-    domain: isDevelopment ? undefined : ".flowai-tau.vercel.app",
+    domain: isDevelopment ? undefined : ".visualworkflow.app",
     maxAge: 60 * 60 * 24, // 24 hours
   });
 };

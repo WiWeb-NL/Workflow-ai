@@ -222,7 +222,7 @@ export default function PrivacyPolicy() {
                   </li>
                   <li>
                     <span className="text-[#B5A1D4]">Website</span> refers to
-                    Visual Workflow AI, accessible from flowai-tau.vercel.app
+                    Visual Workflow AI, accessible from visualworkflow.app
                   </li>
                   <li>
                     <span className="text-[#B5A1D4]">You</span> means the
@@ -793,7 +793,7 @@ export default function PrivacyPolicy() {
                   This policy applies to the following systems and services:
                 </p>
                 <ul className="mb-4 list-disc space-y-2 pl-6 marker:text-[#B5A1D4]">
-                  <li>flowai-tau.vercel.app website</li>
+                  <li>visualworkflow.app website</li>
                   <li>Visual Workflow AI web application</li>
                   <li>Visual Workflow AI API services</li>
                 </ul>
@@ -806,10 +806,10 @@ export default function PrivacyPolicy() {
                   in accordance with their disclosure policy (if any). Before
                   beginning your inquiry, email us at{" "}
                   <Link
-                    href="mailto:security@flowai-tau.vercel.app"
+                    href="mailto:security@visualworkflow.app"
                     className="text-[#B5A1D4] hover:text-[#701ffc]"
                   >
-                    security@flowai-tau.vercel.app
+                    security@visualworkflow.app
                   </Link>{" "}
                   if you're unsure whether a system or endpoint is in scope.
                 </p>
@@ -835,10 +835,10 @@ export default function PrivacyPolicy() {
                 <p className="mb-4">
                   To report any security flaws, send an email to{" "}
                   <Link
-                    href="mailto:security@flowai-tau.vercel.app"
+                    href="mailto:security@visualworkflow.app"
                     className="text-[#B5A1D4] hover:text-[#701ffc]"
                   >
-                    security@flowai-tau.vercel.app
+                    security@visualworkflow.app
                   </Link>
                   . The next business day, we'll acknowledge receipt of your
                   vulnerability report and keep you updated on our progress.
@@ -887,10 +887,10 @@ export default function PrivacyPolicy() {
                   If you have any questions about this Privacy Policy, please
                   contact us at:{" "}
                   <Link
-                    href="mailto:privacy@flowai-tau.vercel.app"
+                    href="mailto:privacy@visualworkflow.app"
                     className="text-[#B5A1D4] hover:text-[#701ffc]"
                   >
-                    privacy@flowai-tau.vercel.app
+                    privacy@visualworkflow.app
                   </Link>
                 </p>
               </section>

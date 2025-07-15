@@ -72,7 +72,7 @@ export const BatchInvitationEmail = ({
         <Container style={container}>
           <Section style={logoContainer}>
             <Img
-              src="https://flowai-tau.vercel.app/logo.png"
+              src="https://visualworkflow.app/logo.png"
               width="120"
               height="36"
               alt="SimStudio"

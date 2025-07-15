@@ -94,8 +94,7 @@ async function forwardToCollector(data: any): Promise<boolean> {
   }
 
   const endpoint =
-    env.TELEMETRY_ENDPOINT ||
-    "https://telemetry.flowai-tau.vercel.app/v1/traces";
+    env.TELEMETRY_ENDPOINT || "https://telemetry.visualworkflow.app/v1/traces";
   const timeout = DEFAULT_TIMEOUT;
 
   try {

@@ -30,8 +30,7 @@ const config = {
    * Change this if you want to send telemetry to your own collector
    */
   endpoint:
-    env.TELEMETRY_ENDPOINT ||
-    "https://telemetry.flowai-tau.vercel.app/v1/traces",
+    env.TELEMETRY_ENDPOINT || "https://telemetry.visualworkflow.app/v1/traces",
 
   /**
    * Service name used to identify this instance
