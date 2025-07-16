@@ -1,23 +1,23 @@
 # Visual Workflow AI Python SDK
 
-The official Python SDK for [Visual Workflow AI](https://simstudio.ai), allowing you to execute workflows programmatically from your Python applications.
+The official Python SDK for [Visual Workflow AI](https://visualworkflowai.ai), allowing you to execute workflows programmatically from your Python applications.
 
 ## Installation
 
 ```bash
-pip install simstudio-sdk
+pip install visualworkflowai-sdk
 ```
 
 ## Quick Start
 
 ```python
 import os
-from simstudio import SimStudioClient
+from visualworkflowai import visualworkflowaiClient
 
 # Initialize the client
-client = SimStudioClient(
-    api_key=os.getenv("SIMSTUDIO_API_KEY", "your-api-key-here"),
-    base_url="https://simstudio.ai"  # optional, defaults to https://simstudio.ai
+client = visualworkflowaiClient(
+    api_key=os.getenv("visualworkflowai_API_KEY", "your-api-key-here"),
+    base_url="https://visualworkflowai.ai"  # optional, defaults to https://visualworkflowai.ai
 )
 
 # Execute a workflow
@@ -30,16 +30,16 @@ except Exception as error:
 
 ## API Reference
 
-### SimStudioClient
+### visualworkflowaiClient
 
 #### Constructor
 
 ```python
-SimStudioClient(api_key: str, base_url: str = "https://simstudio.ai")
+visualworkflowaiClient(api_key: str, base_url: str = "https://visualworkflowai.ai")
 ```
 
 - `api_key` (str): Your Visual Workflow AI API key
-- `base_url` (str, optional): Base URL for the Visual Workflow AI API (defaults to `https://simstudio.ai`)
+- `base_url` (str, optional): Base URL for the Visual Workflow AI API (defaults to `https://visualworkflowai.ai`)
 
 #### Methods
 
@@ -166,10 +166,10 @@ class WorkflowStatus:
     needs_redeployment: bool = False
 ```
 
-### SimStudioError
+### visualworkflowaiError
 
 ```python
-class SimStudioError(Exception):
+class visualworkflowaiError(Exception):
     def __init__(self, message: str, code: Optional[str] = None, status: Optional[int] = None):
         super().__init__(message)
         self.code = code
@@ -182,9 +182,9 @@ class SimStudioError(Exception):
 
 ```python
 import os
-from simstudio import SimStudioClient
+from visualworkflowai import visualworkflowaiClient
 
-client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+client = visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY"))
 
 def run_workflow():
     try:
@@ -217,16 +217,16 @@ run_workflow()
 ### Error Handling
 
 ```python
-from simstudio import SimStudioClient, SimStudioError
+from visualworkflowai import visualworkflowaiClient, visualworkflowaiError
 import os
 
-client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+client = visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY"))
 
 def execute_with_error_handling():
     try:
         result = client.execute_workflow("workflow-id")
         return result
-    except SimStudioError as error:
+    except visualworkflowaiError as error:
         if error.code == "UNAUTHORIZED":
             print("Invalid API key")
         elif error.code == "TIMEOUT":
@@ -246,11 +246,11 @@ def execute_with_error_handling():
 ### Context Manager Usage
 
 ```python
-from simstudio import SimStudioClient
+from visualworkflowai import visualworkflowaiClient
 import os
 
 # Using context manager to automatically close the session
-with SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY")) as client:
+with visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY")) as client:
     result = client.execute_workflow("workflow-id")
     print("Result:", result)
 # Session is automatically closed here
@@ -260,22 +260,22 @@ with SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY")) as client:
 
 ```python
 import os
-from simstudio import SimStudioClient
+from visualworkflowai import visualworkflowaiClient
 
 # Using environment variables
-client = SimStudioClient(
-    api_key=os.getenv("SIMSTUDIO_API_KEY"),
-    base_url=os.getenv("SIMSTUDIO_BASE_URL", "https://simstudio.ai")
+client = visualworkflowaiClient(
+    api_key=os.getenv("visualworkflowai_API_KEY"),
+    base_url=os.getenv("visualworkflowai_BASE_URL", "https://visualworkflowai.ai")
 )
 ```
 
 ### Batch Workflow Execution
 
 ```python
-from simstudio import SimStudioClient
+from visualworkflowai import visualworkflowaiClient
 import os
 
-client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+client = visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY"))
 
 def execute_workflows_batch(workflow_data_pairs):
     """Execute multiple workflows with different input data."""
@@ -318,7 +318,7 @@ for result in results:
 
 ## Getting Your API Key
 
-1. Log in to your [Visual Workflow AI](https://simstudio.ai) account
+1. Log in to your [Visual Workflow AI](https://visualworkflowai.ai) account
 2. Navigate to your workflow
 3. Click on "Deploy" to deploy your workflow
 4. Select or create an API key during the deployment process
@@ -360,16 +360,16 @@ Run code quality checks:
 
 ```bash
 # Code formatting
-black simstudio/
+black visualworkflowai/
 
 # Linting
-flake8 simstudio/ --max-line-length=100
+flake8 visualworkflowai/ --max-line-length=100
 
 # Type checking
-mypy simstudio/
+mypy visualworkflowai/
 
 # Import sorting
-isort simstudio/
+isort visualworkflowai/
 ```
 
 ## Requirements

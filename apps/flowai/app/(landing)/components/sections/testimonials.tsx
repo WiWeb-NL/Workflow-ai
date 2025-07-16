@@ -41,7 +41,7 @@ const X_TESTIMONIALS = [
     profileImage: "/twitter/samarth.jpg",
   },
   {
-    text: "lfgg got access to @simstudioai via @zerodotemail 😎",
+    text: "lfgg got access to @visualworkflowaiai via @zerodotemail 😎",
     username: "@nizzyabi",
     viewCount: "1,585",
     tweetUrl: "https://x.com/nizzyabi/status/1910482357821595944",
@@ -62,7 +62,7 @@ const X_TESTIMONIALS = [
     profileImage: "/twitter/lazukars.png",
   },
   {
-    text: "The use cases are endless. Great work @simstudioai",
+    text: "The use cases are endless. Great work @visualworkflowaiai",
     username: "@daniel_zkim",
     viewCount: "103",
     tweetUrl: "https://x.com/daniel_zkim/status/1907891273664782708",

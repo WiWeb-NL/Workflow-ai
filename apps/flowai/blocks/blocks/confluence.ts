@@ -34,7 +34,8 @@ export const ConfluenceBlock: BlockConfig<ConfluenceResponse> = {
       title: "Domain",
       type: "short-input",
       layout: "full",
-      placeholder: "Enter Confluence domain (e.g., simstudio.atlassian.net)",
+      placeholder:
+        "Enter Confluence domain (e.g., visualworkflowai.atlassian.net)",
     },
     {
       id: "credential",

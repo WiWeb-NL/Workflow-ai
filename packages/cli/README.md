@@ -1,13 +1,13 @@
 # Visual Workflow AI CLI
 
-Visual Workflow AI CLI allows you to run [Visual Workflow AI](https://simstudio.ai) using Docker with a single command.
+Visual Workflow AI CLI allows you to run [Visual Workflow AI](https://visualworkflowai.ai) using Docker with a single command.
 
 ## Installation
 
 To install the Visual Workflow AI CLI globally, use:
 
 ```bash
-npm install -g simstudio
+npm install -g visualworkflowai
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ npm install -g simstudio
 To start Visual Workflow AI, simply run:
 
 ```bash
-simstudio
+visualworkflowai
 ```
 
 ### Options

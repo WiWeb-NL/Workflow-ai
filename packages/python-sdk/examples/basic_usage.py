@@ -4,12 +4,12 @@ Basic usage examples for the Visual Workflow AI Python SDK
 """
 
 import os
-from simstudio import SimStudioClient, SimStudioError
+from visualworkflowai import visualworkflowaiClient, visualworkflowaiError
 
 
 def basic_example():
     """Example 1: Basic workflow execution"""
-    client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+    client = visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY"))
 
     try:
         # Execute a workflow without input
@@ -23,7 +23,7 @@ def basic_example():
         else:
             print(f"❌ Workflow failed: {result.error}")
             
-    except SimStudioError as error:
+    except visualworkflowaiError as error:
         print(f"SDK Error: {error} (Code: {error.code})")
     except Exception as error:
         print(f"Unexpected error: {error}")
@@ -31,7 +31,7 @@ def basic_example():
 
 def with_input_example():
     """Example 2: Workflow execution with input data"""
-    client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+    client = visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY"))
 
     try:
         result = client.execute_workflow(
@@ -58,7 +58,7 @@ def with_input_example():
         else:
             print(f"❌ Workflow failed: {result.error}")
         
-    except SimStudioError as error:
+    except visualworkflowaiError as error:
         print(f"SDK Error: {error} (Code: {error.code})")
     except Exception as error:
         print(f"Unexpected error: {error}")
@@ -66,7 +66,7 @@ def with_input_example():
 
 def status_example():
     """Example 3: Workflow validation and status checking"""
-    client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+    client = visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY"))
 
     try:
         # Check if workflow is ready
@@ -93,7 +93,7 @@ def status_example():
 
 def context_manager_example():
     """Example 4: Using context manager"""
-    with SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY")) as client:
+    with visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY")) as client:
         try:
             result = client.execute_workflow("your-workflow-id")
             print(f"Result: {result}")
@@ -104,7 +104,7 @@ def context_manager_example():
 
 def batch_execution_example():
     """Example 5: Batch workflow execution"""
-    client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+    client = visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY"))
     
     workflows = [
         ("workflow-1", {"type": "analysis", "data": "sample1"}),
@@ -132,7 +132,7 @@ def batch_execution_example():
             status = "✅ Success" if result.success else "❌ Failed"
             print(f"{status}: {workflow_id}")
             
-        except SimStudioError as error:
+        except visualworkflowaiError as error:
             results.append({
                 "workflow_id": workflow_id,
                 "success": False,
@@ -157,7 +157,7 @@ def batch_execution_example():
 
 def error_handling_example():
     """Example 6: Comprehensive error handling"""
-    client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
+    client = visualworkflowaiClient(api_key=os.getenv("visualworkflowai_API_KEY"))
 
     try:
         result = client.execute_workflow("your-workflow-id")
@@ -169,7 +169,7 @@ def error_handling_example():
         else:
             print(f"❌ Workflow failed: {result.error}")
             return result
-    except SimStudioError as error:
+    except visualworkflowaiError as error:
         if error.code == "UNAUTHORIZED":
             print("❌ Invalid API key")
         elif error.code == "TIMEOUT":
@@ -194,8 +194,8 @@ if __name__ == "__main__":
     print("🚀 Running Visual Workflow AI Python SDK Examples\n")
     
     # Check if API key is set
-    if not os.getenv("SIMSTUDIO_API_KEY"):
-        print("❌ Please set SIMSTUDIO_API_KEY environment variable")
+    if not os.getenv("visualworkflowai_API_KEY"):
+        print("❌ Please set visualworkflowai_API_KEY environment variable")
         exit(1)
     
     try:

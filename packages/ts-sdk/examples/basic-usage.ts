@@ -1,10 +1,10 @@
-import { SimStudioClient, SimStudioError } from "../src/index";
+import { visualworkflowaiClient, visualworkflowaiError } from "../src/index";
 
 // Example 1: Basic workflow execution
 async function basicExample() {
-  const client = new SimStudioClient({
-    apiKey: process.env.SIMSTUDIO_API_KEY!,
-    baseUrl: "https://simstudio.ai",
+  const client = new visualworkflowaiClient({
+    apiKey: process.env.visualworkflowai_API_KEY!,
+    baseUrl: "https://visualworkflowai.ai",
   });
 
   try {
@@ -19,7 +19,7 @@ async function basicExample() {
       console.log("❌ Workflow failed:", result.error);
     }
   } catch (error) {
-    if (error instanceof SimStudioError) {
+    if (error instanceof visualworkflowaiError) {
       console.error("SDK Error:", error.message, "Code:", error.code);
     } else {
       console.error("Unexpected error:", error);
@@ -29,8 +29,8 @@ async function basicExample() {
 
 // Example 2: Workflow execution with input data
 async function withInputExample() {
-  const client = new SimStudioClient({
-    apiKey: process.env.SIMSTUDIO_API_KEY!,
+  const client = new visualworkflowaiClient({
+    apiKey: process.env.visualworkflowai_API_KEY!,
   });
 
   try {
@@ -59,7 +59,7 @@ async function withInputExample() {
       console.log("❌ Workflow failed:", result.error);
     }
   } catch (error) {
-    if (error instanceof SimStudioError) {
+    if (error instanceof visualworkflowaiError) {
       console.error("SDK Error:", error.message, "Code:", error.code);
     } else {
       console.error("Unexpected error:", error);
@@ -69,8 +69,8 @@ async function withInputExample() {
 
 // Example 3: Workflow validation and status checking
 async function statusExample() {
-  const client = new SimStudioClient({
-    apiKey: process.env.SIMSTUDIO_API_KEY!,
+  const client = new visualworkflowaiClient({
+    apiKey: process.env.visualworkflowai_API_KEY!,
   });
 
   try {
@@ -99,7 +99,7 @@ async function statusExample() {
       }
     }
   } catch (error) {
-    if (error instanceof SimStudioError) {
+    if (error instanceof visualworkflowaiError) {
       console.error("SDK Error:", error.message, "Code:", error.code);
     } else {
       console.error("Unexpected error:", error);

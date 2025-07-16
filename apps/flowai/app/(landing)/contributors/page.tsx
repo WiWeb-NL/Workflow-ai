@@ -236,7 +236,7 @@
 //                     className="gap-1 border-[#606060]/30 bg-[#0f0f0f] text-neutral-300 text-xs backdrop-blur-sm hover:bg-neutral-700/50 hover:text-white sm:gap-2 sm:text-sm"
 //                   >
 //                     <a
-//                       href="https://github.com/simstudioai/sim"
+//                       href="https://github.com/visualworkflowaiai/sim"
 //                       target="_blank"
 //                       rel="noopener"
 //                     >
@@ -603,7 +603,7 @@
 //                       className="bg-[#701ffc] text-white transition-colors duration-500 hover:bg-[#802FFF]"
 //                     >
 //                       <a
-//                         href="https://github.com/simstudioai/sim/blob/main/.github/CONTRIBUTING.md"
+//                         href="https://github.com/visualworkflowaiai/sim/blob/main/.github/CONTRIBUTING.md"
 //                         target="_blank"
 //                         rel="noopener"
 //                       >
@@ -619,7 +619,7 @@
 //                       className="border-[#606060]/30 bg-transparent text-neutral-300 transition-colors duration-500 hover:bg-neutral-700/50 hover:text-white"
 //                     >
 //                       <a
-//                         href="https://github.com/simstudioai/sim"
+//                         href="https://github.com/visualworkflowaiai/sim"
 //                         target="_blank"
 //                         rel="noopener"
 //                       >
@@ -635,7 +635,7 @@
 //                       className="border-[#606060]/30 bg-transparent text-neutral-300 transition-colors duration-500 hover:bg-neutral-700/50 hover:text-white"
 //                     >
 //                       <a
-//                         href="https://github.com/simstudioai/sim/issues"
+//                         href="https://github.com/visualworkflowaiai/sim/issues"
 //                         target="_blank"
 //                         rel="noopener"
 //                       >

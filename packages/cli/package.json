@@ -1,11 +1,11 @@
 {
-  "name": "simstudio",
+  "name": "visualworkflowai",
   "version": "0.1.19",
   "description": "Visual Workflow AI CLI - Run Visual Workflow AI with a single command",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
-    "simstudio": "dist/index.js"
+    "visualworkflowai": "dist/index.js"
   },
   "scripts": {
     "build": "bun run build:tsc",
@@ -16,7 +16,7 @@
     "dist"
   ],
   "keywords": [
-    "simstudio",
+    "visualworkflowai",
     "ai",
     "workflow",
     "ui",

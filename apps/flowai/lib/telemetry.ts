@@ -26,7 +26,7 @@ export type TelemetryStatus = {
   notifiedUser: boolean;
 };
 
-const TELEMETRY_STATUS_KEY = "simstudio-telemetry-status";
+const TELEMETRY_STATUS_KEY = "visualworkflowai-telemetry-status";
 
 let telemetryConfig = {
   endpoint:

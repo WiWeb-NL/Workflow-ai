@@ -53,7 +53,7 @@ export const onRouterTransitionStart =
   clientEnv.NODE_ENV === "production" ? captureRouterTransitionStart : () => {};
 
 if (typeof window !== "undefined") {
-  const TELEMETRY_STATUS_KEY = "simstudio-telemetry-status";
+  const TELEMETRY_STATUS_KEY = "visualworkflowai-telemetry-status";
   let telemetryEnabled = true;
 
   try {

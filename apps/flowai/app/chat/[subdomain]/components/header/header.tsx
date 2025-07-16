@@ -35,7 +35,7 @@ export function ChatHeader({ chatConfig, starCount }: ChatHeaderProps) {
       </div>
       <div className="flex items-center gap-2">
         <a
-          href="https://github.com/simstudioai/sim"
+          href="https://github.com/visualworkflowaiai/sim"
           className="flex items-center gap-1 text-foreground"
           aria-label="GitHub"
           target="_blank"

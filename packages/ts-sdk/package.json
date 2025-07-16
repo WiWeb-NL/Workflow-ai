@@ -1,5 +1,5 @@
 {
-  "name": "simstudio-ts-sdk",
+  "name": "visualworkflowai-ts-sdk",
   "version": "0.1.0",
   "description": "Visual Workflow AI SDK - Execute workflows programmatically",
   "main": "dist/index.js",
@@ -24,7 +24,7 @@
     "dist"
   ],
   "keywords": [
-    "simstudio",
+    "visualworkflowai",
     "ai",
     "workflow",
     "sdk",
@@ -51,11 +51,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/simstudioai/sim.git",
+    "url": "https://github.com/visualworkflowaiai/sim.git",
     "directory": "packages/ts-sdk"
   },
-  "homepage": "https://simstudio.ai",
+  "homepage": "https://visualworkflowai.ai",
   "bugs": {
-    "url": "https://github.com/simstudioai/sim/issues"
+    "url": "https://github.com/visualworkflowaiai/sim/issues"
   }
 }
