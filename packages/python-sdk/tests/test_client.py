@@ -1,62 +1,62 @@
 """
-Tests for the Visual Workflow AI Python SDK
+Tests for the Sim Studio Python SDK
 """
 
 import pytest
 from unittest.mock import Mock, patch
-from visualworkflowai import visualworkflowaiClient, visualworkflowaiError, WorkflowExecutionResult, WorkflowStatus
+from simstudio import SimStudioClient, SimStudioError, WorkflowExecutionResult, WorkflowStatus
 
 
-def test_visualworkflowai_client_initialization():
-    """Test visualworkflowaiClient initialization."""
-    client = visualworkflowaiClient(api_key="test-api-key", base_url="https://test.visualworkflowai.ai")
+def test_simstudio_client_initialization():
+    """Test SimStudioClient initialization."""
+    client = SimStudioClient(api_key="test-api-key", base_url="https://test.simstudio.ai")
     assert client.api_key == "test-api-key"
-    assert client.base_url == "https://test.visualworkflowai.ai"
+    assert client.base_url == "https://test.simstudio.ai"
 
 
-def test_visualworkflowai_client_default_base_url():
-    """Test visualworkflowaiClient with default base URL."""
-    client = visualworkflowaiClient(api_key="test-api-key")
+def test_simstudio_client_default_base_url():
+    """Test SimStudioClient with default base URL."""
+    client = SimStudioClient(api_key="test-api-key")
     assert client.api_key == "test-api-key"
-    assert client.base_url == "https://visualworkflowai.ai"
+    assert client.base_url == "https://simstudio.ai"
 
 
 def test_set_api_key():
     """Test setting a new API key."""
-    client = visualworkflowaiClient(api_key="test-api-key")
+    client = SimStudioClient(api_key="test-api-key")
     client.set_api_key("new-api-key")
     assert client.api_key == "new-api-key"
 
 
 def test_set_base_url():
     """Test setting a new base URL."""
-    client = visualworkflowaiClient(api_key="test-api-key")
-    client.set_base_url("https://new.visualworkflowai.ai/")
-    assert client.base_url == "https://new.visualworkflowai.ai"
+    client = SimStudioClient(api_key="test-api-key")
+    client.set_base_url("https://new.simstudio.ai/")
+    assert client.base_url == "https://new.simstudio.ai"
 
 
 def test_set_base_url_strips_trailing_slash():
     """Test that base URL strips trailing slash."""
-    client = visualworkflowaiClient(api_key="test-api-key")
-    client.set_base_url("https://test.visualworkflowai.ai/")
-    assert client.base_url == "https://test.visualworkflowai.ai"
+    client = SimStudioClient(api_key="test-api-key")
+    client.set_base_url("https://test.simstudio.ai/")
+    assert client.base_url == "https://test.simstudio.ai"
 
 
-@patch('visualworkflowai.requests.Session.get')
+@patch('simstudio.requests.Session.get')
 def test_validate_workflow_returns_false_on_error(mock_get):
     """Test that validate_workflow returns False when request fails."""
-    mock_get.side_effect = visualworkflowaiError("Network error")
+    mock_get.side_effect = SimStudioError("Network error")
     
-    client = visualworkflowaiClient(api_key="test-api-key")
+    client = SimStudioClient(api_key="test-api-key")
     result = client.validate_workflow("test-workflow-id")
     
     assert result is False
-    mock_get.assert_called_once_with("https://visualworkflowai.ai/api/workflows/test-workflow-id/status")
+    mock_get.assert_called_once_with("https://simstudio.ai/api/workflows/test-workflow-id/status")
 
 
-def test_visualworkflowai_error():
-    """Test visualworkflowaiError creation."""
-    error = visualworkflowaiError("Test error", "TEST_CODE", 400)
+def test_simstudio_error():
+    """Test SimStudioError creation."""
+    error = SimStudioError("Test error", "TEST_CODE", 400)
     assert str(error) == "Test error"
     assert error.code == "TEST_CODE"
     assert error.status == 400
@@ -88,10 +88,10 @@ def test_workflow_status():
     assert status.needs_redeployment is False
 
 
-@patch('visualworkflowai.requests.Session.close')
+@patch('simstudio.requests.Session.close')
 def test_context_manager(mock_close):
-    """Test visualworkflowaiClient as context manager."""
-    with visualworkflowaiClient(api_key="test-api-key") as client:
+    """Test SimStudioClient as context manager."""
+    with SimStudioClient(api_key="test-api-key") as client:
         assert client.api_key == "test-api-key"
     # Should close without error
     mock_close.assert_called_once() 

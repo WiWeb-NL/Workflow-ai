@@ -38,7 +38,7 @@ With Mem0, you can:
 - **Implement long-term memory**: Create agents that learn and adapt over time
 - **Scale memory management**: Handle memory needs for multiple users and complex workflows
 
-In Visual Workflow AI, the Mem0 integration enables your agents to maintain persistent memory across workflow executions. This allows for more natural, context-aware interactions where agents can recall past conversations, remember user preferences, and build upon previous interactions. By connecting Visual Workflow AI with Mem0, you can create agents that feel more human-like in their ability to remember and learn from past experiences. The integration supports adding new memories, searching existing memories semantically, and retrieving specific memory records. This memory management capability is essential for building sophisticated agents that can maintain context over time, personalize interactions based on user history, and continuously improve their performance through accumulated knowledge.
+In Sim Studio, the Mem0 integration enables your agents to maintain persistent memory across workflow executions. This allows for more natural, context-aware interactions where agents can recall past conversations, remember user preferences, and build upon previous interactions. By connecting Sim Studio with Mem0, you can create agents that feel more human-like in their ability to remember and learn from past experiences. The integration supports adding new memories, searching existing memories semantically, and retrieving specific memory records. This memory management capability is essential for building sophisticated agents that can maintain context over time, personalize interactions based on user history, and continuously improve their performance through accumulated knowledge.
 {/* MANUAL-CONTENT-END */}
 
 
@@ -52,63 +52,12 @@ Add, search, retrieve, and delete memories using Mem0. Store conversation histor
 
 ### `mem0_add_memories`
 
-Add memories to Mem0 for persistent storage and retrieval
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `apiKey` | string | Yes | Your Mem0 API key |
-| `userId` | string | Yes | User ID associated with the memory |
-| `messages` | json | Yes | Array of message objects with role and content |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `memories` | string |
 
 ### `mem0_search_memories`
 
-Search for memories in Mem0 using semantic search
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `apiKey` | string | Yes | Your Mem0 API key |
-| `userId` | string | Yes | User ID to search memories for |
-| `query` | string | Yes | Search query to find relevant memories |
-| `limit` | number | No | Maximum number of results to return |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `searchResults` | string |
-| `ids` | string |
 
 ### `mem0_get_memories`
 
-Retrieve memories from Mem0 by ID or filter criteria
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `apiKey` | string | Yes | Your Mem0 API key |
-| `userId` | string | Yes | User ID to retrieve memories for |
-| `memoryId` | string | No | Specific memory ID to retrieve |
-| `startDate` | string | No | Start date for filtering by created_at \(format: YYYY-MM-DD\) |
-| `endDate` | string | No | End date for filtering by created_at \(format: YYYY-MM-DD\) |
-| `limit` | number | No | Maximum number of results to return |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `memories` | string |
-| `ids` | string |
 
 
 

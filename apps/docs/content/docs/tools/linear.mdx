@@ -36,7 +36,7 @@ Key features of Linear include:
 - Workflow Automation: Powerful automation rules to streamline repetitive tasks and processes
 - Advanced Search: Complex filtering and reporting capabilities for efficient issue management
 
-In Visual Workflow AI, the Linear integration allows your agents to seamlessly interact with your project management workflow. This creates opportunities for automated issue creation, updates, and tracking as part of your AI workflows. The integration enables agents to read existing issues and create new ones programmatically, facilitating automated project management tasks and ensuring that important information is properly tracked and documented. By connecting Visual Workflow AI with Linear, you can build intelligent agents that maintain project visibility while automating routine project management tasks, enhancing team productivity and ensuring consistent project tracking.
+In Sim Studio, the Linear integration allows your agents to seamlessly interact with your project management workflow. This creates opportunities for automated issue creation, updates, and tracking as part of your AI workflows. The integration enables agents to read existing issues and create new ones programmatically, facilitating automated project management tasks and ensuring that important information is properly tracked and documented. By connecting Sim Studio with Linear, you can build intelligent agents that maintain project visibility while automating routine project management tasks, enhancing team productivity and ensuring consistent project tracking.
 {/* MANUAL-CONTENT-END */}
 
 
@@ -50,44 +50,9 @@ Integrate with Linear to fetch, filter, and create issues directly from your wor
 
 ### `linear_read_issues`
 
-Fetch and filter issues from Linear
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `teamId` | string | Yes | Linear team ID |
-| `projectId` | string | Yes | Linear project ID |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `issues` | string |
 
 ### `linear_create_issue`
 
-Create a new issue in Linear
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `teamId` | string | Yes | Linear team ID |
-| `projectId` | string | Yes | Linear project ID |
-| `title` | string | Yes | Issue title |
-| `description` | string | No | Issue description |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `issue` | string |
-| `title` | string |
-| `description` | string |
-| `state` | string |
-| `teamId` | string |
-| `projectId` | string |
 
 
 

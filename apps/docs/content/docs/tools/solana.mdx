@@ -1,0 +1,87 @@
+---
+title: Solana
+description: Solana blockchain operations
+---
+
+import { BlockInfoCard } from "@/components/ui/block-info-card"
+
+<BlockInfoCard 
+  type="solana"
+  color="#14F195"
+  icon={true}
+  iconSvg={`<svg className="block-icon"
+      
+      
+      
+      viewBox='0 0 30 33'
+      fill='none'
+      xmlns='http://www.w3.org/2000/svg'
+    >
+      <path
+        d='M28 16.2188C28 23.8026 2 23.8026 2 16.2188M15 2C7.82075 2 2 4.09625 2 6.68C2 13.44 28 13.44 28 6.68C28 4.09625 22.1793 2 15 2Z'
+        stroke='currentColor'
+        strokeWidth='2.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+      <path
+        d='M2 6.875V26.6431C2 32.7856 28 32.7856 28 26.6431V6.875'
+        stroke='currentColor'
+        strokeWidth='2.5'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>`}
+/>
+
+## Usage Instructions
+
+Interact with the Solana blockchain to transfer SPL tokens, swap tokens via Jupiter aggregator, check wallet balances, and get token prices. Comprehensive Solana DeFi integration for your workflows.
+
+
+
+## Tools
+
+### `solana_transfer`
+
+
+### `solana_swap`
+
+
+### `solana_accounts`
+
+
+### `solana_price`
+
+
+
+
+## Block Configuration
+
+### Input
+
+| Parameter | Type | Required | Description | 
+| --------- | ---- | -------- | ----------- | 
+| `operation` | string | Yes | Operation |
+
+
+
+### Outputs
+
+| Output | Type | Description |
+| ------ | ---- | ----------- |
+| `transaction` | json | transaction output from the block |
+| `fee` | number | fee output from the block |
+| `walletAddress` | string | walletAddress output from the block |
+| `prices` | json | prices output from the block |
+| `tokenAccounts` | json | tokenAccounts output from the block |
+| `solBalance` | number | solBalance output from the block |
+| `amount` | string | amount output from the block |
+| `inputAmount` | string | inputAmount output from the block |
+| `outputAmount` | string | outputAmount output from the block |
+
+
+## Notes
+
+- Category: `tools`
+- Type: `solana`

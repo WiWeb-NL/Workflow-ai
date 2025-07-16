@@ -1,31 +1,31 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { visualworkflowaiClient, visualworkflowaiError } from './index'
+import { SimStudioClient, SimStudioError } from './index'
 
 vi.mock('node-fetch', () => ({
   default: vi.fn(),
 }))
 
-describe('visualworkflowaiClient', () => {
-  let client: visualworkflowaiClient
+describe('SimStudioClient', () => {
+  let client: SimStudioClient
 
   beforeEach(() => {
-    client = new visualworkflowaiClient({
+    client = new SimStudioClient({
       apiKey: 'test-api-key',
-      baseUrl: 'https://test.visualworkflowai.ai',
+      baseUrl: 'https://test.simstudio.ai',
     })
     vi.clearAllMocks()
   })
 
   describe('constructor', () => {
     it('should create a client with correct configuration', () => {
-      expect(client).toBeInstanceOf(visualworkflowaiClient)
+      expect(client).toBeInstanceOf(SimStudioClient)
     })
 
     it('should use default base URL when not provided', () => {
-      const defaultClient = new visualworkflowaiClient({
+      const defaultClient = new SimStudioClient({
         apiKey: 'test-api-key',
       })
-      expect(defaultClient).toBeInstanceOf(visualworkflowaiClient)
+      expect(defaultClient).toBeInstanceOf(SimStudioClient)
     })
   })
 
@@ -43,16 +43,16 @@ describe('visualworkflowaiClient', () => {
 
   describe('setBaseUrl', () => {
     it('should update the base URL', () => {
-      const newBaseUrl = 'https://new.visualworkflowai.ai'
+      const newBaseUrl = 'https://new.simstudio.ai'
       client.setBaseUrl(newBaseUrl)
       expect((client as any).baseUrl).toBe(newBaseUrl)
     })
 
     it('should strip trailing slash from base URL', () => {
-      const urlWithSlash = 'https://test.visualworkflowai.ai/'
+      const urlWithSlash = 'https://test.simstudio.ai/'
       client.setBaseUrl(urlWithSlash)
       // Verify the trailing slash was actually stripped
-      expect((client as any).baseUrl).toBe('https://test.visualworkflowai.ai')
+      expect((client as any).baseUrl).toBe('https://test.simstudio.ai')
     })
   })
 
@@ -101,15 +101,15 @@ describe('visualworkflowaiClient', () => {
   })
 })
 
-describe('visualworkflowaiError', () => {
+describe('SimStudioError', () => {
   it('should create error with message', () => {
-    const error = new visualworkflowaiError('Test error')
+    const error = new SimStudioError('Test error')
     expect(error.message).toBe('Test error')
-    expect(error.name).toBe('visualworkflowaiError')
+    expect(error.name).toBe('SimStudioError')
   })
 
   it('should create error with code and status', () => {
-    const error = new visualworkflowaiError('Test error', 'TEST_CODE', 400)
+    const error = new SimStudioError('Test error', 'TEST_CODE', 400)
     expect(error.message).toBe('Test error')
     expect(error.code).toBe('TEST_CODE')
     expect(error.status).toBe(400)

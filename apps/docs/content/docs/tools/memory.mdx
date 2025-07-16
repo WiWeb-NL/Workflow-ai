@@ -43,70 +43,15 @@ Create persistent storage for data that needs to be accessed across multiple wor
 
 ### `memory_add`
 
-Add a new memory to the database or append to existing memory with the same ID.
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `id` | string | Yes | Identifier for the memory. If a memory with this ID already exists, the new data will be appended to it. |
-| `role` | string | Yes | Role for agent memory \(user, assistant, or system\) |
-| `content` | string | Yes | Content for agent memory |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `memories` | string |
 
 ### `memory_get`
 
-Retrieve a specific memory by its ID
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `id` | string | Yes | Identifier for the memory to retrieve |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `memories` | string |
-| `message` | string |
 
 ### `memory_get_all`
 
-Retrieve all memories from the database
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `message` | string |
-| `memories` | string |
 
 ### `memory_delete`
 
-Delete a specific memory by its ID
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `id` | string | Yes | Identifier for the memory to delete |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `message` | string |
 
 
 

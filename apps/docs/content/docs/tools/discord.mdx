@@ -39,11 +39,11 @@ With a Discord account or bot, you can:
 - **Get server**: Get information about a specific server
 - **Get user**: Get information about a specific user
 
-In Visual Workflow AI, the Discord integration enables your agents to access and leverage your organization's Discord servers. Agents can retrieve information from Discord channels, search for specific users, get server information, and send messages. This allows your workflows to integrate with your Discord communities, automate notifications, and create interactive experiences.
+In Sim Studio, the Discord integration enables your agents to access and leverage your organization's Discord servers. Agents can retrieve information from Discord channels, search for specific users, get server information, and send messages. This allows your workflows to integrate with your Discord communities, automate notifications, and create interactive experiences.
 
 > **Important:** To read message content, your Discord bot needs the "Message Content Intent" enabled in the Discord Developer Portal. Without this permission, you'll still receive message metadata but the content field will appear empty.
 
-Discord components in Visual Workflow AI use efficient lazy loading, only fetching data when needed to minimize API calls and prevent rate limiting. Token refreshing happens automatically in the background to maintain your connection.
+Discord components in Sim Studio use efficient lazy loading, only fetching data when needed to minimize API calls and prevent rate limiting. Token refreshing happens automatically in the background to maintain your connection.
 
 ### Setting Up Your Discord Bot
 
@@ -65,74 +65,15 @@ Connect to Discord to send messages, manage channels, and interact with servers.
 
 ### `discord_send_message`
 
-Send a message to a Discord channel
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `botToken` | string | Yes | The bot token for authentication |
-| `channelId` | string | Yes | The Discord channel ID to send the message to |
-| `content` | string | No | The text content of the message |
-| `serverId` | string | Yes | The Discord server ID \(guild ID\) |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `message` | string |
 
 ### `discord_get_messages`
 
-Retrieve messages from a Discord channel
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `botToken` | string | Yes | The bot token for authentication |
-| `channelId` | string | Yes | The Discord channel ID to retrieve messages from |
-| `limit` | number | No | Maximum number of messages to retrieve \(default: 10, max: 100\) |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `message` | string |
 
 ### `discord_get_server`
 
-Retrieve information about a Discord server (guild)
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `botToken` | string | Yes | The bot token for authentication |
-| `serverId` | string | Yes | The Discord server ID \(guild ID\) |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `message` | string |
 
 ### `discord_get_user`
 
-Retrieve information about a Discord user
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `botToken` | string | Yes | Discord bot token for authentication |
-| `userId` | string | Yes | The Discord user ID |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `message` | string |
 
 
 

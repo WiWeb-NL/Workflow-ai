@@ -1,15 +1,15 @@
-# Visual Workflow AI SDKs
+# Sim Studio SDKs
 
-This directory contains the official SDKs for [Visual Workflow AI](https://visualworkflowai.ai), allowing developers to execute workflows programmatically from their applications.
+This directory contains the official SDKs for [Sim Studio](https://simstudio.ai), allowing developers to execute workflows programmatically from their applications.
 
 ## Available SDKs
 
 ### Package Installation Commands
 
-- **TypeScript/JavaScript**: `npm install visualworkflowai-ts-sdk`
-- **Python**: `pip install visualworkflowai-sdk`
+- **TypeScript/JavaScript**: `npm install simstudio-ts-sdk`
+- **Python**: `pip install simstudio-sdk`
 
-### 🟢 TypeScript/JavaScript SDK (`visualworkflowai-ts-sdk`)
+### 🟢 TypeScript/JavaScript SDK (`simstudio-ts-sdk`)
 
 **Directory:** `ts-sdk/`
 
@@ -17,18 +17,18 @@ The TypeScript SDK provides type-safe workflow execution for Node.js and browser
 
 **Installation:**
 ```bash
-npm install visualworkflowai-ts-sdk
+npm install simstudio-ts-sdk
 # or 
-yarn add visualworkflowai-ts-sdk
+yarn add simstudio-ts-sdk
 # or
-bun add visualworkflowai-ts-sdk
+bun add simstudio-ts-sdk
 ```
 
 **Quick Start:**
 ```typescript
-import { visualworkflowaiClient } from 'visualworkflowai-ts-sdk';
+import { SimStudioClient } from 'simstudio-ts-sdk';
 
-const client = new visualworkflowaiClient({
+const client = new SimStudioClient({
   apiKey: 'your-api-key-here'
 });
 
@@ -37,7 +37,7 @@ const result = await client.executeWorkflow('workflow-id', {
 });
 ```
 
-### 🐍 Python SDK (`visualworkflowai-sdk`)
+### 🐍 Python SDK (`simstudio-sdk`)
 
 **Directory:** `python-sdk/`
 
@@ -45,14 +45,14 @@ The Python SDK provides Pythonic workflow execution with comprehensive error han
 
 **Installation:**
 ```bash
-pip install visualworkflowai-sdk
+pip install simstudio-sdk
 ```
 
 **Quick Start:**
 ```python
-from visualworkflowai import visualworkflowaiClient
+from simstudio import SimStudioClient
 
-client = visualworkflowaiClient(api_key='your-api-key-here')
+client = SimStudioClient(api_key='your-api-key-here')
 
 result = client.execute_workflow('workflow-id', 
     input_data={'message': 'Hello, world!'})
@@ -80,7 +80,7 @@ Both SDKs are built on top of the same REST API endpoints:
 
 Both SDKs use API key authentication via the `X-API-Key` header. You can obtain an API key by:
 
-1. Logging in to your [Visual Workflow AI](https://visualworkflowai.ai) account
+1. Logging in to your [Sim Studio](https://simstudio.ai) account
 2. Navigating to your workflow
 3. Clicking "Deploy" to deploy your workflow
 4. Creating or selecting an API key during deployment
@@ -91,10 +91,10 @@ Both SDKs support environment variable configuration:
 
 ```bash
 # Required
-visualworkflowai_API_KEY=your-api-key-here
+SIMSTUDIO_API_KEY=your-api-key-here
 
 # Optional
-visualworkflowai_BASE_URL=https://visualworkflowai.ai  # or your custom domain
+SIMSTUDIO_BASE_URL=https://simstudio.ai  # or your custom domain
 ```
 
 ## Error Handling
@@ -115,10 +115,10 @@ Both SDKs provide consistent error handling with these error codes:
 ### TypeScript Example
 
 ```typescript
-import { visualworkflowaiClient, visualworkflowaiError } from 'visualworkflowai-ts-sdk';
+import { SimStudioClient, SimStudioError } from 'simstudio-ts-sdk';
 
-const client = new visualworkflowaiClient({
-  apiKey: process.env.visualworkflowai_API_KEY!
+const client = new SimStudioClient({
+  apiKey: process.env.SIMSTUDIO_API_KEY!
 });
 
 try {
@@ -138,7 +138,7 @@ try {
     console.log('Output:', result.output);
   }
 } catch (error) {
-  if (error instanceof visualworkflowaiError) {
+  if (error instanceof SimStudioError) {
     console.error(`Error ${error.code}: ${error.message}`);
   }
 }
@@ -147,10 +147,10 @@ try {
 ### Python Example
 
 ```python
-from visualworkflowai import visualworkflowaiClient, visualworkflowaiError
+from simstudio import SimStudioClient, SimStudioError
 import os
 
-client = visualworkflowaiClient(api_key=os.getenv('visualworkflowai_API_KEY'))
+client = SimStudioClient(api_key=os.getenv('SIMSTUDIO_API_KEY'))
 
 try:
     # Check if workflow is ready
@@ -166,7 +166,7 @@ try:
     if result.success:
         print(f'Output: {result.output}')
         
-except visualworkflowaiError as error:
+except SimStudioError as error:
     print(f'Error {error.code}: {error}')
 ```
 
@@ -193,13 +193,13 @@ python -m build
 **TypeScript:**
 ```bash
 cd packages/ts-sdk
-visualworkflowai_API_KEY=your-key bun run examples/basic-usage.ts
+SIMSTUDIO_API_KEY=your-key bun run examples/basic-usage.ts
 ```
 
 **Python:**
 ```bash
 cd packages/python-sdk
-visualworkflowai_API_KEY=your-key python examples/basic_usage.py
+SIMSTUDIO_API_KEY=your-key python examples/basic_usage.py
 ```
 
 ### Testing
@@ -243,7 +243,7 @@ Both SDKs are licensed under the Apache-2.0 License. See the [LICENSE](../LICENS
 
 ## Support
 
-- 📖 [Documentation](https://docs.visualworkflowai.ai)
-- 💬 [Discord Community](https://discord.gg/visualworkflowai)
-- 🐛 [Issue Tracker](https://github.com/visualworkflowaiai/sim/issues)
-- 📧 [Email Support](mailto:support@visualworkflowai.ai) 
+- 📖 [Documentation](https://docs.simstudio.ai)
+- 💬 [Discord Community](https://discord.gg/simstudio)
+- 🐛 [Issue Tracker](https://github.com/simstudioai/sim/issues)
+- 📧 [Email Support](mailto:support@simstudio.ai) 

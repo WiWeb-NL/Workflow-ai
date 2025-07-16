@@ -1,6 +1,6 @@
 # Block Documentation Generator
 
-This directory contains scripts to automatically generate documentation for all blocks in the Visual Workflow AI platform.
+This directory contains scripts to automatically generate documentation for all blocks in the Sim Studio platform.
 
 ## Available Scripts
 

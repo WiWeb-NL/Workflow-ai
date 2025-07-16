@@ -1,26 +1,26 @@
-# Visual Workflow AI TypeScript SDK
+# Sim Studio TypeScript SDK
 
-The official TypeScript/JavaScript SDK for [Visual Workflow AI](https://visualworkflowai.ai), allowing you to execute workflows programmatically from your applications.
+The official TypeScript/JavaScript SDK for [Sim Studio](https://simstudio.ai), allowing you to execute workflows programmatically from your applications.
 
 ## Installation
 
 ```bash
-npm install visualworkflowai-ts-sdk
+npm install simstudio-ts-sdk
 # or 
-yarn add visualworkflowai-ts-sdk
+yarn add simstudio-ts-sdk
 # or
-bun add visualworkflowai-ts-sdk
+bun add simstudio-ts-sdk
 ```
 
 ## Quick Start
 
 ```typescript
-import { visualworkflowaiClient } from 'visualworkflowai-ts-sdk';
+import { SimStudioClient } from 'simstudio-ts-sdk';
 
 // Initialize the client
-const client = new visualworkflowaiClient({
+const client = new SimStudioClient({
   apiKey: 'your-api-key-here',
-  baseUrl: 'https://visualworkflowai.ai' // optional, defaults to https://visualworkflowai.ai
+  baseUrl: 'https://simstudio.ai' // optional, defaults to https://simstudio.ai
 });
 
 // Execute a workflow
@@ -34,16 +34,16 @@ try {
 
 ## API Reference
 
-### visualworkflowaiClient
+### SimStudioClient
 
 #### Constructor
 
 ```typescript
-new visualworkflowaiClient(config: visualworkflowaiConfig)
+new SimStudioClient(config: SimStudioConfig)
 ```
 
-- `config.apiKey` (string): Your Visual Workflow AI API key
-- `config.baseUrl` (string, optional): Base URL for the Visual Workflow AI API (defaults to `https://visualworkflowai.ai`)
+- `config.apiKey` (string): Your Sim Studio API key
+- `config.baseUrl` (string, optional): Base URL for the Sim Studio API (defaults to `https://simstudio.ai`)
 
 #### Methods
 
@@ -162,10 +162,10 @@ interface WorkflowStatus {
 }
 ```
 
-### visualworkflowaiError
+### SimStudioError
 
 ```typescript
-class visualworkflowaiError extends Error {
+class SimStudioError extends Error {
   code?: string;
   status?: number;
 }
@@ -176,10 +176,10 @@ class visualworkflowaiError extends Error {
 ### Basic Workflow Execution
 
 ```typescript
-import { visualworkflowaiClient } from 'visualworkflowai-ts-sdk';
+import { SimStudioClient } from 'simstudio-ts-sdk';
 
-const client = new visualworkflowaiClient({
-  apiKey: process.env.visualworkflowai_API_KEY!
+const client = new SimStudioClient({
+  apiKey: process.env.SIMSTUDIO_API_KEY!
 });
 
 async function runWorkflow() {
@@ -215,10 +215,10 @@ runWorkflow();
 ### Error Handling
 
 ```typescript
-import { visualworkflowaiClient, visualworkflowaiError } from 'visualworkflowai-ts-sdk';
+import { SimStudioClient, SimStudioError } from 'simstudio-ts-sdk';
 
-const client = new visualworkflowaiClient({
-  apiKey: process.env.visualworkflowai_API_KEY!
+const client = new SimStudioClient({
+  apiKey: process.env.SIMSTUDIO_API_KEY!
 });
 
 async function executeWithErrorHandling() {
@@ -226,7 +226,7 @@ async function executeWithErrorHandling() {
     const result = await client.executeWorkflow('workflow-id');
     return result;
   } catch (error) {
-    if (error instanceof visualworkflowaiError) {
+    if (error instanceof SimStudioError) {
       switch (error.code) {
         case 'UNAUTHORIZED':
           console.error('Invalid API key');
@@ -255,15 +255,15 @@ async function executeWithErrorHandling() {
 
 ```typescript
 // Using environment variables
-const client = new visualworkflowaiClient({
-  apiKey: process.env.visualworkflowai_API_KEY!,
-  baseUrl: process.env.visualworkflowai_BASE_URL // optional
+const client = new SimStudioClient({
+  apiKey: process.env.SIMSTUDIO_API_KEY!,
+  baseUrl: process.env.SIMSTUDIO_BASE_URL // optional
 });
 ```
 
 ## Getting Your API Key
 
-1. Log in to your [Visual Workflow AI](https://visualworkflowai.ai) account
+1. Log in to your [Sim Studio](https://simstudio.ai) account
 2. Navigate to your workflow
 3. Click on "Deploy" to deploy your workflow
 4. Select or create an API key during the deployment process

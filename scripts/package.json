@@ -1,11 +1,11 @@
 {
   "name": "sim-doc-generator",
   "version": "1.0.0",
-  "description": "Documentation generator for Visual Workflow AI blocks",
+  "description": "Documentation generator for Sim Studio blocks",
   "type": "module",
   "private": true,
   "dependencies": {
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "glob": "^11.0.3",
     "ts-node": "^10.9.2",

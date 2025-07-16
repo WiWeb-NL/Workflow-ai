@@ -227,10 +227,10 @@ function extractStringProperty(
   content: string,
   propName: string
 ): string | null {
-  const flowaipleMatch = content.match(
+  const simpleMatch = content.match(
     new RegExp(`${propName}\\s*:\\s*['"]([^'"]+)['"]`, "m")
   );
-  if (flowaipleMatch) return flowaipleMatch[1];
+  if (simpleMatch) return simpleMatch[1];
 
   // Try to match multi-line string with template literals
   const templateMatch = content.match(
@@ -240,7 +240,7 @@ function extractStringProperty(
     let templateContent = templateMatch[1];
 
     // Handle template literals with expressions by replacing them with reasonable defaults
-    // This is a flowaiple approach - we'll replace common variable references with sensible defaults
+    // This is a simple approach - we'll replace common variable references with sensible defaults
     templateContent = templateContent.replace(
       /\$\{[^}]*shouldEnableURLInput[^}]*\?[^:]*:[^}]*\}/g,
       "Upload files directly. "
@@ -367,7 +367,7 @@ function extractInputs(content: string): Record<string, any> {
   return inputs;
 }
 
-// Updated function to extract outputs with a flowaipler and more reliable approach
+// Updated function to extract outputs with a simpler and more reliable approach
 function extractOutputs(content: string): Record<string, any> {
   // Look for the outputs section with a more resilient regex
   const outputsMatch = content.match(/outputs\s*:\s*{([^}]*)}(?:\s*,|\s*})/s);
@@ -452,13 +452,13 @@ function extractOutputs(content: string): Record<string, any> {
               description: `${fieldName} from the block execution`,
             };
           } else {
-            // Try to extract a flowaiple type definition
-            const flowaipleTypeMatch = fieldMatch.match(
+            // Try to extract a simple type definition
+            const simpleTypeMatch = fieldMatch.match(
               /type\s*:\s*['"]([^'"]+)['"]/
             );
-            if (flowaipleTypeMatch) {
+            if (simpleTypeMatch) {
               outputs[fieldName] = {
-                type: flowaipleTypeMatch[1],
+                type: simpleTypeMatch[1],
                 description: `${fieldName} output from the block`,
               };
             }
@@ -558,7 +558,7 @@ function extractToolInfo(
   outputs: Record<string, any>;
 } | null {
   try {
-    // Extract tool config section - flowaiplified regex to match any *Tool export pattern
+    // Extract tool config section - Simplified regex to match any *Tool export pattern
     const toolConfigRegex =
       /export const \w+Tool\s*[=<][^{]*{[\s\S]*?params\s*:\s*{([\s\S]*?)}/im;
     const toolConfigMatch = fileContent.match(toolConfigRegex);
@@ -828,15 +828,14 @@ function parseOutputStructure(
     } else if (toolName.includes("_get")) {
       outputs.data = "Retrieved data";
     } else {
-      // Try to extract field names from the output content with a flowaipler regex
-      const flowaipleFieldsRegex = /(\w+)\s*:/g;
-      let flowaipleFieldMatch;
+      // Try to extract field names from the output content with a simpler regex
+      const simpleFieldsRegex = /(\w+)\s*:/g;
+      let simpleFieldMatch;
 
       while (
-        (flowaipleFieldMatch = flowaipleFieldsRegex.exec(outputContent)) !==
-        null
+        (simpleFieldMatch = simpleFieldsRegex.exec(outputContent)) !== null
       ) {
-        outputs[flowaipleFieldMatch[1]] = "Dynamic output field";
+        outputs[simpleFieldMatch[1]] = "Dynamic output field";
       }
     }
   }
@@ -871,7 +870,7 @@ async function getToolInfo(toolName: string): Promise<{
       // Check if a directory exists for this prefix
       const toolDirPath = path.join(
         rootDir,
-        `apps/flowai/tools/${possiblePrefix}`
+        `apps/sim/tools/${possiblePrefix}`
       );
 
       if (
@@ -890,12 +889,12 @@ async function getToolInfo(toolName: string): Promise<{
       toolSuffix = parts.slice(1).join("_");
     }
 
-    // flowaiplify the file search strategy
+    // Simplify the file search strategy
     const possibleLocations = [];
 
     // Most common pattern: suffix.ts file in the prefix directory
     possibleLocations.push(
-      path.join(rootDir, `apps/flowai/tools/${toolPrefix}/${toolSuffix}.ts`)
+      path.join(rootDir, `apps/sim/tools/${toolPrefix}/${toolSuffix}.ts`)
     );
 
     // Try underscore version if suffix has multiple parts
@@ -904,7 +903,7 @@ async function getToolInfo(toolName: string): Promise<{
       possibleLocations.push(
         path.join(
           rootDir,
-          `apps/flowai/tools/${toolPrefix}/${underscoreSuffix}.ts`
+          `apps/sim/tools/${toolPrefix}/${underscoreSuffix}.ts`
         )
       );
     }
@@ -917,15 +916,12 @@ async function getToolInfo(toolName: string): Promise<{
       )
       .join("");
     possibleLocations.push(
-      path.join(
-        rootDir,
-        `apps/flowai/tools/${toolPrefix}/${camelCaseSuffix}.ts`
-      )
+      path.join(rootDir, `apps/sim/tools/${toolPrefix}/${camelCaseSuffix}.ts`)
     );
 
     // Also check the index.ts file in the tool directory
     possibleLocations.push(
-      path.join(rootDir, `apps/flowai/tools/${toolPrefix}/index.ts`)
+      path.join(rootDir, `apps/sim/tools/${toolPrefix}/index.ts`)
     );
 
     // Try to find the tool definition file
@@ -1356,7 +1352,7 @@ async function generateMarkdownForBlock(
         : `Output from ${outputKey}`;
 
       if (typeof output.type === "string") {
-        // flowaiple output with explicit type
+        // Simple output with explicit type
         outputsSection += `| \`${outputKey}\` | ${output.type} | ${escapedDescription} |\n`;
       } else if (output.type && typeof output.type === "object") {
         // For cases where output.type is an object containing field types

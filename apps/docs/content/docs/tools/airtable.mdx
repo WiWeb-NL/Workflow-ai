@@ -51,7 +51,7 @@ With Airtable, you can:
 - **Automate workflows**: Set up triggers and actions to automate repetitive tasks
 - **Integrate with other tools**: Connect with hundreds of other applications through native integrations and APIs
 
-In Visual Workflow AI, the Airtable integration enables your agents to interact with your Airtable bases programmatically. This allows for seamless data operations like retrieving information, creating new records, and updating existing data - all within your agent workflows. Use Airtable as a dynamic data source or destination for your agents, enabling them to access and manipulate structured information as part of their decision-making and task execution processes.
+In Sim Studio, the Airtable integration enables your agents to interact with your Airtable bases programmatically. This allows for seamless data operations like retrieving information, creating new records, and updating existing data - all within your agent workflows. Use Airtable as a dynamic data source or destination for your agents, enabling them to access and manipulate structured information as part of their decision-making and task execution processes.
 {/* MANUAL-CONTENT-END */}
 
 
@@ -65,106 +65,18 @@ Integrate Airtable functionality to manage table records. List, get, create,
 
 ### `airtable_list_records`
 
-Read records from an Airtable table
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | OAuth access token |
-| `baseId` | string | Yes | ID of the Airtable base |
-| `tableId` | string | Yes | ID of the table |
-| `maxRecords` | number | No | Maximum number of records to return |
-| `filterFormula` | string | No | Formula to filter records \(e.g.,  |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `records` | string |
-| `metadata` | string |
-| `totalRecords` | string |
 
 ### `airtable_get_record`
 
-Retrieve a single record from an Airtable table by its ID
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | OAuth access token |
-| `baseId` | string | Yes | ID of the Airtable base |
-| `tableId` | string | Yes | ID or name of the table |
-| `recordId` | string | Yes | ID of the record to retrieve |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `record` | string |
-| `metadata` | string |
 
 ### `airtable_create_records`
 
-Write new records to an Airtable table
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | OAuth access token |
-| `baseId` | string | Yes | ID of the Airtable base |
-| `tableId` | string | Yes | ID or name of the table |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `records` | string |
-| `metadata` | string |
 
 ### `airtable_update_record`
 
-Update an existing record in an Airtable table by ID
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | OAuth access token |
-| `baseId` | string | Yes | ID of the Airtable base |
-| `tableId` | string | Yes | ID or name of the table |
-| `recordId` | string | Yes | ID of the record to update |
-| `fields` | json | Yes | An object containing the field names and their new values |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `record` | string |
-| `metadata` | string |
-| `updatedFields` | string |
 
 ### `airtable_update_multiple_records`
 
-Update multiple existing records in an Airtable table
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | OAuth access token |
-| `baseId` | string | Yes | ID of the Airtable base |
-| `tableId` | string | Yes | ID or name of the table |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `records` | string |
-| `metadata` | string |
-| `updatedRecordIds` | string |
 
 
 

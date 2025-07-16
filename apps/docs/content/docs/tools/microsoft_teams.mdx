@@ -92,7 +92,7 @@ With Microsoft Teams, you can:
 - **Access across devices**: Use Teams on desktop, web, and mobile with cloud-synced conversations  
 - **Secure communication**: Leverage enterprise-grade security and compliance features
 
-In Visual Workflow AI, the Microsoft Teams integration enables your agents to interact directly with chat messages programmatically. This allows for powerful automation scenarios such as sending updates, posting alerts, coordinating tasks, and responding to conversations in real time. Your agents can write new messages to chats or channels, update content based on workflow data, and engage with users where collaboration happens. By integrating Visual Workflow AI with Microsoft Teams, you bridge the gap between intelligent workflows and team communication — empowering your agents to streamline collaboration, automate communication tasks, and keep your teams aligned.
+In Sim Studio, the Microsoft Teams integration enables your agents to interact directly with chat messages programmatically. This allows for powerful automation scenarios such as sending updates, posting alerts, coordinating tasks, and responding to conversations in real time. Your agents can write new messages to chats or channels, update content based on workflow data, and engage with users where collaboration happens. By integrating Sim Studio with Microsoft Teams, you bridge the gap between intelligent workflows and team communication — empowering your agents to streamline collaboration, automate communication tasks, and keep your teams aligned.
 {/* MANUAL-CONTENT-END */}
 
 
@@ -106,88 +106,15 @@ Integrate Microsoft Teams functionality to manage messages. Read content from ex
 
 ### `microsoft_teams_read_chat`
 
-Read content from a Microsoft Teams chat
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | The access token for the Microsoft Teams API |
-| `chatId` | string | Yes | The ID of the chat to read from |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `content` | string |
-| `metadata` | string |
-| `messageCount` | string |
-| `messages` | string |
-| `totalAttachments` | string |
-| `attachmentTypes` | string |
 
 ### `microsoft_teams_write_chat`
 
-Write or update content in a Microsoft Teams chat
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | The access token for the Microsoft Teams API |
-| `chatId` | string | Yes | The ID of the chat to write to |
-| `content` | string | Yes | The content to write to the message |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `updatedContent` | string |
-| `metadata` | string |
 
 ### `microsoft_teams_read_channel`
 
-Read content from a Microsoft Teams channel
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | The access token for the Microsoft Teams API |
-| `teamId` | string | Yes | The ID of the team to read from |
-| `channelId` | string | Yes | The ID of the channel to read from |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `content` | string |
-| `metadata` | string |
-| `channelId` | string |
-| `messageCount` | string |
-| `messages` | string |
-| `totalAttachments` | string |
-| `attachmentTypes` | string |
 
 ### `microsoft_teams_write_channel`
 
-Write or send a message to a Microsoft Teams channel
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | The access token for the Microsoft Teams API |
-| `teamId` | string | Yes | The ID of the team to write to |
-| `channelId` | string | Yes | The ID of the channel to write to |
-| `content` | string | Yes | The content to write to the channel |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `updatedContent` | string |
-| `metadata` | string |
 
 
 

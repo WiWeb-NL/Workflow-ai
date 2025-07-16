@@ -66,4 +66,3 @@ start-collector.sh
 
 # VSCode
 .vscode
-.env*.local

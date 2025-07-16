@@ -1,42 +1,42 @@
-import type { ReactNode } from 'react'
-import { RootProvider } from 'fumadocs-ui/provider'
-import { Inter } from 'next/font/google'
-import './global.css'
-import { Analytics } from '@vercel/analytics/next'
+import type { ReactNode } from "react";
+import { RootProvider } from "fumadocs-ui/provider";
+import { Inter } from "next/font/google";
+import "./global.css";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
-  subsets: ['latin'],
-})
+  subsets: ["latin"],
+});
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <html lang='en' className={inter.className} suppressHydrationWarning>
-      <body className='flex min-h-screen flex-col'>
+    <html lang="en" className={inter.className} suppressHydrationWarning>
+      <body className="flex min-h-screen flex-col">
         <RootProvider>
           {children}
           <Analytics />
         </RootProvider>
       </body>
     </html>
-  )
+  );
 }
 
 export const metadata = {
-  title: 'Visual Workflow AI',
+  title: "Visual Workflow AI",
   description:
-    'Build agents in seconds with a drag and drop workflow builder. Access comprehensive documentation to help you create efficient workflows and maximize your automation capabilities.',
-  manifest: '/favicon/site.webmanifest',
+    "Build agents in seconds with a drag and drop workflow builder. Access comprehensive documentation to help you create efficient workflows and maximize your automation capabilities.",
+  manifest: "/favicon/site.webmanifest",
   icons: {
     icon: [
-      { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
-      { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: "/favicon/flowai.jpg", sizes: "16x16", type: "image/png" },
+      { url: "/favicon/flowai.jpg", sizes: "32x32", type: "image/png" },
     ],
-    apple: '/favicon/apple-touch-icon.png',
-    shortcut: '/favicon/favicon.ico',
+    apple: "/favicon/flowai.jpg",
+    shortcut: "/favicon/favicon.ico",
   },
   appleWebApp: {
     capable: true,
-    statusBarStyle: 'default',
-    title: 'Visual Workflow AI Docs',
+    statusBarStyle: "default",
+    title: "Visual Workflow AI Docs",
   },
-}
+};

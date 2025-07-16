@@ -4,14 +4,14 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="visualworkflowai-sdk",
+    name="simstudio-sdk",
     version="0.1.0",
-    author="Visual Workflow AI",
-    author_email="support@visualworkflowai.ai",
-    description="Visual Workflow AI SDK - Execute workflows programmatically",
+    author="Sim Studio",
+    author_email="support@simstudio.ai",
+    description="Sim Studio SDK - Execute workflows programmatically",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/visualworkflowaiai/sim",
+    url="https://github.com/simstudioai/sim",
     packages=find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
@@ -42,10 +42,10 @@ setup(
             "pytest>=6.0.0",
         ],
     },
-    keywords=["visualworkflowai", "ai", "workflow", "sdk", "api", "automation"],
+    keywords=["simstudio", "ai", "workflow", "sdk", "api", "automation"],
     project_urls={
-        "Bug Reports": "https://github.com/visualworkflowaiai/sim/issues",
-        "Source": "https://github.com/visualworkflowaiai/sim",
-        "Documentation": "https://docs.visualworkflowai.ai",
+        "Bug Reports": "https://github.com/simstudioai/sim/issues",
+        "Source": "https://github.com/simstudioai/sim",
+        "Documentation": "https://docs.simstudio.ai",
     },
 ) 

@@ -29,7 +29,7 @@ With Notion, you can:
 - **Connect information**: Link between pages and databases to create a knowledge network
 - **Access anywhere**: Use Notion across web, desktop, and mobile platforms with automatic syncing
 
-In Visual Workflow AI, the Notion integration enables your agents to interact directly with your Notion workspace programmatically. This allows for powerful automation scenarios such as knowledge management, content creation, and information retrieval. Your agents can read existing Notion pages to extract information, write to pages to update content, and create new pages from scratch. This integration bridges the gap between your AI workflows and your knowledge base, enabling seamless documentation and information management. By connecting Visual Workflow AI with Notion, you can automate documentation processes, maintain up-to-date information repositories, generate reports, and organize information intelligently - all through your intelligent agents.
+In Sim Studio, the Notion integration enables your agents to interact directly with your Notion workspace programmatically. This allows for powerful automation scenarios such as knowledge management, content creation, and information retrieval. Your agents can read existing Notion pages to extract information, write to pages to update content, and create new pages from scratch. This integration bridges the gap between your AI workflows and your knowledge base, enabling seamless documentation and information management. By connecting Sim Studio with Notion, you can automate documentation processes, maintain up-to-date information repositories, generate reports, and organize information intelligently - all through your intelligent agents.
 {/* MANUAL-CONTENT-END */}
 
 
@@ -43,63 +43,12 @@ Integrate with Notion to read content from pages, write new content, and create 
 
 ### `notion_read`
 
-Read content from a Notion page
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `pageId` | string | Yes | The ID of the Notion page to read |
-| `accessToken` | string | Yes | Notion OAuth access token |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `content` | string |
-| `metadata` | string |
-| `lastEditedTime` | string |
-| `createdTime` | string |
-| `url` | string |
 
 ### `notion_write`
 
-Append content to a Notion page
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `pageId` | string | Yes | The ID of the Notion page to append content to |
-| `content` | string | Yes | The content to append to the page |
-| `accessToken` | string | Yes | Notion OAuth access token |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `content` | string |
 
 ### `notion_create_page`
 
-Create a new page in Notion
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `parentType` | string | Yes | Type of parent:  |
-| `parentId` | string | Yes | ID of the parent page or database |
-| `title` | string | No | Title of the page \(required for parent pages, not for databases\) |
-| `properties` | json | No | JSON object of properties for database pages |
-| `content` | string | No | Optional content to add to the page upon creation |
-| `accessToken` | string | Yes | Notion OAuth access token |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `content` | string |
 
 
 

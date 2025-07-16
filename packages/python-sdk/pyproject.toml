@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "visualworkflowai-sdk"
+name = "simstudio-sdk"
 version = "0.1.0"
 authors = [
-    {name = "Visual Workflow AI", email = "support@visualworkflowai.ai"},
+    {name = "Sim Studio", email = "support@simstudio.ai"},
 ]
-description = "Visual Workflow AI SDK - Execute workflows programmatically"
+description = "Sim Studio SDK - Execute workflows programmatically"
 readme = "README.md"
 license = {text = "Apache-2.0"}
 requires-python = ">=3.8"
@@ -27,7 +27,7 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP :: HTTP Servers",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
-keywords = ["visualworkflowai", "ai", "workflow", "sdk", "api", "automation"]
+keywords = ["simstudio", "ai", "workflow", "sdk", "api", "automation"]
 dependencies = [
     "requests>=2.25.0",
     "typing-extensions>=4.0.0; python_version<'3.10'",
@@ -45,14 +45,14 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://visualworkflowai.ai"
-Documentation = "https://docs.visualworkflowai.ai"
-Repository = "https://github.com/visualworkflowaiai/sim"
-"Bug Reports" = "https://github.com/visualworkflowaiai/sim/issues"
+Homepage = "https://simstudio.ai"
+Documentation = "https://docs.simstudio.ai"
+Repository = "https://github.com/simstudioai/sim"
+"Bug Reports" = "https://github.com/simstudioai/sim/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["visualworkflowai*"]
+include = ["simstudio*"]
 
 [tool.black]
 line-length = 100

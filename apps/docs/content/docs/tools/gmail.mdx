@@ -45,7 +45,7 @@ With Gmail, you can:
 - **Access from anywhere**: Use Gmail across devices with synchronized content and settings
 - **Integrate with other services**: Connect with Google Calendar, Drive, and other productivity tools
 
-In Visual Workflow AI, the Gmail integration enables your agents to send, read, and search emails programmatically. This allows for powerful automation scenarios such as sending notifications, processing incoming messages, extracting information from emails, and managing communication workflows. Your agents can compose and send personalized emails, search for specific messages using Gmail's query syntax, and extract content from emails to use in other parts of your workflow. Coming soon, agents will also be able to listen for new emails in real-time, enabling responsive workflows that can trigger actions based on incoming messages. This integration bridges the gap between your AI workflows and email communications, enabling seamless interaction with one of the world's most widely used communication platforms.
+In Sim Studio, the Gmail integration enables your agents to send, read, and search emails programmatically. This allows for powerful automation scenarios such as sending notifications, processing incoming messages, extracting information from emails, and managing communication workflows. Your agents can compose and send personalized emails, search for specific messages using Gmail's query syntax, and extract content from emails to use in other parts of your workflow. Coming soon, agents will also be able to listen for new emails in real-time, enabling responsive workflows that can trigger actions based on incoming messages. This integration bridges the gap between your AI workflows and email communications, enabling seamless interaction with one of the world's most widely used communication platforms.
 {/* MANUAL-CONTENT-END */}
 
 
@@ -59,48 +59,9 @@ Integrate Gmail functionality to send email messages within your workflow. Autom
 
 ### `gmail_send`
 
-Send emails using Gmail
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | Access token for Gmail API |
-| `to` | string | Yes | Recipient email address |
-| `subject` | string | Yes | Email subject |
-| `body` | string | Yes | Email body content |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `content` | string |
-| `metadata` | string |
-| `threadId` | string |
-| `labelIds` | string |
 
 ### `gmail_draft`
 
-Draft emails using Gmail
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `accessToken` | string | Yes | Access token for Gmail API |
-| `to` | string | Yes | Recipient email address |
-| `subject` | string | Yes | Email subject |
-| `body` | string | Yes | Email body content |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `content` | string |
-| `metadata` | string |
-| `message` | string |
-| `threadId` | string |
-| `labelIds` | string |
 
 
 

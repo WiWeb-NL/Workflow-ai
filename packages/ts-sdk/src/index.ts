@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-export interface visualworkflowaiConfig {
+export interface SimStudioConfig {
   apiKey: string
   baseUrl?: string
 }
@@ -31,25 +31,25 @@ export interface ExecutionOptions {
   timeout?: number
 }
 
-export class visualworkflowaiError extends Error {
+export class SimStudioError extends Error {
   public code?: string
   public status?: number
 
   constructor(message: string, code?: string, status?: number) {
     super(message)
-    this.name = 'visualworkflowaiError'
+    this.name = 'SimStudioError'
     this.code = code
     this.status = status
   }
 }
 
-export class visualworkflowaiClient {
+export class SimStudioClient {
   private apiKey: string
   private baseUrl: string
 
-  constructor(config: visualworkflowaiConfig) {
+  constructor(config: SimStudioConfig) {
     this.apiKey = config.apiKey
-    this.baseUrl = (config.baseUrl || 'https://visualworkflowai.ai').replace(/\/+$/, '')
+    this.baseUrl = (config.baseUrl || 'https://simstudio.ai').replace(/\/+$/, '')
   }
 
   /**
@@ -81,7 +81,7 @@ export class visualworkflowaiClient {
 
       if (!response.ok) {
         const errorData = (await response.json().catch(() => ({}))) as unknown as any
-        throw new visualworkflowaiError(
+        throw new SimStudioError(
           errorData.error || `HTTP ${response.status}: ${response.statusText}`,
           errorData.code,
           response.status
@@ -91,15 +91,15 @@ export class visualworkflowaiClient {
       const result = await response.json()
       return result as WorkflowExecutionResult
     } catch (error: any) {
-      if (error instanceof visualworkflowaiError) {
+      if (error instanceof SimStudioError) {
         throw error
       }
 
       if (error.message === 'TIMEOUT') {
-        throw new visualworkflowaiError(`Workflow execution timed out after ${timeout}ms`, 'TIMEOUT')
+        throw new SimStudioError(`Workflow execution timed out after ${timeout}ms`, 'TIMEOUT')
       }
 
-      throw new visualworkflowaiError(error?.message || 'Failed to execute workflow', 'EXECUTION_ERROR')
+      throw new SimStudioError(error?.message || 'Failed to execute workflow', 'EXECUTION_ERROR')
     }
   }
 
@@ -119,7 +119,7 @@ export class visualworkflowaiClient {
 
       if (!response.ok) {
         const errorData = (await response.json().catch(() => ({}))) as unknown as any
-        throw new visualworkflowaiError(
+        throw new SimStudioError(
           errorData.error || `HTTP ${response.status}: ${response.statusText}`,
           errorData.code,
           response.status
@@ -129,11 +129,11 @@ export class visualworkflowaiClient {
       const result = await response.json()
       return result as WorkflowStatus
     } catch (error: any) {
-      if (error instanceof visualworkflowaiError) {
+      if (error instanceof SimStudioError) {
         throw error
       }
 
-      throw new visualworkflowaiError(error?.message || 'Failed to get workflow status', 'STATUS_ERROR')
+      throw new SimStudioError(error?.message || 'Failed to get workflow status', 'STATUS_ERROR')
     }
   }
 
@@ -177,4 +177,4 @@ export class visualworkflowaiClient {
 }
 
 // Export types and classes
-export { visualworkflowaiClient as default }
+export { SimStudioClient as default }

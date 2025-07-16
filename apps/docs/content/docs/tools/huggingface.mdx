@@ -60,7 +60,7 @@ Natural language processing: Process and analyze text with specialized NLP model
 Deploy at scale: Host and serve models for production applications
 Customize models: Fine-tune existing models for specific use cases
 
-In Visual Workflow AI, the HuggingFace integration enables your agents to programmatically generate completions using the HuggingFace Inference API. This allows for powerful automation scenarios such as content generation, text analysis, code completion, and creative writing. Your agents can generate completions with natural language prompts, access specialized models for different tasks, and integrate AI-generated content into workflows. This integration bridges the gap between your AI workflows and machine learning capabilities, enabling seamless AI-powered automation with one of the world's most comprehensive ML platforms.
+In Sim Studio, the HuggingFace integration enables your agents to programmatically generate completions using the HuggingFace Inference API. This allows for powerful automation scenarios such as content generation, text analysis, code completion, and creative writing. Your agents can generate completions with natural language prompts, access specialized models for different tasks, and integrate AI-generated content into workflows. This integration bridges the gap between your AI workflows and machine learning capabilities, enabling seamless AI-powered automation with one of the world's most comprehensive ML platforms.
 {/* MANUAL-CONTENT-END */}
 
 
@@ -74,30 +74,6 @@ Generate completions using Hugging Face Inference API with access to various ope
 
 ### `huggingface_chat`
 
-Generate completions using Hugging Face Inference API
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `apiKey` | string | Yes | Hugging Face API token |
-| `provider` | string | Yes | The provider to use for the API request \(e.g., novita, cerebras, etc.\) |
-| `model` | string | Yes | Model to use for chat completions \(e.g., deepseek/deepseek-v3-0324\) |
-| `content` | string | Yes | The user message content to send to the model |
-| `systemPrompt` | string | No | System prompt to guide the model behavior |
-| `maxTokens` | number | No | Maximum number of tokens to generate |
-| `temperature` | number | No | Sampling temperature \(0-2\). Higher values make output more random |
-| `stream` | boolean | No | Whether to stream the response |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `content` | string |
-| `model` | string |
-| `usage` | string |
-| `completion_tokens` | string |
-| `total_tokens` | string |
 
 
 

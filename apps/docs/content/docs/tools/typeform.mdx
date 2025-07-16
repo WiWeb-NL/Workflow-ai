@@ -34,7 +34,7 @@ With Typeform, you can:
 - **Integrate with other tools**: Connect with 1000+ apps through native integrations and APIs
 - **Analyze response data**: Get actionable insights through comprehensive analytics and reporting tools
 
-In Visual Workflow AI, the Typeform integration enables your agents to programmatically interact with your Typeform data as part of their workflows. Agents can retrieve form responses, process submission data, and incorporate user feedback directly into decision-making processes. This integration is particularly valuable for scenarios like lead qualification, customer feedback analysis, and data-driven personalization. By connecting Visual Workflow AI with Typeform, you can create intelligent automation workflows that transform form responses into actionable insights - analyzing sentiment, categorizing feedback, generating summaries, and even triggering follow-up actions based on specific response patterns.
+In Sim Studio, the Typeform integration enables your agents to programmatically interact with your Typeform data as part of their workflows. Agents can retrieve form responses, process submission data, and incorporate user feedback directly into decision-making processes. This integration is particularly valuable for scenarios like lead qualification, customer feedback analysis, and data-driven personalization. By connecting Sim Studio with Typeform, you can create intelligent automation workflows that transform form responses into actionable insights - analyzing sentiment, categorizing feedback, generating summaries, and even triggering follow-up actions based on specific response patterns.
 {/* MANUAL-CONTENT-END */}
 
 
@@ -48,67 +48,12 @@ Access and retrieve responses from your Typeform forms. Integrate form submissio
 
 ### `typeform_responses`
 
-Retrieve form responses from Typeform
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `formId` | string | Yes | Typeform form ID |
-| `apiKey` | string | Yes | Typeform Personal Access Token |
-| `pageSize` | number | No | Number of responses to retrieve \(default: 25\) |
-| `since` | string | No | Retrieve responses submitted after this date \(ISO 8601 format\) |
-| `until` | string | No | Retrieve responses submitted before this date \(ISO 8601 format\) |
-| `completed` | string | No | Filter by completion status \(true/false\) |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `total_items` | string |
-| `answers` | string |
-| `type` | string |
-| `hidden` | string |
-| `calculated` | string |
-| `variables` | string |
 
 ### `typeform_files`
 
-Download files uploaded in Typeform responses
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `formId` | string | Yes | Typeform form ID |
-| `responseId` | string | Yes | Response ID containing the files |
-| `fieldId` | string | Yes | Unique ID of the file upload field |
-| `filename` | string | Yes | Filename of the uploaded file |
-| `inline` | boolean | No | Whether to request the file with inline Content-Disposition |
-| `apiKey` | string | Yes | Typeform Personal Access Token |
-
-#### Output
-
-| Parameter | Type |
-| --------- | ---- |
-| `fileUrl` | string |
-| `contentType` | string |
-| `filename` | string |
 
 ### `typeform_insights`
 
-Retrieve insights and analytics for Typeform forms
-
-#### Input
-
-| Parameter | Type | Required | Description |
-| --------- | ---- | -------- | ----------- |
-| `formId` | string | Yes | Typeform form ID |
-| `apiKey` | string | Yes | Typeform Personal Access Token |
-
-#### Output
-
-This tool does not produce any outputs.
 
 
 

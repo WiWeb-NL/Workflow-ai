@@ -3,9 +3,9 @@ title: Google Search
 description: Search the web
 ---
 
-import { BlockInfoCard } from "@/components/ui/block-info-card";
+import { BlockInfoCard } from "@/components/ui/block-info-card"
 
-<BlockInfoCard
+<BlockInfoCard 
   type="google_search"
   color="#E0E0E0"
   icon={true}
@@ -32,7 +32,17 @@ import { BlockInfoCard } from "@/components/ui/block-info-card";
 {/* MANUAL-CONTENT-START:intro */}
 [Google Search](https://www.google.com) is the world's most widely used search engine, providing access to billions of web pages and information sources. Google Search uses sophisticated algorithms to deliver relevant search results based on user queries, making it an essential tool for finding information on the internet.
 
-Learn how to integrate the Google Search tool in Visual Workflow AI to effortlessly fetch real-time search results through your workflows. This tutorial walks you through connecting Google Search, configuring search queries, and using live data to enhance automation. Perfect for powering your agents with up-to-date information and smarter decision-making.
+Learn how to integrate the Google Search tool in Sim Studio to effortlessly fetch real-time search results through your workflows. This tutorial walks you through connecting Google Search, configuring search queries, and using live data to enhance automation. Perfect for powering your agents with up-to-date information and smarter decision-making.
+
+<iframe
+  width="100%"
+  height="400"
+  src="https://www.youtube.com/embed/1B7hV9b5UMQ"
+  title="Use the Google Search tool in Sim Studio"
+  frameBorder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowFullScreen
+></iframe>
 
 With Google Search, you can:
 
@@ -42,52 +52,40 @@ With Google Search, you can:
 - **Access knowledge graphs**: Get structured information about people, places, and things
 - **Utilize search features**: Take advantage of specialized search tools like calculators, unit converters, and more
 
-In Visual Workflow AI, the Google Search integration enables your agents to search the web programmatically and incorporate search results into their workflows. This allows for powerful automation scenarios such as research, fact-checking, data gathering, and information synthesis. Your agents can formulate search queries, retrieve relevant results, and extract information from those results to make decisions or generate insights. This integration bridges the gap between your AI workflows and the vast information available on the web, enabling your agents to access up-to-date information from across the internet. By connecting Visual Workflow AI with Google Search, you can create agents that stay informed with the latest information, verify facts, conduct research, and provide users with relevant web content - all without leaving your workflow.
+In Sim Studio, the Google Search integration enables your agents to search the web programmatically and incorporate search results into their workflows. This allows for powerful automation scenarios such as research, fact-checking, data gathering, and information synthesis. Your agents can formulate search queries, retrieve relevant results, and extract information from those results to make decisions or generate insights. This integration bridges the gap between your AI workflows and the vast information available on the web, enabling your agents to access up-to-date information from across the internet. By connecting Sim Studio with Google Search, you can create agents that stay informed with the latest information, verify facts, conduct research, and provide users with relevant web content - all without leaving your workflow.
 {/* MANUAL-CONTENT-END */}
+
 
 ## Usage Instructions
 
 Searches the web using the Google Custom Search API, which provides high-quality search results from the entire internet or a specific site defined by a custom search engine ID.
 
+
+
 ## Tools
 
 ### `google_search`
 
-Search the web with the Custom Search API
 
-#### Input
 
-| Parameter        | Type   | Required | Description                                          |
-| ---------------- | ------ | -------- | ---------------------------------------------------- |
-| `query`          | string | Yes      | The search query to execute                          |
-| `apiKey`         | string | Yes      | Google API key                                       |
-| `searchEngineId` | string | Yes      | Custom Search Engine ID                              |
-| `num`            | string | No       | Number of results to return \(default: 10, max: 10\) |
-
-#### Output
-
-| Parameter               | Type   |
-| ----------------------- | ------ |
-| `items`                 | string |
-| `searchInformation`     | string |
-| `searchTime`            | string |
-| `formattedSearchTime`   | string |
-| `formattedTotalResults` | string |
 
 ## Block Configuration
 
 ### Input
 
-| Parameter | Type   | Required | Description                            |
-| --------- | ------ | -------- | -------------------------------------- |
-| `query`   | string | Yes      | Search Query - Enter your search query |
+| Parameter | Type | Required | Description | 
+| --------- | ---- | -------- | ----------- | 
+| `query` | string | Yes | Search Query - Enter your search query |
+
+
 
 ### Outputs
 
-| Output              | Type | Description                             |
-| ------------------- | ---- | --------------------------------------- |
-| `items`             | json | items output from the block             |
+| Output | Type | Description |
+| ------ | ---- | ----------- |
+| `items` | json | items output from the block |
 | `searchInformation` | json | searchInformation output from the block |
+
 
 ## Notes
 
