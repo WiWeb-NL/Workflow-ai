@@ -1,5 +1,5 @@
 {
-  "title": "Sim Studio Documentation",
+  "title": "Visual Workflow AI Documentation",
   "pages": [
     "---Introduction---",
     "./introduction/index",
@@ -12,10 +12,7 @@
     "---Execution---",
     "execution",
     "---Advanced---",
-    "./variables/index",
-    "---SDKs---",
-    "./sdks/python",
-    "./sdks/typescript"
+    "./variables/index"
   ],
   "defaultOpen": true
 }

@@ -1,21 +1,7 @@
-import type { ReactNode } from 'react'
-import { DocsLayout } from 'fumadocs-ui/layouts/docs'
-import { ExternalLink, GithubIcon } from 'lucide-react'
-import Link from 'next/link'
-import { source } from '@/lib/source'
-
-const GitHubLink = () => (
-  <div className='fixed right-4 bottom-4 z-50'>
-    <Link
-      href='https://github.com/simstudioai/sim'
-      target='_blank'
-      rel='noopener noreferrer'
-      className='flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background transition-colors hover:bg-muted'
-    >
-      <GithubIcon className='h-4 w-4' />
-    </Link>
-  </div>
-)
+import type { ReactNode } from "react";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import { ExternalLink, GithubIcon } from "lucide-react";
+import { source } from "@/lib/source";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -23,13 +9,17 @@ export default function Layout({ children }: { children: ReactNode }) {
       <DocsLayout
         tree={source.pageTree}
         nav={{
-          title: <div className='flex items-center font-medium'>Sim Studio</div>,
+          title: (
+            <div className="flex items-center font-medium">
+              Visual Workflow AI
+            </div>
+          ),
         }}
         links={[
           {
-            text: 'Visit Sim Studio',
-            url: 'https://simstudio.ai',
-            icon: <ExternalLink className='h-4 w-4' />,
+            text: "Visit Visual Workflow AI",
+            url: "https://visualworkflow.app",
+            icon: <ExternalLink className="h-4 w-4" />,
           },
         ]}
         sidebar={{
@@ -40,7 +30,6 @@ export default function Layout({ children }: { children: ReactNode }) {
       >
         {children}
       </DocsLayout>
-      <GitHubLink />
     </>
-  )
+  );
 }

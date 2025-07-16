@@ -1,15 +1,16 @@
 ---
 title: Execution
-description: Understand how workflows are executed in Sim Studio
+description: Understand how workflows are executed in Visual Workflow AI
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout'
-import { Card, Cards } from 'fumadocs-ui/components/card'
+import { Callout } from "fumadocs-ui/components/callout";
+import { Card, Cards } from "fumadocs-ui/components/card";
 
-Sim Studio's execution engine brings your workflows to life by processing blocks in the correct order, managing data flow, and handling errors gracefully.
+Visual Workflow AI's execution engine brings your workflows to life by processing blocks in the correct order, managing data flow, and handling errors gracefully.
 
 <Callout type="info">
-  Every workflow execution follows a deterministic path based on your block connections and logic, ensuring predictable and reliable results.
+  Every workflow execution follows a deterministic path based on your block
+  connections and logic, ensuring predictable and reliable results.
 </Callout>
 
 ## Documentation Overview
@@ -21,23 +22,28 @@ Sim Studio's execution engine brings your workflows to life by processing blocks
   </Card>
 
   <Card title="Logging and Cost Calculation" href="/execution/advanced">
-    Understand workflow logs and how execution costs are calculated in Sim Studio
+    Understand workflow logs and how execution costs are calculated in Visual Workflow AI
   </Card>
 </Cards>
 
 ## Key Concepts
 
 ### Topological Execution
+
 Blocks execute in dependency order, similar to how a spreadsheet recalculates cells. The execution engine automatically determines which blocks can run based on completed dependencies.
 
 ### Path Tracking
+
 The engine actively tracks execution paths through your workflow. Router and Condition blocks dynamically update these paths, ensuring only relevant blocks execute.
 
 ### Layer-Based Processing
+
 Instead of executing blocks one-by-one, the engine identifies layers of blocks that can run in parallel, optimizing performance for complex workflows.
 
 ### Execution Context
+
 Each workflow maintains a rich context during execution containing:
+
 - Block outputs and states
 - Active execution paths
 - Loop and parallel iteration tracking
@@ -56,15 +62,17 @@ Workflows can be executed through multiple channels:
 
 ### Deploy as API
 
-When you deploy a workflow as an API, Sim Studio:
-- Creates a unique HTTP endpoint: `https://simstudio.ai/api/workflows/{workflowId}/execute`
+When you deploy a workflow as an API, Visual Workflow AI:
+
+- Creates a unique HTTP endpoint: `https://visualworkflow.app/api/workflows/{workflowId}/execute`
 - Generates an API key for authentication
 - Accepts POST requests with JSON payloads
 - Returns workflow execution results as JSON
 
 Example API call:
+
 ```bash
-curl -X POST https://simstudio.ai/api/workflows/your-workflow-id/execute \
+curl -X POST https://visualworkflow.app/api/workflows/your-workflow-id/execute \
   -H "X-API-Key: your-api-key" \
   -H "Content-Type: application/json" \
   -d '{"input": "your data here"}'
@@ -73,7 +81,8 @@ curl -X POST https://simstudio.ai/api/workflows/your-workflow-id/execute \
 ### Deploy as Chat
 
 Chat deployment creates a conversational interface for your workflow:
-- Hosted on a custom subdomain: `https://your-name.simstudio.ai`
+
+- Hosted on a custom subdomain: `https://your-name.visualworkflow.app`
 - Optional authentication (public, password, or email-based)
 - Customizable UI with your branding
 - Streaming responses for real-time interaction
@@ -81,44 +90,22 @@ Chat deployment creates a conversational interface for your workflow:
 
 Each deployment method passes data to your workflow's starter block, beginning the execution flow.
 
-## Programmatic Execution
-
-Execute workflows from your applications using our official SDKs:
-
-```bash
-# TypeScript/JavaScript
-npm install simstudio-ts-sdk
-
-# Python
-pip install simstudio-sdk
-```
-
-```typescript
-// TypeScript Example
-import { SimStudioClient } from 'simstudio-ts-sdk';
-
-const client = new SimStudioClient({ 
-  apiKey: 'your-api-key' 
-});
-
-const result = await client.executeWorkflow('workflow-id', {
-  input: { message: 'Hello' }
-});
-```
-
 ## Best Practices
 
 ### Design for Reliability
+
 - Handle errors gracefully with appropriate fallback paths
 - Use environment variables for sensitive data
 - Add logging to Function blocks for debugging
 
 ### Optimize Performance
+
 - Minimize external API calls where possible
 - Use parallel execution for independent operations
 - Cache results with Memory blocks when appropriate
 
 ### Monitor Executions
+
 - Review logs regularly to understand performance patterns
 - Track costs for AI model usage
 - Use workflow snapshots to debug issues
