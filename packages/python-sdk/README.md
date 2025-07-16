@@ -1,6 +1,6 @@
-# Sim Studio Python SDK
+# Visual Workflow AI Python SDK
 
-The official Python SDK for [Sim Studio](https://simstudio.ai), allowing you to execute workflows programmatically from your Python applications.
+The official Python SDK for [Visual Workflow AI](https://simstudio.ai), allowing you to execute workflows programmatically from your Python applications.
 
 ## Installation
 
@@ -38,8 +38,8 @@ except Exception as error:
 SimStudioClient(api_key: str, base_url: str = "https://simstudio.ai")
 ```
 
-- `api_key` (str): Your Sim Studio API key
-- `base_url` (str, optional): Base URL for the Sim Studio API (defaults to `https://simstudio.ai`)
+- `api_key` (str): Your Visual Workflow AI API key
+- `base_url` (str, optional): Base URL for the Visual Workflow AI API (defaults to `https://simstudio.ai`)
 
 #### Methods
 
@@ -56,6 +56,7 @@ result = client.execute_workflow(
 ```
 
 **Parameters:**
+
 - `workflow_id` (str): The ID of the workflow to execute
 - `input_data` (dict, optional): Input data to pass to the workflow
 - `timeout` (float): Timeout in seconds (default: 30.0)
@@ -72,6 +73,7 @@ print("Is deployed:", status.is_deployed)
 ```
 
 **Parameters:**
+
 - `workflow_id` (str): The ID of the workflow
 
 **Returns:** `WorkflowStatus`
@@ -88,6 +90,7 @@ if is_ready:
 ```
 
 **Parameters:**
+
 - `workflow_id` (str): The ID of the workflow
 
 **Returns:** `bool`
@@ -105,6 +108,7 @@ result = client.execute_workflow_sync(
 ```
 
 **Parameters:**
+
 - `workflow_id` (str): The ID of the workflow to execute
 - `input_data` (dict, optional): Input data to pass to the workflow
 - `timeout` (float): Timeout for the initial request in seconds
@@ -203,7 +207,7 @@ def run_workflow():
             print("Duration:", result.metadata.get("duration") if result.metadata else None)
         else:
             print("Workflow failed:", result.error)
-            
+
     except Exception as error:
         print("Error:", error)
 
@@ -276,14 +280,14 @@ client = SimStudioClient(api_key=os.getenv("SIMSTUDIO_API_KEY"))
 def execute_workflows_batch(workflow_data_pairs):
     """Execute multiple workflows with different input data."""
     results = []
-    
+
     for workflow_id, input_data in workflow_data_pairs:
         try:
             # Validate workflow before execution
             if not client.validate_workflow(workflow_id):
                 print(f"Skipping {workflow_id}: not deployed")
                 continue
-                
+
             result = client.execute_workflow(workflow_id, input_data)
             results.append({
                 "workflow_id": workflow_id,
@@ -291,14 +295,14 @@ def execute_workflows_batch(workflow_data_pairs):
                 "output": result.output,
                 "error": result.error
             })
-            
+
         except Exception as error:
             results.append({
                 "workflow_id": workflow_id,
                 "success": False,
                 "error": str(error)
             })
-    
+
     return results
 
 # Example usage
@@ -314,7 +318,7 @@ for result in results:
 
 ## Getting Your API Key
 
-1. Log in to your [Sim Studio](https://simstudio.ai) account
+1. Log in to your [Visual Workflow AI](https://simstudio.ai) account
 2. Navigate to your workflow
 3. Click on "Deploy" to deploy your workflow
 4. Select or create an API key during the deployment process
@@ -327,17 +331,20 @@ for result in results:
 To run the tests locally:
 
 1. Clone the repository and navigate to the Python SDK directory:
+
    ```bash
    cd packages/python-sdk
    ```
 
 2. Create and activate a virtual environment:
+
    ```bash
    python3 -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 3. Install the package in development mode with test dependencies:
+
    ```bash
    pip install -e ".[dev]"
    ```
@@ -372,4 +379,4 @@ isort simstudio/
 
 ## License
 
-Apache-2.0 
+Apache-2.0

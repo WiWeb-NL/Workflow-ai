@@ -1,28 +1,28 @@
-import { SimStudioClient, SimStudioError } from '../src/index'
+import { SimStudioClient, SimStudioError } from "../src/index";
 
 // Example 1: Basic workflow execution
 async function basicExample() {
   const client = new SimStudioClient({
     apiKey: process.env.SIMSTUDIO_API_KEY!,
-    baseUrl: 'https://simstudio.ai',
-  })
+    baseUrl: "https://simstudio.ai",
+  });
 
   try {
     // Execute a workflow without input
-    const result = await client.executeWorkflow('your-workflow-id')
+    const result = await client.executeWorkflow("your-workflow-id");
 
     if (result.success) {
-      console.log('✅ Workflow executed successfully!')
-      console.log('Output:', result.output)
-      console.log('Duration:', result.metadata?.duration, 'ms')
+      console.log("✅ Workflow executed successfully!");
+      console.log("Output:", result.output);
+      console.log("Duration:", result.metadata?.duration, "ms");
     } else {
-      console.log('❌ Workflow failed:', result.error)
+      console.log("❌ Workflow failed:", result.error);
     }
   } catch (error) {
     if (error instanceof SimStudioError) {
-      console.error('SDK Error:', error.message, 'Code:', error.code)
+      console.error("SDK Error:", error.message, "Code:", error.code);
     } else {
-      console.error('Unexpected error:', error)
+      console.error("Unexpected error:", error);
     }
   }
 }
@@ -31,38 +31,38 @@ async function basicExample() {
 async function withInputExample() {
   const client = new SimStudioClient({
     apiKey: process.env.SIMSTUDIO_API_KEY!,
-  })
+  });
 
   try {
-    const result = await client.executeWorkflow('your-workflow-id', {
+    const result = await client.executeWorkflow("your-workflow-id", {
       input: {
-        message: 'Hello from SDK!',
-        userId: '12345',
+        message: "Hello from SDK!",
+        userId: "12345",
         data: {
-          type: 'analysis',
+          type: "analysis",
           parameters: {
             includeMetadata: true,
-            format: 'json',
+            format: "json",
           },
         },
       },
       timeout: 60000, // 60 seconds
-    })
+    });
 
     if (result.success) {
-      console.log('✅ Workflow executed successfully!')
-      console.log('Output:', result.output)
+      console.log("✅ Workflow executed successfully!");
+      console.log("Output:", result.output);
       if (result.metadata?.duration) {
-        console.log('Duration:', result.metadata.duration, 'ms')
+        console.log("Duration:", result.metadata.duration, "ms");
       }
     } else {
-      console.log('❌ Workflow failed:', result.error)
+      console.log("❌ Workflow failed:", result.error);
     }
   } catch (error) {
     if (error instanceof SimStudioError) {
-      console.error('SDK Error:', error.message, 'Code:', error.code)
+      console.error("SDK Error:", error.message, "Code:", error.code);
     } else {
-      console.error('Unexpected error:', error)
+      console.error("Unexpected error:", error);
     }
   }
 }
@@ -71,38 +71,38 @@ async function withInputExample() {
 async function statusExample() {
   const client = new SimStudioClient({
     apiKey: process.env.SIMSTUDIO_API_KEY!,
-  })
+  });
 
   try {
     // Check if workflow is ready
-    const isReady = await client.validateWorkflow('your-workflow-id')
-    console.log('Workflow ready:', isReady)
+    const isReady = await client.validateWorkflow("your-workflow-id");
+    console.log("Workflow ready:", isReady);
 
     // Get detailed status
-    const status = await client.getWorkflowStatus('your-workflow-id')
-    console.log('Status:', {
+    const status = await client.getWorkflowStatus("your-workflow-id");
+    console.log("Status:", {
       deployed: status.isDeployed,
       published: status.isPublished,
       needsRedeployment: status.needsRedeployment,
       deployedAt: status.deployedAt,
-    })
+    });
 
     if (status.isDeployed) {
       // Execute the workflow
-      const result = await client.executeWorkflow('your-workflow-id')
+      const result = await client.executeWorkflow("your-workflow-id");
 
       if (result.success) {
-        console.log('✅ Workflow executed successfully!')
-        console.log('Output:', result.output)
+        console.log("✅ Workflow executed successfully!");
+        console.log("Output:", result.output);
       } else {
-        console.log('❌ Workflow failed:', result.error)
+        console.log("❌ Workflow failed:", result.error);
       }
     }
   } catch (error) {
     if (error instanceof SimStudioError) {
-      console.error('SDK Error:', error.message, 'Code:', error.code)
+      console.error("SDK Error:", error.message, "Code:", error.code);
     } else {
-      console.error('Unexpected error:', error)
+      console.error("Unexpected error:", error);
     }
   }
 }
@@ -110,21 +110,21 @@ async function statusExample() {
 // Run examples
 if (require.main === module) {
   async function runExamples() {
-    console.log('🚀 Running Sim Studio SDK Examples\n')
+    console.log("🚀 Running Visual Workflow AI SDK Examples\n");
 
     try {
-      await basicExample()
-      console.log('\n✅ Basic example completed')
+      await basicExample();
+      console.log("\n✅ Basic example completed");
 
-      await withInputExample()
-      console.log('\n✅ Input example completed')
+      await withInputExample();
+      console.log("\n✅ Input example completed");
 
-      await statusExample()
-      console.log('\n✅ Status example completed')
+      await statusExample();
+      console.log("\n✅ Status example completed");
     } catch (error) {
-      console.error('Error running examples:', error)
+      console.error("Error running examples:", error);
     }
   }
 
-  runExamples()
+  runExamples();
 }

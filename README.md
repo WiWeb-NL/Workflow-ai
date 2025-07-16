@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="apps/sim/public/static/sim.png" alt="Sim Studio Logo" width="500"/>
+  <img src="apps/sim/public/static/sim.png" alt="Visual Workflow AI Logo" width="500"/>
 </p>
 
 <p align="center">
@@ -11,11 +11,11 @@
 </p>
 
 <p align="center">
-  <strong>Sim Studio</strong> is a lightweight, user-friendly platform for building AI agent workflows.
+  <strong>Visual Workflow AI</strong> is a lightweight, user-friendly platform for building AI agent workflows.
 </p>
 
 <p align="center">
-  <img src="apps/sim/public/static/demo.gif" alt="Sim Studio Demo" width="800"/>
+  <img src="apps/sim/public/static/demo.gif" alt="Visual Workflow AI Demo" width="800"/>
 </p>
 
 ## Getting Started
@@ -27,7 +27,7 @@
 
 ### Option 1: NPM Package (Simplest)
 
-The easiest way to run Sim Studio locally is using our [NPM package](https://www.npmjs.com/package/simstudio?activeTab=readme):
+The easiest way to run Visual Workflow AI locally is using our [NPM package](https://www.npmjs.com/package/simstudio?activeTab=readme):
 
 ```bash
 npx simstudio
@@ -37,7 +37,7 @@ After running these commands, open [http://localhost:3000/](http://localhost:300
 
 #### Options
 
-- `-p, --port <port>`: Specify the port to run Sim Studio on (default: 3000)
+- `-p, --port <port>`: Specify the port to run Visual Workflow AI on (default: 3000)
 - `--no-pull`: Skip pulling the latest Docker images
 
 #### Requirements
@@ -53,7 +53,7 @@ git clone https://github.com/simstudioai/sim.git
 # Navigate to the project directory
 cd sim
 
-# Start Sim Studio
+# Start Visual Workflow AI
 docker compose -f docker-compose.prod.yml up -d
 ```
 
@@ -61,7 +61,7 @@ Access the application at [http://localhost:3000/](http://localhost:3000/)
 
 #### Using Local Models
 
-To use local models with Sim Studio:
+To use local models with Visual Workflow AI:
 
 1. Pull models using our helper script:
 
@@ -69,7 +69,7 @@ To use local models with Sim Studio:
 ./apps/sim/scripts/ollama_docker.sh pull <model_name>
 ```
 
-2. Start Sim Studio with local model support:
+2. Start Visual Workflow AI with local model support:
 
 ```bash
 # With NVIDIA GPU support
@@ -125,11 +125,13 @@ This starts both the main Next.js application and the realtime socket server req
 **Alternative - run servers separately:**
 
 Next.js app (from project root):
+
 ```bash
 bun run dev
 ```
 
 Realtime socket server (from `apps/sim` directory in a separate terminal):
+
 ```bash
 cd apps/sim
 bun run dev:sockets
@@ -156,4 +158,4 @@ We welcome contributions! Please see our [Contributing Guide](.github/CONTRIBUTI
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-<p align="center">Made with ❤️ by the Sim Studio Team</p>
+<p align="center">Made with ❤️ by the Visual Workflow AI Team</p>

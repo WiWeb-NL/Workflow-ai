@@ -71,7 +71,7 @@ function Footer() {
               {/* See repo button positioned absolutely to align with the top text - desktop only */}
               {/* <div className="absolute top-0 right-0 hidden md:block">
                 <Link
-                  href="https://github.com/visualworkflowaiai/sim"
+                  href="https://github.com/visualworkflowaiai/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

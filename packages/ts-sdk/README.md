@@ -1,12 +1,12 @@
-# Sim Studio TypeScript SDK
+# Visual Workflow AI TypeScript SDK
 
-The official TypeScript/JavaScript SDK for [Sim Studio](https://simstudio.ai), allowing you to execute workflows programmatically from your applications.
+The official TypeScript/JavaScript SDK for [Visual Workflow AI](https://simstudio.ai), allowing you to execute workflows programmatically from your applications.
 
 ## Installation
 
 ```bash
 npm install simstudio-ts-sdk
-# or 
+# or
 yarn add simstudio-ts-sdk
 # or
 bun add simstudio-ts-sdk
@@ -15,20 +15,20 @@ bun add simstudio-ts-sdk
 ## Quick Start
 
 ```typescript
-import { SimStudioClient } from 'simstudio-ts-sdk';
+import { SimStudioClient } from "simstudio-ts-sdk";
 
 // Initialize the client
 const client = new SimStudioClient({
-  apiKey: 'your-api-key-here',
-  baseUrl: 'https://simstudio.ai' // optional, defaults to https://simstudio.ai
+  apiKey: "your-api-key-here",
+  baseUrl: "https://simstudio.ai", // optional, defaults to https://simstudio.ai
 });
 
 // Execute a workflow
 try {
-  const result = await client.executeWorkflow('workflow-id');
-  console.log('Workflow executed successfully:', result);
+  const result = await client.executeWorkflow("workflow-id");
+  console.log("Workflow executed successfully:", result);
 } catch (error) {
-  console.error('Workflow execution failed:', error);
+  console.error("Workflow execution failed:", error);
 }
 ```
 
@@ -42,8 +42,8 @@ try {
 new SimStudioClient(config: SimStudioConfig)
 ```
 
-- `config.apiKey` (string): Your Sim Studio API key
-- `config.baseUrl` (string, optional): Base URL for the Sim Studio API (defaults to `https://simstudio.ai`)
+- `config.apiKey` (string): Your Visual Workflow AI API key
+- `config.baseUrl` (string, optional): Base URL for the Visual Workflow AI API (defaults to `https://simstudio.ai`)
 
 #### Methods
 
@@ -52,13 +52,14 @@ new SimStudioClient(config: SimStudioConfig)
 Execute a workflow with optional input data.
 
 ```typescript
-const result = await client.executeWorkflow('workflow-id', {
-  input: { message: 'Hello, world!' },
-  timeout: 30000 // 30 seconds
+const result = await client.executeWorkflow("workflow-id", {
+  input: { message: "Hello, world!" },
+  timeout: 30000, // 30 seconds
 });
 ```
 
 **Parameters:**
+
 - `workflowId` (string): The ID of the workflow to execute
 - `options` (ExecutionOptions, optional):
   - `input` (any): Input data to pass to the workflow
@@ -71,11 +72,12 @@ const result = await client.executeWorkflow('workflow-id', {
 Get the status of a workflow (deployment status, etc.).
 
 ```typescript
-const status = await client.getWorkflowStatus('workflow-id');
-console.log('Is deployed:', status.isDeployed);
+const status = await client.getWorkflowStatus("workflow-id");
+console.log("Is deployed:", status.isDeployed);
 ```
 
 **Parameters:**
+
 - `workflowId` (string): The ID of the workflow
 
 **Returns:** `Promise<WorkflowStatus>`
@@ -85,13 +87,14 @@ console.log('Is deployed:', status.isDeployed);
 Validate that a workflow is ready for execution.
 
 ```typescript
-const isReady = await client.validateWorkflow('workflow-id');
+const isReady = await client.validateWorkflow("workflow-id");
 if (isReady) {
   // Workflow is deployed and ready
 }
 ```
 
 **Parameters:**
+
 - `workflowId` (string): The ID of the workflow
 
 **Returns:** `Promise<boolean>`
@@ -101,13 +104,14 @@ if (isReady) {
 Execute a workflow and poll for completion (useful for long-running workflows).
 
 ```typescript
-const result = await client.executeWorkflowSync('workflow-id', {
-  input: { data: 'some input' },
-  timeout: 60000
+const result = await client.executeWorkflowSync("workflow-id", {
+  input: { data: "some input" },
+  timeout: 60000,
 });
 ```
 
 **Parameters:**
+
 - `workflowId` (string): The ID of the workflow to execute
 - `options` (ExecutionOptions, optional):
   - `input` (any): Input data to pass to the workflow
@@ -120,7 +124,7 @@ const result = await client.executeWorkflowSync('workflow-id', {
 Update the API key.
 
 ```typescript
-client.setApiKey('new-api-key');
+client.setApiKey("new-api-key");
 ```
 
 ##### setBaseUrl(baseUrl)
@@ -128,7 +132,7 @@ client.setApiKey('new-api-key');
 Update the base URL.
 
 ```typescript
-client.setBaseUrl('https://my-custom-domain.com');
+client.setBaseUrl("https://my-custom-domain.com");
 ```
 
 ## Types
@@ -176,36 +180,36 @@ class SimStudioError extends Error {
 ### Basic Workflow Execution
 
 ```typescript
-import { SimStudioClient } from 'simstudio-ts-sdk';
+import { SimStudioClient } from "simstudio-ts-sdk";
 
 const client = new SimStudioClient({
-  apiKey: process.env.SIMSTUDIO_API_KEY!
+  apiKey: process.env.SIMSTUDIO_API_KEY!,
 });
 
 async function runWorkflow() {
   try {
     // Check if workflow is ready
-    const isReady = await client.validateWorkflow('my-workflow-id');
+    const isReady = await client.validateWorkflow("my-workflow-id");
     if (!isReady) {
-      throw new Error('Workflow is not deployed or ready');
+      throw new Error("Workflow is not deployed or ready");
     }
 
     // Execute the workflow
-    const result = await client.executeWorkflow('my-workflow-id', {
+    const result = await client.executeWorkflow("my-workflow-id", {
       input: {
-        message: 'Process this data',
-        userId: '12345'
-      }
+        message: "Process this data",
+        userId: "12345",
+      },
     });
 
     if (result.success) {
-      console.log('Output:', result.output);
-      console.log('Duration:', result.metadata?.duration);
+      console.log("Output:", result.output);
+      console.log("Duration:", result.metadata?.duration);
     } else {
-      console.error('Workflow failed:', result.error);
+      console.error("Workflow failed:", result.error);
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
   }
 }
 
@@ -215,36 +219,36 @@ runWorkflow();
 ### Error Handling
 
 ```typescript
-import { SimStudioClient, SimStudioError } from 'simstudio-ts-sdk';
+import { SimStudioClient, SimStudioError } from "simstudio-ts-sdk";
 
 const client = new SimStudioClient({
-  apiKey: process.env.SIMSTUDIO_API_KEY!
+  apiKey: process.env.SIMSTUDIO_API_KEY!,
 });
 
 async function executeWithErrorHandling() {
   try {
-    const result = await client.executeWorkflow('workflow-id');
+    const result = await client.executeWorkflow("workflow-id");
     return result;
   } catch (error) {
     if (error instanceof SimStudioError) {
       switch (error.code) {
-        case 'UNAUTHORIZED':
-          console.error('Invalid API key');
+        case "UNAUTHORIZED":
+          console.error("Invalid API key");
           break;
-        case 'TIMEOUT':
-          console.error('Workflow execution timed out');
+        case "TIMEOUT":
+          console.error("Workflow execution timed out");
           break;
-        case 'USAGE_LIMIT_EXCEEDED':
-          console.error('Usage limit exceeded');
+        case "USAGE_LIMIT_EXCEEDED":
+          console.error("Usage limit exceeded");
           break;
-        case 'INVALID_JSON':
-          console.error('Invalid JSON in request body');
+        case "INVALID_JSON":
+          console.error("Invalid JSON in request body");
           break;
         default:
-          console.error('Workflow error:', error.message);
+          console.error("Workflow error:", error.message);
       }
     } else {
-      console.error('Unexpected error:', error);
+      console.error("Unexpected error:", error);
     }
     throw error;
   }
@@ -257,13 +261,13 @@ async function executeWithErrorHandling() {
 // Using environment variables
 const client = new SimStudioClient({
   apiKey: process.env.SIMSTUDIO_API_KEY!,
-  baseUrl: process.env.SIMSTUDIO_BASE_URL // optional
+  baseUrl: process.env.SIMSTUDIO_BASE_URL, // optional
 });
 ```
 
 ## Getting Your API Key
 
-1. Log in to your [Sim Studio](https://simstudio.ai) account
+1. Log in to your [Visual Workflow AI](https://simstudio.ai) account
 2. Navigate to your workflow
 3. Click on "Deploy" to deploy your workflow
 4. Select or create an API key during the deployment process
@@ -276,11 +280,13 @@ const client = new SimStudioClient({
 To run the tests locally:
 
 1. Clone the repository and navigate to the TypeScript SDK directory:
+
    ```bash
    cd packages/ts-sdk
    ```
 
 2. Install dependencies:
+
    ```bash
    bun install
    ```
@@ -315,4 +321,4 @@ bun run dev
 
 ## License
 
-Apache-2.0 
+Apache-2.0
