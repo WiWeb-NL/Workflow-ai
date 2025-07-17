@@ -3,9 +3,9 @@ title: Slack
 description: Send messages to Slack
 ---
 
-import { BlockInfoCard } from "@/components/ui/block-info-card"
+import { BlockInfoCard } from "@/components/ui/block-info-card";
 
-<BlockInfoCard 
+<BlockInfoCard
   type="slack"
   color="#611f69"
   icon={true}
@@ -31,19 +31,6 @@ import { BlockInfoCard } from "@/components/ui/block-info-card"
     </svg>`}
 />
 
-{/* MANUAL-CONTENT-START:intro */}
-[Slack](https://www.slack.com/) is a business communication platform that offers teams a unified place for messaging, tools, and files.
-
-<iframe
-  width="100%"
-  height="400"
-  src="https://www.youtube.com/embed/J5jz3UaWmE8"
-  title="Slack Integration with Visual Workflow AI"
-  frameBorder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowFullScreen
-></iframe>
-
 With Slack, you can:
 
 - **Automate agent notifications**: Send real-time updates from your Visual Workflow AI agents to any Slack channel
@@ -53,37 +40,28 @@ With Slack, you can:
 In Visual Workflow AI, the Slack integration enables your agents to programmatically send messages to any Slack channel or user as part of their workflows. This allows for powerful automation scenarios such as sending notifications, alerts, updates, and reports directly to your team's communication hub. Your agents can deliver timely information, share results from processes they've completed, or alert team members when attention is needed. This integration bridges the gap between your AI workflows and your team's communication, ensuring everyone stays informed without manual intervention. By connecting Visual Workflow AI with Slack, you can create agents that keep your team updated with relevant information at the right time, enhance collaboration by sharing insights automatically, and reduce the need for manual status updates - all while leveraging your existing Slack workspace where your team already communicates.
 {/* MANUAL-CONTENT-END */}
 
-
 ## Usage Instructions
 
 Comprehensive Slack integration with OAuth authentication. Send formatted messages using Slack
-
-
 
 ## Tools
 
 ### `slack_message`
 
-
-
-
 ## Block Configuration
 
 ### Input
 
-| Parameter | Type | Required | Description | 
-| --------- | ---- | -------- | ----------- | 
-| `operation` | string | Yes | Operation |
-
-
+| Parameter   | Type   | Required | Description |
+| ----------- | ------ | -------- | ----------- |
+| `operation` | string | Yes      | Operation   |
 
 ### Outputs
 
-| Output | Type | Description |
-| ------ | ---- | ----------- |
-| `ts` | string | ts output from the block |
+| Output    | Type   | Description                   |
+| --------- | ------ | ----------------------------- |
+| `ts`      | string | ts output from the block      |
 | `channel` | string | channel output from the block |
-
 
 ## Notes
 
