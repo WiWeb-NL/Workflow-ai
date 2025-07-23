@@ -29,6 +29,20 @@ export async function validateWorkflowAccess(
       };
     }
 
+    // Check FlowAI token balance for ALL workflow executions (UI and API)
+    const hasTokens = await flowaiTokenService.canExecuteWorkflow(
+      workflow.userId
+    );
+    if (!hasTokens) {
+      return {
+        error: {
+          message:
+            "Insufficient FlowAI tokens: Please purchase tokens to execute workflows",
+          status: 402, // Payment required
+        },
+      };
+    }
+
     if (requireDeployment) {
       if (!workflow.isDeployed) {
         return {
@@ -72,20 +86,6 @@ export async function validateWorkflowAccess(
           error: {
             message: "Unauthorized: Invalid API key",
             status: 401,
-          },
-        };
-      }
-
-      // Check FlowAI token balance for workflow execution
-      const hasTokens = await flowaiTokenService.canExecuteWorkflow(
-        workflow.userId
-      );
-      if (!hasTokens) {
-        return {
-          error: {
-            message:
-              "Insufficient FlowAI tokens: Please purchase tokens to execute workflows",
-            status: 402, // Payment required
           },
         };
       }
