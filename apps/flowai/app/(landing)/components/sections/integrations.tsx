@@ -9,7 +9,7 @@ import { HeroBlock } from '../hero-block'
 
 function Integrations() {
   return (
-    <section className='flex w-full flex-col gap-10 px-8 py-12 md:px-16 lg:px-28 xl:px-32'>
+    <section className='flex w-full flex-col gap-10 px-8 py-12 md:px-16 lg:px-28 xl:px-32' id='integrations'>
       <div className='flex flex-col gap-5'>
         <motion.p
           className='font-medium text-[42px] text-white leading-none tracking-normal md:text-5xl md:leading-tight'

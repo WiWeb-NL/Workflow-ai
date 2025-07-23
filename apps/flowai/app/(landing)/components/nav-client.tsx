@@ -77,11 +77,11 @@ const NavLinks = ({
   onContactClick?: () => void;
 }) => {
   const navigationLinks = [
-    // { href: "/", label: "Marketplace" },
+    { href: "/", label: "Home" },
     ...(currentPath !== "/" ? [{ href: "/", label: "Home" }] : []),
-    // { href: "https://docs.visualworkflow.app/", label: "Docs", external: true },
-    // // { href: '/', label: 'Blog' },
-    // { href: "/contributors", label: "Contributors" },
+    { href: "#features", label: "Features" },
+    { href: "#integrations", label: "Integrations" },
+    { href: "https://docs.visualworkflow.app/", label: "Docs", external: true },
   ];
 
   const handleContributorsHover = usePrefetchOnHover();
@@ -99,7 +99,7 @@ const NavLinks = ({
             variants={mobile ? mobileNavItemVariants : undefined}
             key={link.label}
           >
-            {/* <Link
+            <Link
               href={link.href}
               className={navItemClass}
               onMouseEnter={
@@ -112,7 +112,7 @@ const NavLinks = ({
                 : {})}
             >
               {link.label}
-            </Link> */}
+            </Link>
           </motion.div>
         );
 
