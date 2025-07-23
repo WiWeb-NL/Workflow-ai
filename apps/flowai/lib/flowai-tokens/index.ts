@@ -3,7 +3,6 @@ import {
   flowaiTokenTransactions,
   flowaiTokenPricing,
   userStats,
-  user,
   userSolanaWallets,
 } from "@/db/schema";
 import { eq, desc, sql, and, gte } from "drizzle-orm";
@@ -14,6 +13,10 @@ import {
   TOKEN_PROGRAM_ID,
 } from "@solana/spl-token";
 import crypto from "crypto";
+import { createLogger } from "@/lib/logs/console-logger";
+import { jupiterPriceService } from "@/lib/jupiter/price-service";
+
+const logger = createLogger("FlowAI-Tokens");
 
 // FlowAI Token Configuration
 export const FLOWAI_TOKEN_MINT = new PublicKey(
@@ -262,31 +265,168 @@ export class FlowAITokenService {
   }
 
   /**
-   * Get current token pricing options
+   * Get current token pricing options with real-time SOL pricing
    */
   async getTokenPricing(): Promise<
     Array<{
       id: string;
       tokenAmount: number;
-      solanaPriceLamports: bigint;
+      solPrice: number; // Price in SOL units
       usdEquivalent: number;
       bonusTokens: number;
       totalTokens: number;
     }>
   > {
-    const pricing = await db.query.flowaiTokenPricing.findMany({
-      where: eq(flowaiTokenPricing.isActive, true),
-      orderBy: flowaiTokenPricing.tokenAmount,
+    try {
+      // First try to get pricing from database
+      const pricing = await db.query.flowaiTokenPricing.findMany({
+        where: eq(flowaiTokenPricing.isActive, true),
+        orderBy: flowaiTokenPricing.tokenAmount,
+      });
+
+      if (pricing.length > 0) {
+        // Use database pricing but update SOL prices with real-time data
+        const solPriceData = await jupiterPriceService.getSOLPrice();
+
+        return pricing.map((p) => ({
+          id: p.id,
+          tokenAmount: p.tokenAmount,
+          solPrice: parseFloat(p.usdEquivalent || "0") / solPriceData.usdPrice, // Convert USD to SOL
+          usdEquivalent: parseFloat(p.usdEquivalent || "0"),
+          bonusTokens: p.bonusTokens,
+          totalTokens: p.tokenAmount + p.bonusTokens,
+        }));
+      }
+
+      // If no database pricing, use Jupiter dynamic pricing
+      logger.warn(
+        "No pricing tiers found in database, using dynamic Jupiter pricing"
+      );
+      const dynamicPricing = await jupiterPriceService.getFormattedPricing();
+      return dynamicPricing;
+    } catch (error) {
+      logger.error("Failed to get real-time pricing, using fallback", error);
+
+      // Ultimate fallback to static pricing
+      const fallbackPricing = [
+        {
+          id: "starter_100",
+          tokenAmount: 100,
+          solPrice: 0.054,
+          usdEquivalent: 10.0,
+          bonusTokens: 0,
+          totalTokens: 100,
+        },
+        {
+          id: "basic_500",
+          tokenAmount: 500,
+          solPrice: 0.243,
+          usdEquivalent: 45.0,
+          bonusTokens: 50,
+          totalTokens: 550,
+        },
+        {
+          id: "pro_1000",
+          tokenAmount: 1000,
+          solPrice: 0.459,
+          usdEquivalent: 85.0,
+          bonusTokens: 150,
+          totalTokens: 1150,
+        },
+        {
+          id: "enterprise_5000",
+          tokenAmount: 5000,
+          solPrice: 2.162,
+          usdEquivalent: 400.0,
+          bonusTokens: 1000,
+          totalTokens: 6000,
+        },
+      ];
+
+      logger.warn("Using static fallback pricing due to API errors");
+      return fallbackPricing;
+    }
+  }
+
+  /**
+   * Get specific pricing tier details
+   */
+  async getPricingTierDetails(pricingTierId: string): Promise<{
+    id: string;
+    tokenAmount: number;
+    solPrice: number;
+    usdEquivalent: number;
+    bonusTokens: number;
+    totalTokens: number;
+  } | null> {
+    const pricing = await db.query.flowaiTokenPricing.findFirst({
+      where: eq(flowaiTokenPricing.id, pricingTierId),
     });
 
-    return pricing.map((p) => ({
-      id: p.id,
-      tokenAmount: p.tokenAmount,
-      solanaPriceLamports: BigInt(p.solanaPriceLamports),
-      usdEquivalent: parseFloat(p.usdEquivalent || "0"),
-      bonusTokens: p.bonusTokens,
-      totalTokens: p.tokenAmount + p.bonusTokens,
-    }));
+    if (pricing && pricing.isActive) {
+      return {
+        id: pricing.id,
+        tokenAmount: pricing.tokenAmount,
+        solPrice: Number(pricing.solanaPriceLamports) / 1_000_000_000,
+        usdEquivalent: parseFloat(pricing.usdEquivalent || "0"),
+        bonusTokens: pricing.bonusTokens,
+        totalTokens: pricing.tokenAmount + pricing.bonusTokens,
+      };
+    }
+
+    // If not found in database, check default pricing
+    const defaultPricingMap: Record<
+      string,
+      {
+        id: string;
+        tokenAmount: number;
+        solPrice: number;
+        usdEquivalent: number;
+        bonusTokens: number;
+        totalTokens: number;
+      }
+    > = {
+      starter_100: {
+        id: "starter_100",
+        tokenAmount: 100,
+        solPrice: 0.054,
+        usdEquivalent: 10.0,
+        bonusTokens: 0,
+        totalTokens: 100,
+      },
+      basic_500: {
+        id: "basic_500",
+        tokenAmount: 500,
+        solPrice: 0.27,
+        usdEquivalent: 50.0,
+        bonusTokens: 50,
+        totalTokens: 550,
+      },
+      pro_1000: {
+        id: "pro_1000",
+        tokenAmount: 1000,
+        solPrice: 0.54,
+        usdEquivalent: 100.0,
+        bonusTokens: 150,
+        totalTokens: 1150,
+      },
+      enterprise_5000: {
+        id: "enterprise_5000",
+        tokenAmount: 5000,
+        solPrice: 2.16,
+        usdEquivalent: 400.0,
+        bonusTokens: 1000,
+        totalTokens: 6000,
+      },
+    };
+
+    const defaultTier = defaultPricingMap[pricingTierId];
+    if (defaultTier) {
+      logger.warn(`Using default pricing tier: ${pricingTierId}`);
+      return defaultTier;
+    }
+
+    return null;
   }
 
   /**
@@ -296,7 +436,7 @@ export class FlowAITokenService {
     address: string;
     hasPrivateKey: boolean;
   } | null> {
-    // First check the new wallet table
+    // Use only the user_solana_wallets table (no fallback)
     const solanaWallet = await db.query.userSolanaWallets.findFirst({
       where: eq(userSolanaWallets.userId, userId),
     });
@@ -305,18 +445,6 @@ export class FlowAITokenService {
       return {
         address: solanaWallet.walletAddress,
         hasPrivateKey: !!solanaWallet.encryptedPrivateKey,
-      };
-    }
-
-    // Fallback to user table for existing wallets
-    const userData = await db.query.user.findFirst({
-      where: eq(user.id, userId),
-    });
-
-    if (userData?.walletAddress) {
-      return {
-        address: userData.walletAddress,
-        hasPrivateKey: !!userData.privateKey,
       };
     }
 
@@ -361,7 +489,12 @@ export class FlowAITokenService {
               `Found FlowAI token balance using ${tokenProgram === TOKEN_2022_PROGRAM_ID ? "Token-2022" : "Token Program"}:`,
               accountInfo.value.amount
             );
-            return parseInt(accountInfo.value.amount);
+            // FlowAI tokens have 9 decimals, convert raw amount to human-readable
+            const FLOWAI_TOKEN_DECIMALS = 9;
+            const rawAmount = parseInt(accountInfo.value.amount);
+            const humanReadableAmount =
+              rawAmount / Math.pow(10, FLOWAI_TOKEN_DECIMALS);
+            return humanReadableAmount;
           }
         } catch (error) {
           // Continue to next program if account not found

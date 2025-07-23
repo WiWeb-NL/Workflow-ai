@@ -162,7 +162,7 @@ export function FlowAITokens({ onOpenChange }: FlowAITokensProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
-            FlowAI Token Balance
+            Workflow Credits
           </CardTitle>
           <Button
             variant="outline"
@@ -184,18 +184,18 @@ export function FlowAITokens({ onOpenChange }: FlowAITokensProps) {
                 <span className="text-2xl font-bold">
                   {balance.toLocaleString()}
                 </span>
-                <span className="text-sm text-muted-foreground">tokens</span>
+                <span className="text-sm text-muted-foreground">Credits</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Badge variant={canExecuteWorkflow ? "default" : "destructive"}>
                   {canExecuteWorkflow
                     ? "Ready to execute"
-                    : "Insufficient tokens"}
+                    : "Insufficient credits"}
                 </Badge>
               </div>
             </div>
             <div className="text-right text-sm text-muted-foreground">
-              <p>1 token = 1 workflow execution</p>
+              <p>1 credit = 1 workflow execution</p>
               {mounted && tokenData?.lastUpdated && (
                 <p>
                   Updated {new Date(tokenData.lastUpdated).toLocaleDateString()}{" "}
@@ -247,7 +247,7 @@ export function FlowAITokens({ onOpenChange }: FlowAITokensProps) {
           className="w-full"
         >
           <Plus className="h-4 w-4 mr-2" />
-          Purchase Tokens
+          Purchase Credits
         </Button>
 
         <Button
@@ -265,7 +265,7 @@ export function FlowAITokens({ onOpenChange }: FlowAITokensProps) {
         <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            Your token balance is running low. Consider purchasing more tokens
+            Your credit balance is running low. Consider purchasing more credits
             to avoid workflow execution interruptions.
           </AlertDescription>
         </Alert>
@@ -276,7 +276,7 @@ export function FlowAITokens({ onOpenChange }: FlowAITokensProps) {
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
-            You have no FlowAI tokens. Purchase tokens to execute workflows.
+            You have no Workflow Credits. Purchase credits to execute workflows.
           </AlertDescription>
         </Alert>
       )}

@@ -24,6 +24,7 @@ import { Privacy } from "./components/privacy/privacy";
 import { SettingsNavigation } from "./components/settings-navigation/settings-navigation";
 import { Subscription } from "./components/subscription/subscription";
 import { TeamManagement } from "./components/team-management/team-management";
+import { WalletManagement } from "./components/wallet-management/wallet-management";
 
 const logger = createLogger("SettingsModal");
 
@@ -38,6 +39,7 @@ type SettingsSection =
   | "account"
   | "credentials"
   | "apikeys"
+  | "wallet-management"
   | "flowai-tokens"
   | "subscription"
   | "team"
@@ -171,6 +173,14 @@ export function SettingsModal({ open, onOpenChange }: SettingsModalProps) {
               )}
             >
               <ApiKeys onOpenChange={onOpenChange} />
+            </div>
+            <div
+              className={cn(
+                "h-full",
+                activeSection === "wallet-management" ? "block" : "hidden"
+              )}
+            >
+              <WalletManagement />
             </div>
             <div
               className={cn(

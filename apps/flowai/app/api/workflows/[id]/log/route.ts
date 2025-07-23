@@ -1,76 +1,150 @@
-import type { NextRequest } from 'next/server'
-import { createLogger } from '@/lib/logs/console-logger'
-import { EnhancedLoggingSession } from '@/lib/logs/enhanced-logging-session'
-import { buildTraceSpans } from '@/lib/logs/trace-spans'
-import { validateWorkflowAccess } from '../../middleware'
-import { createErrorResponse, createSuccessResponse } from '../../utils'
+import type { NextRequest } from "next/server";
+import { createLogger } from "@/lib/logs/console-logger";
+import { EnhancedLoggingSession } from "@/lib/logs/enhanced-logging-session";
+import { buildTraceSpans } from "@/lib/logs/trace-spans";
+import { flowaiTokenService } from "@/lib/flowai-tokens";
+import { validateWorkflowAccess } from "../../middleware";
+import { createErrorResponse, createSuccessResponse } from "../../utils";
 
-const logger = createLogger('WorkflowLogAPI')
+const logger = createLogger("WorkflowLogAPI");
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const requestId = crypto.randomUUID().slice(0, 8)
-  const { id } = await params
+export async function POST(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const requestId = crypto.randomUUID().slice(0, 8);
+  const { id } = await params;
 
   try {
-    const validation = await validateWorkflowAccess(request, id, false)
+    const validation = await validateWorkflowAccess(request, id, false);
     if (validation.error) {
-      logger.warn(`[${requestId}] Workflow access validation failed: ${validation.error.message}`)
-      return createErrorResponse(validation.error.message, validation.error.status)
+      logger.warn(
+        `[${requestId}] Workflow access validation failed: ${validation.error.message}`
+      );
+      return createErrorResponse(
+        validation.error.message,
+        validation.error.status
+      );
     }
 
-    const body = await request.json()
-    const { logs, executionId, result } = body
+    const body = await request.json();
+    const { logs, executionId, result } = body;
 
     // If result is provided, use persistExecutionLogs for full tool call extraction
     if (result) {
-      logger.info(`[${requestId}] Persisting execution result for workflow: ${id}`, {
-        executionId,
-        success: result.success,
-      })
+      logger.info(
+        `[${requestId}] Persisting execution result for workflow: ${id}`,
+        {
+          executionId,
+          success: result.success,
+        }
+      );
+
+      // Get userId from the validated workflow
+      const userId = validation.workflow.userId;
 
       // Check if this execution is from chat using only the explicit source flag
-      const isChatExecution = result.metadata?.source === 'chat'
+      const isChatExecution = result.metadata?.source === "chat";
 
       // Also log to enhanced system
-      const triggerType = isChatExecution ? 'chat' : 'manual'
-      const loggingSession = new EnhancedLoggingSession(id, executionId, triggerType, requestId)
+      const triggerType = isChatExecution ? "chat" : "manual";
+      const loggingSession = new EnhancedLoggingSession(
+        id,
+        executionId,
+        triggerType,
+        requestId
+      );
 
       await loggingSession.safeStart({
-        userId: '', // TODO: Get from session
-        workspaceId: '', // TODO: Get from workflow
+        userId: userId || "",
+        workspaceId: validation.workflow.workspaceId || "",
         variables: {},
-      })
+      });
 
       // Build trace spans from execution logs
-      const { traceSpans } = buildTraceSpans(result)
+      const { traceSpans } = buildTraceSpans(result);
 
       await loggingSession.safeComplete({
         endedAt: new Date().toISOString(),
         totalDurationMs: result.metadata?.duration || 0,
         finalOutput: result.output || {},
         traceSpans,
-      })
+      });
+
+      // Charge FlowAI tokens for successful workflow execution
+      if (result.success && userId) {
+        console.log(
+          `[DEBUG] Attempting to charge FlowAI tokens for successful execution. userId=${userId}, executionId=${executionId}`
+        );
+        try {
+          const tokenCharged =
+            await flowaiTokenService.chargeForWorkflowExecution(
+              userId,
+              executionId
+            );
+
+          if (tokenCharged) {
+            console.log(
+              `[DEBUG] Successfully charged FlowAI tokens for execution ${executionId}`
+            );
+            logger.info(
+              `Successfully charged FlowAI tokens for execution ${executionId}`,
+              {
+                userId,
+                workflowId: id,
+                tokensCharged: 1,
+              }
+            );
+          } else {
+            console.log(
+              `[DEBUG] Failed to charge FlowAI tokens for execution ${executionId}`
+            );
+            logger.warn(
+              `Failed to charge FlowAI tokens for execution ${executionId}`,
+              {
+                userId,
+                workflowId: id,
+              }
+            );
+          }
+        } catch (error: any) {
+          console.log(
+            `[DEBUG] Error charging FlowAI tokens for execution ${executionId}:`,
+            error
+          );
+          logger.error(
+            `Error charging FlowAI tokens for execution ${executionId}`,
+            error
+          );
+        }
+      }
 
       return createSuccessResponse({
-        message: 'Execution logs persisted successfully',
-      })
+        message: "Execution logs persisted successfully",
+      });
     }
 
     // Fall back to the original log format if 'result' isn't provided
     if (!logs || !Array.isArray(logs) || logs.length === 0) {
-      logger.warn(`[${requestId}] No logs provided for workflow: ${id}`)
-      return createErrorResponse('No logs provided', 400)
+      logger.warn(`[${requestId}] No logs provided for workflow: ${id}`);
+      return createErrorResponse("No logs provided", 400);
     }
 
-    logger.info(`[${requestId}] Persisting ${logs.length} logs for workflow: ${id}`, {
-      executionId,
-    })
+    logger.info(
+      `[${requestId}] Persisting ${logs.length} logs for workflow: ${id}`,
+      {
+        executionId,
+      }
+    );
 
-    return createSuccessResponse({ message: 'Logs persisted successfully' })
+    return createSuccessResponse({ message: "Logs persisted successfully" });
   } catch (error: any) {
-    logger.error(`[${requestId}] Error persisting logs for workflow: ${id}`, error)
-    return createErrorResponse(error.message || 'Failed to persist logs', 500)
+    logger.error(
+      `[${requestId}] Error persisting logs for workflow: ${id}`,
+      error
+    );
+    return createErrorResponse(error.message || "Failed to persist logs", 500);
   }
 }

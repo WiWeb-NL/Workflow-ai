@@ -23,8 +23,6 @@ interface CreateWalletResult {
   wallet?: {
     address: string;
     privateKey: string; // Base64 encoded
-    privateKeyArray: number[]; // Array format for Solflare/Phantom
-    privateKeyHex: string; // Hex format alternative
   };
   error?: string;
 }
@@ -162,8 +160,6 @@ export class WalletManager {
         wallet: {
           address,
           privateKey: privateKeyBase64,
-          privateKeyArray: Array.from(privateKeyBytes),
-          privateKeyHex: Buffer.from(privateKeyBytes).toString("hex"),
         },
       };
     } catch (error) {
@@ -223,125 +219,11 @@ export class WalletManager {
   }
 
   /**
-   * Export private key in different formats for wallet compatibility
-   */
-  async exportPrivateKey(
-    userId: string,
-    format: "base64" | "array" | "hex" | "comma" = "array"
-  ): Promise<{
-    success: boolean;
-    privateKey?: string;
-    error?: string;
-  }> {
-    try {
-      const privateKeyBase64 = await this.getUserPrivateKey(userId);
-
-      if (!privateKeyBase64) {
-        return {
-          success: false,
-          error: "No private key found",
-        };
-      }
-
-      const privateKeyBytes = Buffer.from(privateKeyBase64, "base64");
-
-      let formattedKey: string;
-      switch (format) {
-        case "base64":
-          formattedKey = privateKeyBase64;
-          break;
-        case "array":
-          // JSON array format (Solflare/Phantom compatible)
-          formattedKey = JSON.stringify(Array.from(privateKeyBytes));
-          break;
-        case "hex":
-          formattedKey = privateKeyBytes.toString("hex");
-          break;
-        case "comma":
-          formattedKey = Array.from(privateKeyBytes).join(",");
-          break;
-        default:
-          formattedKey = JSON.stringify(Array.from(privateKeyBytes));
-      }
-
-      return {
-        success: true,
-        privateKey: formattedKey,
-      };
-    } catch (error) {
-      logger.error("Failed to export private key", error);
-      return {
-        success: false,
-        error:
-          error instanceof Error
-            ? error.message
-            : "Failed to export private key",
-      };
-    }
-  }
-
-  /**
-   * Parse private key from various formats (Base64, JSON array, hex, comma-separated)
-   */
-  private parsePrivateKey(privateKeyInput: string): Uint8Array {
-    const trimmedInput = privateKeyInput.trim();
-
-    // Try Base64 format first (current format)
-    if (trimmedInput.length === 88) {
-      try {
-        const decoded = Buffer.from(trimmedInput, "base64");
-        if (decoded.length === 64) {
-          return decoded;
-        }
-      } catch (error) {
-        // Continue to next format
-      }
-    }
-
-    // Try JSON array format (Solflare/Phantom export format)
-    if (trimmedInput.startsWith("[") && trimmedInput.endsWith("]")) {
-      try {
-        const parsed = JSON.parse(trimmedInput);
-        if (Array.isArray(parsed) && parsed.length === 64) {
-          return new Uint8Array(parsed);
-        }
-      } catch (error) {
-        // Continue to next format
-      }
-    }
-
-    // Try comma-separated format
-    if (trimmedInput.includes(",")) {
-      try {
-        const numbers = trimmedInput.split(",").map((s) => parseInt(s.trim()));
-        if (numbers.length === 64 && numbers.every((n) => n >= 0 && n <= 255)) {
-          return new Uint8Array(numbers);
-        }
-      } catch (error) {
-        // Continue to next format
-      }
-    }
-
-    // Try hex format
-    if (trimmedInput.length === 128 && /^[0-9a-fA-F]+$/.test(trimmedInput)) {
-      try {
-        return new Uint8Array(Buffer.from(trimmedInput, "hex"));
-      } catch (error) {
-        // Continue to next format
-      }
-    }
-
-    throw new Error(
-      "Invalid private key format. Supported formats: Base64, JSON array, comma-separated numbers, or hex"
-    );
-  }
-
-  /**
    * Import wallet from private key
    */
   async importWallet(
     userId: string,
-    privateKeyInput: string
+    privateKeyBase64: string
   ): Promise<CreateWalletResult> {
     try {
       // Check if user already has a wallet
@@ -353,24 +235,19 @@ export class WalletManager {
         };
       }
 
-      // Parse private key from various formats
+      // Validate private key
       let keypair: Keypair;
-      let privateKeyBytes: Uint8Array;
       try {
-        privateKeyBytes = this.parsePrivateKey(privateKeyInput);
+        const privateKeyBytes = Buffer.from(privateKeyBase64, "base64");
         keypair = Keypair.fromSecretKey(privateKeyBytes);
       } catch (error) {
         return {
           success: false,
-          error:
-            error instanceof Error
-              ? error.message
-              : "Invalid private key format",
+          error: "Invalid private key format",
         };
       }
 
       const address = keypair.publicKey.toBase58();
-      const privateKeyBase64 = Buffer.from(privateKeyBytes).toString("base64");
       const encryptedPrivateKey = this.encryptPrivateKey(privateKeyBase64);
 
       // Store in user_solana_wallets table only
@@ -389,8 +266,6 @@ export class WalletManager {
         wallet: {
           address,
           privateKey: privateKeyBase64,
-          privateKeyArray: Array.from(privateKeyBytes),
-          privateKeyHex: Buffer.from(privateKeyBytes).toString("hex"),
         },
       };
     } catch (error) {

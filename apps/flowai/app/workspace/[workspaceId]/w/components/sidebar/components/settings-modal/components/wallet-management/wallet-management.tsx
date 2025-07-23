@@ -28,6 +28,13 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { createLogger } from "@/lib/logs/console-logger";
 
 const logger = createLogger("Wallet-Management");
@@ -53,6 +60,9 @@ export function WalletManagement({ onWalletChange }: WalletManagementProps) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [importPrivateKey, setImportPrivateKey] = useState("");
   const [exportedPrivateKey, setExportedPrivateKey] = useState("");
+  const [exportFormat, setExportFormat] = useState<
+    "base64" | "array" | "hex" | "comma"
+  >("array");
   const [showPrivateKey, setShowPrivateKey] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -175,7 +185,10 @@ export function WalletManagement({ onWalletChange }: WalletManagementProps) {
       const response = await fetch("/api/tokens/flowai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ action: "export_private_key" }),
+        body: JSON.stringify({
+          action: "export_private_key",
+          format: exportFormat,
+        }),
       });
 
       const data = await response.json();
@@ -192,7 +205,7 @@ export function WalletManagement({ onWalletChange }: WalletManagementProps) {
       setError(errorMessage);
       logger.error("Error exporting private key:", err);
     }
-  }, []);
+  }, [exportFormat]);
 
   const handleDeleteWallet = useCallback(async () => {
     try {
@@ -294,7 +307,7 @@ export function WalletManagement({ onWalletChange }: WalletManagementProps) {
               <Wallet className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
               <h3 className="text-lg font-medium mb-2">No Wallet Found</h3>
               <p className="text-muted-foreground mb-4">
-                Create or import a Solana wallet to purchase FlowAI tokens
+                Create or import a Solana wallet to purchase Credits
               </p>
               <div className="flex gap-2 justify-center">
                 <Button onClick={() => setShowCreateDialog(true)}>
@@ -368,11 +381,7 @@ export function WalletManagement({ onWalletChange }: WalletManagementProps) {
               {/* Wallet Actions */}
               <div className="flex gap-2 flex-wrap">
                 {wallet.hasPrivateKey && (
-                  <Button
-                    variant="outline"
-                    onClick={handleExportPrivateKey}
-                    className="text-orange-600 border-orange-200 hover:bg-orange-50"
-                  >
+                  <Button variant="outline" onClick={handleExportPrivateKey}>
                     <Download className="h-4 w-4 mr-2" />
                     Export Private Key
                   </Button>
@@ -436,15 +445,17 @@ export function WalletManagement({ onWalletChange }: WalletManagementProps) {
             <Alert>
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                Enter your private key (base64 encoded) to import an existing
-                wallet. Your private key will be encrypted and stored securely.
+                Import your existing wallet using your private key. Supports
+                multiple formats: Base64, JSON Array (Solflare/Phantom format),
+                comma-separated numbers, or hex. Your private key will be
+                encrypted and stored securely.
               </AlertDescription>
             </Alert>
             <div>
-              <Label htmlFor="privateKey">Private Key (Base64)</Label>
+              <Label htmlFor="privateKey">Private Key</Label>
               <Textarea
                 id="privateKey"
-                placeholder="Enter your base64-encoded private key..."
+                placeholder="Enter your private key (Base64, JSON array, hex, or comma-separated)..."
                 value={importPrivateKey}
                 onChange={(e) => setImportPrivateKey(e.target.value)}
                 className="font-mono"
@@ -493,35 +504,85 @@ export function WalletManagement({ onWalletChange }: WalletManagementProps) {
               </AlertDescription>
             </Alert>
             <div>
-              <Label htmlFor="exportedKey">Private Key (Base64)</Label>
-              <div className="flex items-center gap-2 mt-1">
-                <Input
+              <Label htmlFor="exportFormat">Export Format</Label>
+              <Select
+                value={exportFormat}
+                onValueChange={(value: "base64" | "array" | "hex" | "comma") =>
+                  setExportFormat(value)
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="array">
+                    JSON Array (Solflare/Phantom compatible)
+                  </SelectItem>
+                  <SelectItem value="base64">Base64 (Legacy format)</SelectItem>
+                  <SelectItem value="hex">Hex String</SelectItem>
+                  <SelectItem value="comma">Comma-separated numbers</SelectItem>
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground mt-1">
+                {exportFormat === "array" &&
+                  "Recommended for importing into Solflare or Phantom wallet"}
+                {exportFormat === "base64" &&
+                  "Legacy Base64 format (88 characters)"}
+                {exportFormat === "hex" &&
+                  "Hexadecimal string format (128 characters)"}
+                {exportFormat === "comma" && "Comma-separated decimal numbers"}
+              </p>
+            </div>
+            <div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="exportedKey">Private Key</Label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExportPrivateKey}
+                  disabled={!wallet}
+                >
+                  <RefreshCw className="h-4 w-4 mr-1" />
+                  Generate
+                </Button>
+              </div>
+              <div className="flex flex-col gap-2 mt-1">
+                <Textarea
                   id="exportedKey"
-                  type={showPrivateKey ? "text" : "password"}
-                  value={exportedPrivateKey}
-                  readOnly
-                  className="font-mono"
-                />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setShowPrivateKey(!showPrivateKey)}
-                >
-                  {showPrivateKey ? (
-                    <EyeOff className="h-4 w-4" />
-                  ) : (
-                    <Eye className="h-4 w-4" />
-                  )}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() =>
-                    copyToClipboard(exportedPrivateKey, "Private key")
+                  value={
+                    showPrivateKey
+                      ? exportedPrivateKey
+                      : "••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••"
                   }
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
+                  readOnly
+                  className="font-mono text-sm"
+                  rows={exportFormat === "array" ? 4 : 2}
+                />
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowPrivateKey(!showPrivateKey)}
+                  >
+                    {showPrivateKey ? (
+                      <EyeOff className="h-4 w-4 mr-1" />
+                    ) : (
+                      <Eye className="h-4 w-4 mr-1" />
+                    )}
+                    {showPrivateKey ? "Hide" : "Show"}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      copyToClipboard(exportedPrivateKey, "Private key")
+                    }
+                    disabled={!exportedPrivateKey}
+                  >
+                    <Copy className="h-4 w-4 mr-1" />
+                    Copy
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

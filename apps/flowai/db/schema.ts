@@ -28,8 +28,6 @@ export const tsvector = customType<{
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
-  walletAddress: text("wallet_address").unique(),
-  privateKey: text("private_key").unique(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").notNull(),

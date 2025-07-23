@@ -8,6 +8,7 @@ import {
   Shield,
   UserCircle,
   Users,
+  Wallet,
 } from "lucide-react";
 import { isDev } from "@/lib/environment";
 import { cn } from "@/lib/utils";
@@ -22,6 +23,7 @@ interface SettingsNavigationProps {
       | "account"
       | "credentials"
       | "apikeys"
+      | "wallet-management"
       | "flowai-tokens"
       | "subscription"
       | "team"
@@ -37,6 +39,7 @@ type NavigationItem = {
     | "account"
     | "credentials"
     | "apikeys"
+    | "wallet-management"
     | "flowai-tokens"
     | "subscription"
     | "team"
@@ -72,6 +75,11 @@ const allNavigationItems: NavigationItem[] = [
     id: "apikeys",
     label: "API Keys",
     icon: KeySquare,
+  },
+  {
+    id: "wallet-management",
+    label: "Wallet Management",
+    icon: Wallet,
   },
   {
     id: "flowai-tokens",

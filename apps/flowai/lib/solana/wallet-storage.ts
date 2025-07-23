@@ -1,23 +1,18 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
-import { user } from "@/db/schema";
+import { userSolanaWallets } from "@/db/schema";
 import { createLogger } from "@/lib/logs/console-logger";
-import {
-  generateSolanaWallet,
-  type SolanaWalletData,
-} from "./wallet-generator";
+import { WalletManager } from "./wallet-manager";
 
 const logger = createLogger("SolanaWalletStorage");
 
 export interface UserWalletData {
   userId: string;
   walletAddress: string;
-  // Note: We store private keys encrypted/securely in a real implementation
-  // For this example, we'll just store the public address in the user table
 }
 
 /**
- * Creates a new Solana wallet for a user and stores the public address
+ * Creates a new Solana wallet for a user using the proper wallet manager
  * @param userId The user ID to create a wallet for
  * @returns The wallet data (only public information)
  */
@@ -26,55 +21,39 @@ export async function createUserSolanaWallet(
 ): Promise<UserWalletData> {
   try {
     // Check if user already has a wallet
-    const existingUser = await db
-      .select({ walletAddress: user.walletAddress })
-      .from(user)
-      .where(eq(user.id, userId))
+    const existingWallet = await db
+      .select({ address: userSolanaWallets.walletAddress })
+      .from(userSolanaWallets)
+      .where(eq(userSolanaWallets.userId, userId))
       .limit(1);
 
-    if (existingUser.length === 0) {
-      throw new Error("User not found");
-    }
-
-    if (existingUser[0]?.walletAddress) {
+    if (existingWallet[0]?.address) {
       logger.info("User already has a wallet address", {
         userId,
-        walletAddress: existingUser[0].walletAddress,
+        walletAddress: existingWallet[0].address,
       });
       return {
         userId,
-        walletAddress: existingUser[0].walletAddress,
+        walletAddress: existingWallet[0].address,
       };
     }
 
-    // Generate a new Solana wallet
-    const walletData = generateSolanaWallet();
+    // Create a new wallet using the wallet manager
+    const walletManager = new WalletManager();
+    const result = await walletManager.createWallet(userId);
 
-    // Update the user record with the wallet address
-    await db
-      .update(user)
-      .set({
-        walletAddress: walletData.publicKey,
-        privateKey: walletData.privateKey, // Store securely in a real app
-        updatedAt: new Date(),
-      })
-      .where(eq(user.id, userId));
+    if (!result.success || !result.wallet) {
+      throw new Error(result.error || "Failed to create wallet");
+    }
 
     logger.info("Created and stored Solana wallet for user", {
       userId,
-      walletAddress: walletData.publicKey,
+      walletAddress: result.wallet.address,
     });
 
-    // TODO: In a production system, you would want to:
-    // 1. Encrypt the private key before storing it
-    // 2. Store it in a separate, more secure table/service
-    // 3. Use environment-specific encryption keys
-    // 4. Consider using a hardware security module (HSM)
-
-    // For now, we only return the public information
     return {
       userId,
-      walletAddress: walletData.publicKey,
+      walletAddress: result.wallet.address,
     };
   } catch (error) {
     logger.error("Failed to create Solana wallet for user", {
@@ -95,12 +74,12 @@ export async function getUserWalletAddress(
 ): Promise<string | null> {
   try {
     const result = await db
-      .select({ walletAddress: user.walletAddress })
-      .from(user)
-      .where(eq(user.id, userId))
+      .select({ address: userSolanaWallets.walletAddress })
+      .from(userSolanaWallets)
+      .where(eq(userSolanaWallets.userId, userId))
       .limit(1);
 
-    return result[0]?.walletAddress || null;
+    return result[0]?.address || null;
   } catch (error) {
     logger.error("Failed to get user wallet address", {
       error,
@@ -111,7 +90,7 @@ export async function getUserWalletAddress(
 }
 
 /**
- * Updates a user's wallet address
+ * Updates a user's wallet address (deprecated - wallets should be immutable)
  * @param userId The user ID
  * @param walletAddress The new wallet address
  */
@@ -121,12 +100,12 @@ export async function updateUserWalletAddress(
 ): Promise<void> {
   try {
     await db
-      .update(user)
+      .update(userSolanaWallets)
       .set({
-        walletAddress,
+        walletAddress: walletAddress,
         updatedAt: new Date(),
       })
-      .where(eq(user.id, userId));
+      .where(eq(userSolanaWallets.userId, userId));
 
     logger.info("Updated user wallet address", {
       userId,

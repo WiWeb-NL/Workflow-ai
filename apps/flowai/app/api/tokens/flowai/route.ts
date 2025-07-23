@@ -3,6 +3,7 @@ import { getSession } from "@/lib/auth";
 import { FlowAITokenService } from "@/lib/flowai-tokens";
 import { solanaPaymentService } from "@/lib/solana/payment";
 import { walletManager } from "@/lib/solana/wallet-manager";
+import { jupiterPriceService } from "@/lib/jupiter/price-service";
 import { createLogger } from "@/lib/logs/console-logger";
 import crypto from "crypto";
 
@@ -94,17 +95,25 @@ export async function POST(request: NextRequest) {
 
     switch (action) {
       case "get_pricing":
-        // Get available token pricing tiers
+        // Get available token pricing tiers with real-time SOL pricing
         const pricing = await flowaiTokenService.getTokenPricing();
+        const solPriceData = await jupiterPriceService.getSOLPrice();
+
+        const solPriceInfo = {
+          currentPrice: solPriceData.usdPrice,
+          priceChange24h: solPriceData.priceChange24h,
+          lastUpdated: solPriceData.lastUpdated.toISOString(),
+        };
 
         logger.debug(
           `[${requestId}] Retrieved token pricing for user ${userId}`,
           {
             tierCount: pricing.length,
+            solPrice: solPriceData.usdPrice,
           }
         );
 
-        return NextResponse.json({ pricing });
+        return NextResponse.json({ pricing, solPriceInfo });
 
       case "get_wallet":
         // Get user's Solana wallet info for purchases
@@ -200,20 +209,27 @@ export async function POST(request: NextRequest) {
 
       case "export_private_key":
         // Export user's private key (use with extreme caution)
-        const exportedKey = await walletManager.getUserPrivateKey(userId);
+        const { format = "array" } = data;
+        const exportResult = await walletManager.exportPrivateKey(
+          userId,
+          format
+        );
 
-        if (!exportedKey) {
+        if (!exportResult.success) {
           return NextResponse.json(
-            { error: "No private key found" },
+            { error: exportResult.error || "Failed to export private key" },
             { status: 404 }
           );
         }
 
-        logger.warn(`[${requestId}] Private key exported for user ${userId}`);
+        logger.warn(
+          `[${requestId}] Private key exported for user ${userId} in ${format} format`
+        );
 
         return NextResponse.json({
           success: true,
-          privateKey: exportedKey,
+          privateKey: exportResult.privateKey,
+          format,
         });
 
       case "delete_wallet":
@@ -264,18 +280,10 @@ export async function POST(request: NextRequest) {
       case "purchase_tokens":
         // Purchase tokens with SOL or FlowAI tokens
         const {
-          tokenAmount,
           paymentCurrency, // "SOL" | "FLOWAI_TOKEN"
           paymentAmount,
           pricingTierId,
         } = data;
-
-        if (!tokenAmount || tokenAmount <= 0) {
-          return NextResponse.json(
-            { error: "Invalid token amount" },
-            { status: 400 }
-          );
-        }
 
         if (
           !paymentCurrency ||
@@ -292,6 +300,109 @@ export async function POST(request: NextRequest) {
             { error: "Invalid payment amount" },
             { status: 400 }
           );
+        }
+
+        let tierDetails: {
+          id: string;
+          tokenAmount: number;
+          solPrice: number;
+          usdEquivalent: number;
+          bonusTokens: number;
+          totalTokens: number;
+        };
+
+        if (pricingTierId && pricingTierId !== "custom") {
+          // Get predefined pricing tier details
+          const tier =
+            await flowaiTokenService.getPricingTierDetails(pricingTierId);
+          if (!tier) {
+            logger.error(
+              `[${requestId}] Invalid pricing tier requested: ${pricingTierId}`
+            );
+            return NextResponse.json(
+              {
+                error: `Invalid pricing tier: ${pricingTierId}. Please refresh and try again.`,
+              },
+              { status: 400 }
+            );
+          }
+          tierDetails = tier;
+
+          // Validate payment amount matches tier price
+          let expectedAmount: number;
+
+          if (paymentCurrency === "SOL") {
+            expectedAmount = tierDetails.solPrice;
+          } else {
+            // For FLOWAI_TOKEN, calculate how many FlowAI tokens needed for the credits
+            const solPriceData = await jupiterPriceService.getSOLPrice();
+            const creditsPerSol = solPriceData.usdPrice / 0.1; // How many credits per SOL
+            const flowaiTokensPerCredit = 3000000 / creditsPerSol; // FlowAI tokens needed per credit
+            expectedAmount = Math.floor(
+              tierDetails.tokenAmount * flowaiTokensPerCredit
+            );
+          }
+
+          // Use more lenient tolerance for different currencies
+          const tolerance = paymentCurrency === "SOL" ? 0.001 : 100; // 100 token tolerance for FLOWAI_TOKEN
+
+          if (Math.abs(paymentAmount - expectedAmount) > tolerance) {
+            logger.error(
+              `[${requestId}] Payment amount mismatch for user ${userId}`,
+              {
+                paymentAmount,
+                expectedAmount,
+                paymentCurrency,
+                tierDetails,
+                difference: paymentAmount - expectedAmount,
+                flowaiTokensNeeded:
+                  paymentCurrency === "FLOWAI_TOKEN" ? expectedAmount : "N/A",
+              }
+            );
+            return NextResponse.json(
+              {
+                error: `Payment amount ${paymentAmount} does not match expected ${expectedAmount} for ${paymentCurrency}`,
+              },
+              { status: 400 }
+            );
+          }
+        } else {
+          // Handle custom purchase (no specific pricing tier)
+          if (paymentCurrency === "SOL") {
+            // For SOL payments: convert SOL to USD then to credits at $0.10 per credit
+            const solPriceData = await jupiterPriceService.getSOLPrice();
+            const usdValue = paymentAmount * solPriceData.usdPrice;
+            const tokenAmount = Math.floor(usdValue / 0.1); // $0.10 per credit
+
+            tierDetails = {
+              id: "custom",
+              tokenAmount,
+              solPrice: paymentAmount,
+              usdEquivalent: usdValue,
+              bonusTokens: 0,
+              totalTokens: tokenAmount,
+            };
+          } else {
+            // For FlowAI token payment: Convert FlowAI tokens to credits
+            // 1 SOL = 3,000,000 FlowAI tokens, and credits cost $0.10 each
+            const solPriceData = await jupiterPriceService.getSOLPrice();
+            const creditsPerSol = solPriceData.usdPrice / 0.1; // How many credits per SOL
+            const flowaiTokensPerCredit = 3000000 / creditsPerSol; // FlowAI tokens needed per credit
+
+            const tokenAmount = Math.floor(
+              paymentAmount / flowaiTokensPerCredit
+            ); // Credits from FlowAI tokens
+            const usdValue = tokenAmount * 0.1; // $0.10 per credit
+
+            tierDetails = {
+              id: "custom",
+              tokenAmount,
+              solPrice: usdValue / solPriceData.usdPrice, // Convert USD to SOL
+              usdEquivalent: usdValue,
+              bonusTokens: 0,
+              totalTokens: tokenAmount,
+            };
+          }
         }
 
         // Get user's wallet and private key
@@ -320,14 +431,15 @@ export async function POST(request: NextRequest) {
               ? await solanaPaymentService.processSOLPayment({
                   amount: paymentAmount,
                   currency: "SOL",
-                  description: `Purchase ${tokenAmount} FlowAI tokens`,
+                  description: `Purchase ${tierDetails.totalTokens} FlowAI tokens`,
                   fromWalletAddress: userWallet.address,
                   fromPrivateKey: userPrivateKey,
+                  tokenAmount: tierDetails.totalTokens, // Pass token amount for marketing wallet transfer
                 })
               : await solanaPaymentService.processSPLPayment({
                   amount: paymentAmount,
                   currency: "FLOWAI_TOKEN",
-                  description: `Purchase ${tokenAmount} FlowAI tokens with FlowAI tokens`,
+                  description: `Purchase ${tierDetails.totalTokens} FlowAI tokens with FlowAI tokens`,
                   fromWalletAddress: userWallet.address,
                   fromPrivateKey: userPrivateKey,
                 });
@@ -363,14 +475,15 @@ export async function POST(request: NextRequest) {
                     ? await solanaPaymentService.processSOLPayment({
                         amount: paymentAmount,
                         currency: "SOL",
-                        description: `Purchase ${tokenAmount} FlowAI tokens`,
+                        description: `Purchase ${tierDetails.totalTokens} FlowAI tokens`,
                         fromWalletAddress: userWallet.address,
                         fromPrivateKey: newPrivateKey,
+                        tokenAmount: tierDetails.totalTokens, // Pass token amount for marketing wallet transfer
                       })
                     : await solanaPaymentService.processSPLPayment({
                         amount: paymentAmount,
                         currency: "FLOWAI_TOKEN",
-                        description: `Purchase ${tokenAmount} FlowAI tokens with FlowAI tokens`,
+                        description: `Purchase ${tierDetails.totalTokens} FlowAI tokens with FlowAI tokens`,
                         fromWalletAddress: userWallet.address,
                         fromPrivateKey: newPrivateKey,
                       });
@@ -402,18 +515,20 @@ export async function POST(request: NextRequest) {
           );
         }
 
-        // Add tokens to user's balance
+        // Add tokens to user's balance (total tokens including bonus)
         await flowaiTokenService.addTokens(
           userId,
-          tokenAmount,
+          tierDetails.totalTokens,
           paymentResult.signature,
-          `Purchased with ${paymentAmount} ${paymentCurrency} (${pricingTierId || "custom"})`
+          `Purchased with ${paymentAmount} ${paymentCurrency} (${pricingTierId})`
         );
 
         logger.info(
           `[${requestId}] Token purchase successful for user ${userId}`,
           {
-            tokenAmount,
+            totalTokens: tierDetails.totalTokens,
+            baseTokens: tierDetails.tokenAmount,
+            bonusTokens: tierDetails.bonusTokens,
             paymentCurrency,
             paymentAmount,
             signature: paymentResult.signature,
@@ -422,7 +537,7 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({
           success: true,
-          message: `Successfully purchased ${tokenAmount} FlowAI tokens`,
+          message: `Successfully purchased ${tierDetails.totalTokens} FlowAI tokens`,
           transactionSignature: paymentResult.signature,
         });
 

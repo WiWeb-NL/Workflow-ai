@@ -14,6 +14,7 @@ import {
   getAssociatedTokenAddress,
   createTransferInstruction,
   getAccount,
+  createAssociatedTokenAccountInstruction,
 } from "@solana/spl-token";
 import { createLogger } from "@/lib/logs/console-logger";
 
@@ -27,13 +28,18 @@ export const FLOWAI_TOKEN_MINT = new PublicKey(
 // Payment destination from environment variables
 export const PAYMENT_DESTINATION_SOL = new PublicKey(
   process.env.SOLANA_PAYMENT_DESTINATION_SOL ||
-    "FpVBzhuQhY3uT1ijxwHRob4NjXQzbcpg1FsgNNTwwBLV" // Fallback to token mint
+    "DeFJ3LmEZ44iWWGPy4kS7MiAodU8JSTweEFZ94TfpQaT" // Fallback to token mint
 );
 
 export const PAYMENT_DESTINATION_SPL = new PublicKey(
   process.env.SOLANA_PAYMENT_DESTINATION_SPL ||
-    "FpVBzhuQhY3uT1ijxwHRob4NjXQzbcpg1FsgNNTwwBLV" // Fallback to token mint
+    "DeFJ3LmEZ44iWWGPy4kS7MiAodU8JSTweEFZ94TfpQaT" // Fallback to token mint
 );
+
+// Treasury wallet for FlowAI token transfers (when purchasing with SOL)
+export const TREASURY_WALLET_PRIVATE_KEY =
+  process.env.SOLANA_TREASURY_PRIVATE_KEY;
+export const TREASURY_WALLET_ADDRESS = process.env.SOLANA_TREASURY_ADDRESS;
 
 interface PaymentDetails {
   amount: number;
@@ -41,12 +47,14 @@ interface PaymentDetails {
   description: string;
   fromWalletAddress: string;
   fromPrivateKey: string;
+  tokenAmount?: number; // For SOL payments, the equivalent FlowAI tokens to transfer
 }
 
 interface PaymentResult {
   success: boolean;
   signature?: string;
   error?: string;
+  marketingTransferSignature?: string; // Optional signature for FlowAI token transfer to marketing wallet
 }
 
 export class SolanaPaymentService {
@@ -96,6 +104,172 @@ export class SolanaPaymentService {
       throw new Error(
         `Invalid private key format: ${error instanceof Error ? error.message : "Unknown error"}`
       );
+    }
+  }
+
+  /**
+   * Transfer FlowAI tokens from treasury to payment destination (marketing wallet)
+   * This is called after a successful SOL purchase to move tokens to the marketing wallet
+   */
+  async transferFlowAITokensToMarketing(
+    tokenAmount: number,
+    description: string
+  ): Promise<{ success: boolean; signature?: string; error?: string }> {
+    try {
+      if (!TREASURY_WALLET_PRIVATE_KEY || !TREASURY_WALLET_ADDRESS) {
+        logger.warn(
+          "Treasury wallet not configured, skipping FlowAI token transfer"
+        );
+        return { success: true }; // Don't fail the main transaction
+      }
+
+      // Create treasury keypair
+      const treasuryKeypair = this.parsePrivateKey(TREASURY_WALLET_PRIVATE_KEY);
+
+      // Verify treasury address matches
+      if (treasuryKeypair.publicKey.toBase58() !== TREASURY_WALLET_ADDRESS) {
+        throw new Error(
+          "Treasury private key does not match configured address"
+        );
+      }
+
+      // Determine which token program to use
+      let tokenProgram = TOKEN_PROGRAM_ID;
+      let fromTokenAccount: PublicKey;
+      let toTokenAccount: PublicKey;
+
+      // Try legacy program first
+      try {
+        fromTokenAccount = await getAssociatedTokenAddress(
+          FLOWAI_TOKEN_MINT,
+          treasuryKeypair.publicKey,
+          false,
+          TOKEN_PROGRAM_ID
+        );
+
+        await getAccount(
+          this.connection,
+          fromTokenAccount,
+          "confirmed",
+          TOKEN_PROGRAM_ID
+        );
+        tokenProgram = TOKEN_PROGRAM_ID;
+      } catch (error) {
+        // Try Token-2022 program
+        try {
+          fromTokenAccount = await getAssociatedTokenAddress(
+            FLOWAI_TOKEN_MINT,
+            treasuryKeypair.publicKey,
+            false,
+            TOKEN_2022_PROGRAM_ID
+          );
+
+          await getAccount(
+            this.connection,
+            fromTokenAccount,
+            "confirmed",
+            TOKEN_2022_PROGRAM_ID
+          );
+          tokenProgram = TOKEN_2022_PROGRAM_ID;
+        } catch (error2) {
+          throw new Error("Treasury FlowAI token account not found");
+        }
+      }
+
+      // Get destination token account
+      toTokenAccount = await getAssociatedTokenAddress(
+        FLOWAI_TOKEN_MINT,
+        PAYMENT_DESTINATION_SPL,
+        false,
+        tokenProgram
+      );
+
+      // Check if destination account exists, create if not
+      let destinationAccountExists = true;
+      try {
+        await getAccount(
+          this.connection,
+          toTokenAccount,
+          "confirmed",
+          tokenProgram
+        );
+      } catch (error) {
+        destinationAccountExists = false;
+      }
+
+      // Check treasury token balance
+      const fromAccountInfo = await getAccount(
+        this.connection,
+        fromTokenAccount,
+        "confirmed",
+        tokenProgram
+      );
+
+      if (Number(fromAccountInfo.amount) < tokenAmount) {
+        throw new Error(
+          `Insufficient treasury FlowAI token balance. Required: ${tokenAmount}, Available: ${fromAccountInfo.amount}`
+        );
+      }
+
+      // Create transaction
+      const transaction = new Transaction();
+
+      // Add create account instruction if needed
+      if (!destinationAccountExists) {
+        transaction.add(
+          createAssociatedTokenAccountInstruction(
+            treasuryKeypair.publicKey, // payer
+            toTokenAccount, // associatedToken
+            PAYMENT_DESTINATION_SPL, // owner
+            FLOWAI_TOKEN_MINT, // mint
+            tokenProgram
+          )
+        );
+      }
+
+      // Add transfer instruction
+      transaction.add(
+        createTransferInstruction(
+          fromTokenAccount,
+          toTokenAccount,
+          treasuryKeypair.publicKey,
+          tokenAmount,
+          [],
+          tokenProgram
+        )
+      );
+
+      // Get recent blockhash
+      const { blockhash } = await this.connection.getLatestBlockhash();
+      transaction.recentBlockhash = blockhash;
+      transaction.feePayer = treasuryKeypair.publicKey;
+
+      // Sign and send transaction
+      const signature = await sendAndConfirmTransaction(
+        this.connection,
+        transaction,
+        [treasuryKeypair],
+        { commitment: "confirmed" }
+      );
+
+      logger.info("FlowAI tokens transferred to marketing wallet", {
+        signature,
+        amount: tokenAmount,
+        from: TREASURY_WALLET_ADDRESS,
+        to: PAYMENT_DESTINATION_SPL.toBase58(),
+        description,
+      });
+
+      return { success: true, signature };
+    } catch (error) {
+      logger.error(
+        "Failed to transfer FlowAI tokens to marketing wallet",
+        error
+      );
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Token transfer failed",
+      };
     }
   }
 
@@ -158,9 +332,41 @@ export class SolanaPaymentService {
         to: PAYMENT_DESTINATION_SOL.toBase58(),
       });
 
+      // If tokenAmount is provided, transfer FlowAI tokens to marketing wallet
+      let marketingTransferSignature: string | undefined;
+      if (paymentDetails.tokenAmount && paymentDetails.tokenAmount > 0) {
+        logger.info("Transferring FlowAI tokens to marketing wallet", {
+          tokenAmount: paymentDetails.tokenAmount,
+          description: paymentDetails.description,
+        });
+
+        const marketingTransfer = await this.transferFlowAITokensToMarketing(
+          paymentDetails.tokenAmount,
+          paymentDetails.description
+        );
+
+        if (marketingTransfer.success) {
+          marketingTransferSignature = marketingTransfer.signature;
+          logger.info(
+            "FlowAI tokens successfully transferred to marketing wallet",
+            {
+              tokenTransferSignature: marketingTransferSignature,
+              tokenAmount: paymentDetails.tokenAmount,
+            }
+          );
+        } else {
+          logger.warn("Failed to transfer FlowAI tokens to marketing wallet", {
+            error: marketingTransfer.error,
+            tokenAmount: paymentDetails.tokenAmount,
+          });
+          // Don't fail the main transaction, just log the warning
+        }
+      }
+
       return {
         success: true,
         signature,
+        marketingTransferSignature, // Include the marketing transfer signature if successful
       };
     } catch (error) {
       logger.error("SOL payment failed", error);
@@ -255,7 +461,12 @@ export class SolanaPaymentService {
         tokenProgram
       );
 
-      // Check token balance
+      // FlowAI tokens have 9 decimals, so convert human-readable amount to raw amount
+      const FLOWAI_TOKEN_DECIMALS = 9;
+      const rawAmount =
+        paymentDetails.amount * Math.pow(10, FLOWAI_TOKEN_DECIMALS);
+
+      // Check token balance (compare raw amounts)
       const fromAccountInfo = await getAccount(
         this.connection,
         fromTokenAccount,
@@ -263,7 +474,7 @@ export class SolanaPaymentService {
         tokenProgram
       );
 
-      if (Number(fromAccountInfo.amount) < paymentDetails.amount) {
+      if (Number(fromAccountInfo.amount) < rawAmount) {
         throw new Error("Insufficient FlowAI token balance");
       }
 
@@ -276,13 +487,13 @@ export class SolanaPaymentService {
         throw new Error("Insufficient SOL balance for transaction fees");
       }
 
-      // Create transaction
+      // Create transaction with raw amount
       const transaction = new Transaction().add(
         createTransferInstruction(
           fromTokenAccount,
           toTokenAccount,
           fromKeypair.publicKey,
-          paymentDetails.amount,
+          BigInt(rawAmount), // Use raw amount with decimals
           [],
           tokenProgram
         )
@@ -370,9 +581,13 @@ export class SolanaPaymentService {
             tokenProgram
           );
 
-          const balance = Number(accountInfo.amount);
+          const rawBalance = Number(accountInfo.amount);
+          // FlowAI tokens have 9 decimals, so convert raw amount to human-readable
+          const balance = rawBalance / Math.pow(10, 9);
+
           logger.debug("Found FlowAI token balance", {
             walletAddress,
+            rawBalance,
             balance,
             tokenProgram:
               tokenProgram === TOKEN_2022_PROGRAM_ID

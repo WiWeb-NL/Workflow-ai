@@ -1,13 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import {
-  AlertCircle,
-  Coins,
-  ExternalLink,
-  Loader2,
-  Wallet,
-} from "lucide-react";
+import { AlertCircle, Coins, Loader2, Wallet } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,34 +41,40 @@ interface SolanaWallet {
   flowaiTokenBalance?: number;
 }
 
+interface SolPriceInfo {
+  currentPrice: number;
+  priceChange24h: number;
+  lastUpdated: string;
+}
+
 const DEFAULT_PRICING: PricingTier[] = [
   {
-    id: "starter",
+    id: "starter_100",
     name: "Starter Pack",
     tokenAmount: 100,
-    solPrice: 0.1,
+    solPrice: 0.054, // ~$10
     bonusTokens: 0,
   },
   {
-    id: "standard",
-    name: "Standard Pack",
+    id: "basic_500",
+    name: "Basic Pack",
     tokenAmount: 500,
-    solPrice: 0.4,
-    bonusTokens: 25,
+    solPrice: 0.27, // ~$50
+    bonusTokens: 50,
     popular: true,
   },
   {
-    id: "premium",
-    name: "Premium Pack",
+    id: "pro_1000",
+    name: "Pro Pack",
     tokenAmount: 1000,
-    solPrice: 0.7,
-    bonusTokens: 100,
+    solPrice: 0.54, // ~$100
+    bonusTokens: 150,
   },
   {
-    id: "enterprise",
+    id: "enterprise_5000",
     name: "Enterprise Pack",
     tokenAmount: 5000,
-    solPrice: 3.0,
+    solPrice: 2.16, // ~$400
     bonusTokens: 1000,
   },
 ];
@@ -86,8 +86,8 @@ export function TokenPurchaseDialog({
 }: TokenPurchaseDialogProps) {
   const [pricing, setPricing] = useState<PricingTier[]>(DEFAULT_PRICING);
   const [wallet, setWallet] = useState<SolanaWallet | null>(null);
+  const [solPriceInfo, setSolPriceInfo] = useState<SolPriceInfo | null>(null);
   const [selectedTier, setSelectedTier] = useState<PricingTier | null>(null);
-  const [customAmount, setCustomAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [step, setStep] = useState<
@@ -112,6 +112,10 @@ export function TokenPurchaseDialog({
         const pricingData = await pricingResponse.json();
         if (pricingData.pricing && pricingData.pricing.length > 0) {
           setPricing(pricingData.pricing);
+        }
+        // Set SOL price info if available
+        if (pricingData.solPriceInfo) {
+          setSolPriceInfo(pricingData.solPriceInfo);
         }
       }
 
@@ -146,7 +150,6 @@ export function TokenPurchaseDialog({
       loadPricingAndWallet();
       setStep("select");
       setSelectedTier(null);
-      setCustomAmount("");
       setError(null);
     }
   }, [isOpen, loadPricingAndWallet]);
@@ -154,21 +157,6 @@ export function TokenPurchaseDialog({
   const handleTierSelect = (tier: PricingTier) => {
     setSelectedTier(tier);
     setStep("payment");
-  };
-
-  const handleCustomPurchase = () => {
-    const amount = parseInt(customAmount);
-    if (amount > 0) {
-      const customTier: PricingTier = {
-        id: "custom",
-        name: "Custom Amount",
-        tokenAmount: amount,
-        solPrice: amount * 0.001, // Rough conversion rate
-        bonusTokens: 0,
-      };
-      setSelectedTier(customTier);
-      setStep("payment");
-    }
   };
 
   const handlePaymentConfirm = async (
@@ -180,20 +168,27 @@ export function TokenPurchaseDialog({
       setStep("processing");
       setError(null);
 
+      // Calculate FlowAI tokens needed for FLOWAI payment method
+      const calculateFlowAITokensNeeded = (credits: number) => {
+        if (!solPriceInfo) return credits; // Fallback to 1:1 if no price info
+        const creditsPerSol = solPriceInfo.currentPrice / 0.1; // How many credits per SOL
+        const flowaiTokensPerCredit = 3000000 / creditsPerSol; // FlowAI tokens needed per credit
+        return Math.floor(credits * flowaiTokensPerCredit);
+      };
+
       const paymentAmount =
         paymentMethod === "SOL"
           ? selectedTier.solPrice
-          : selectedTier.tokenAmount;
+          : calculateFlowAITokensNeeded(selectedTier.tokenAmount); // Calculate actual FlowAI tokens needed
 
       const response = await fetch("/api/tokens/flowai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: "purchase_tokens",
-          tokenAmount: selectedTier.tokenAmount + selectedTier.bonusTokens,
+          pricingTierId: selectedTier.id,
           paymentCurrency: paymentMethod,
           paymentAmount,
-          pricingTierId: selectedTier.id,
         }),
       });
 
@@ -228,8 +223,32 @@ export function TokenPurchaseDialog({
   const renderSelectStep = () => (
     <div className="space-y-4">
       <div className="text-sm text-muted-foreground">
-        Choose a token package or enter a custom amount:
+        Choose a credit package or enter a custom amount:
       </div>
+
+      {/* SOL Price Info */}
+      {solPriceInfo && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm">
+          <div className="flex items-center justify-between">
+            <span className="font-medium text-blue-900">
+              Live SOL Price: ${solPriceInfo.currentPrice.toFixed(2)}
+            </span>
+            <span
+              className={`text-xs ${
+                solPriceInfo.priceChange24h >= 0
+                  ? "text-green-600"
+                  : "text-red-600"
+              }`}
+            >
+              {solPriceInfo.priceChange24h >= 0 ? "+" : ""}
+              {solPriceInfo.priceChange24h.toFixed(2)}% (24h)
+            </span>
+          </div>
+          <div className="text-xs text-blue-700 mt-1">
+            Updated: {new Date(solPriceInfo.lastUpdated).toLocaleTimeString()}
+          </div>
+        </div>
+      )}
 
       {/* Predefined Tiers */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -255,7 +274,7 @@ export function TokenPurchaseDialog({
                   <span className="text-2xl font-bold">
                     {tier.tokenAmount.toLocaleString()}
                   </span>
-                  <span className="text-xs text-muted-foreground">tokens</span>
+                  <span className="text-xs text-muted-foreground">credits</span>
                 </div>
                 {tier.bonusTokens > 0 && (
                   <div className="flex items-center justify-between text-green-600">
@@ -269,36 +288,13 @@ export function TokenPurchaseDialog({
                 <div className="flex items-center justify-between">
                   <span className="font-medium">{tier.solPrice} SOL</span>
                   <span className="text-xs text-muted-foreground">
-                    ≈ {tier.tokenAmount + tier.bonusTokens} total tokens
+                    ≈ {tier.tokenAmount + tier.bonusTokens} total credits
                   </span>
                 </div>
               </div>
             </CardContent>
           </Card>
         ))}
-      </div>
-
-      {/* Custom Amount */}
-      <Separator />
-      <div className="space-y-2">
-        <Label htmlFor="custom-amount">Custom Amount</Label>
-        <div className="flex space-x-2">
-          <Input
-            id="custom-amount"
-            type="number"
-            placeholder="Enter token amount"
-            value={customAmount}
-            onChange={(e) => setCustomAmount(e.target.value)}
-            min="1"
-          />
-          <Button
-            variant="outline"
-            onClick={handleCustomPurchase}
-            disabled={!customAmount || parseInt(customAmount) <= 0}
-          >
-            Select
-          </Button>
-        </div>
       </div>
     </div>
   );
@@ -348,17 +344,12 @@ export function TokenPurchaseDialog({
 
                 {/* SOL Payment */}
                 <Card
-                  className="cursor-pointer hover:bg-gray-50"
+                  className="cursor-pointer "
                   onClick={() => handlePaymentConfirm("SOL")}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                          <span className="text-purple-600 font-bold text-sm">
-                            SOL
-                          </span>
-                        </div>
                         <div>
                           <div className="font-medium">Pay with SOL</div>
                           <div className="text-sm text-muted-foreground">
@@ -388,15 +379,12 @@ export function TokenPurchaseDialog({
 
                 {/* FlowAI Token Payment */}
                 <Card
-                  className="cursor-pointer hover:bg-gray-50"
+                  className="cursor-pointer"
                   onClick={() => handlePaymentConfirm("FLOWAI_TOKEN")}
                 >
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Coins className="w-4 h-4 text-blue-600" />
-                        </div>
                         <div>
                           <div className="font-medium">
                             Pay with FlowAI Tokens
@@ -408,19 +396,51 @@ export function TokenPurchaseDialog({
                       </div>
                       <div className="text-right">
                         <div className="font-bold">
-                          {selectedTier.tokenAmount} FLOWAI
+                          {solPriceInfo
+                            ? (() => {
+                                const creditsPerSol =
+                                  solPriceInfo.currentPrice / 0.1;
+                                const flowaiTokensPerCredit =
+                                  3000000 / creditsPerSol;
+                                const tokensNeeded = Math.floor(
+                                  selectedTier.tokenAmount *
+                                    flowaiTokensPerCredit
+                                );
+                                return `${tokensNeeded.toLocaleString()} FLOWAI`;
+                              })()
+                            : `${selectedTier.tokenAmount.toLocaleString()} FLOWAI`}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          {(wallet.flowaiTokenBalance ?? 0) >=
-                          selectedTier.tokenAmount ? (
-                            <span className="text-green-600">
-                              ✓ Sufficient balance
-                            </span>
-                          ) : (
-                            <span className="text-red-600">
-                              ✗ Insufficient balance
-                            </span>
-                          )}
+                          {(() => {
+                            if (!solPriceInfo) return null;
+                            const creditsPerSol =
+                              solPriceInfo.currentPrice / 0.1;
+                            const flowaiTokensPerCredit =
+                              3000000 / creditsPerSol;
+                            const tokensNeeded = Math.floor(
+                              selectedTier.tokenAmount * flowaiTokensPerCredit
+                            );
+                            return (wallet.flowaiTokenBalance ?? 0) >=
+                              tokensNeeded ? (
+                              <span className="text-green-600">
+                                ✓ Sufficient balance
+                              </span>
+                            ) : (
+                              <span className="text-red-600">
+                                ✗ Insufficient balance
+                              </span>
+                            );
+                          })() ||
+                            ((wallet.flowaiTokenBalance ?? 0) >=
+                            selectedTier.tokenAmount ? (
+                              <span className="text-green-600">
+                                ✓ Sufficient balance
+                              </span>
+                            ) : (
+                              <span className="text-red-600">
+                                ✗ Insufficient balance
+                              </span>
+                            ))}
                         </div>
                       </div>
                     </div>
@@ -481,7 +501,7 @@ export function TokenPurchaseDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Purchase FlowAI Tokens</DialogTitle>
+          <DialogTitle>Purchase Credits</DialogTitle>
         </DialogHeader>
 
         {error && (
