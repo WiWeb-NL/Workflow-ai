@@ -1,40 +1,24 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { flowaiTokenService } from "@/lib/flowai-tokens";
-import { headers } from "next/headers";
-
-async function getUserIdFromRequest(): Promise<string | null> {
-  try {
-    // Try to get user ID from auth headers - this is a simplified approach
-    // In a real app, you'd validate the session token properly
-    const headersList = await headers();
-    const authHeader = headersList.get("authorization");
-
-    if (authHeader) {
-      // This is a simplified extraction - in production you'd validate the JWT properly
-      // For now, assume it's in the format "Bearer userId"
-      const userId = authHeader.split(" ")[1];
-      return userId;
-    }
-
-    return null;
-  } catch (error) {
-    console.error("Error extracting user ID:", error);
-    return null;
-  }
-}
+import { auth } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   try {
-    const userId = await getUserIdFromRequest();
+    // Use proper auth system instead of manual header parsing
+    const session = await auth.api.getSession({
+      headers: request.headers,
+    });
 
-    if (!userId) {
+    if (!session?.user?.id) {
       return NextResponse.json(
         { canExecute: false, reason: "Authentication required" },
         { status: 401 }
       );
     }
 
-    const hasTokens = await flowaiTokenService.canExecuteWorkflow(userId);
+    const hasTokens = await flowaiTokenService.canExecuteWorkflow(
+      session.user.id
+    );
 
     if (!hasTokens) {
       return NextResponse.json(

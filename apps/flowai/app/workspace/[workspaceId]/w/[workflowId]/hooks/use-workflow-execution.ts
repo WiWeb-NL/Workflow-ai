@@ -150,6 +150,45 @@ export function useWorkflowExecution() {
         return;
       }
 
+      // Check credit balance before starting execution
+      try {
+        const creditResponse = await fetch("/api/workflow/check-credits", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!creditResponse.ok) {
+          const errorData = await creditResponse.json();
+          addNotification(
+            "error",
+            errorData.reason || "Failed to check credit balance",
+            activeWorkflowId
+          );
+          return;
+        }
+
+        const creditData = await creditResponse.json();
+
+        if (!creditData.canExecute) {
+          addNotification(
+            "error",
+            creditData.reason || "Insufficient credits to execute workflow",
+            activeWorkflowId
+          );
+          return;
+        }
+      } catch (error) {
+        logger.error("Error checking credits:", error);
+        addNotification(
+          "error",
+          "Failed to verify credit balance. Please try again.",
+          activeWorkflowId
+        );
+        return;
+      }
+
       // Reset execution result and set execution state
       setExecutionResult(null);
       setIsExecuting(true);
