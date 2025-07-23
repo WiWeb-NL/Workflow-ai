@@ -1,21 +1,21 @@
-import { eq } from 'drizzle-orm'
-import { isProd } from '@/lib/environment'
-import { createLogger } from '@/lib/logs/console-logger'
-import { db } from '@/db'
-import { userStats } from '@/db/schema'
-import { getUserUsageLimit } from '../core/usage'
+import { eq } from "drizzle-orm";
+import { isProd } from "@/lib/environment";
+import { createLogger } from "@/lib/logs/console-logger";
+import { db } from "@/db";
+import { userStats } from "@/db/schema";
+import { getUserUsageLimit } from "../core/usage";
 
-const logger = createLogger('UsageMonitor')
+const logger = createLogger("UsageMonitor");
 
 // Percentage threshold for showing warning
-const WARNING_THRESHOLD = 80
+const WARNING_THRESHOLD = 80;
 
 interface UsageData {
-  percentUsed: number
-  isWarning: boolean
-  isExceeded: boolean
-  currentUsage: number
-  limit: number
+  percentUsed: number;
+  isWarning: boolean;
+  isExceeded: boolean;
+  currentUsage: number;
+  limit: number;
 }
 
 /**
@@ -27,13 +27,18 @@ export async function checkUsageStatus(userId: string): Promise<UsageData> {
     // In development, always return permissive limits
     if (!isProd) {
       // Get actual usage from the database for display purposes
-      const statsRecords = await db.select().from(userStats).where(eq(userStats.userId, userId))
+      const statsRecords = await db
+        .select()
+        .from(userStats)
+        .where(eq(userStats.userId, userId));
       const currentUsage =
         statsRecords.length > 0
           ? Number.parseFloat(
-              statsRecords[0].currentPeriodCost?.toString() || statsRecords[0].totalCost.toString()
+              statsRecords[0].currentPeriodCost?.toString() ||
+                statsRecords[0].totalCost?.toString() ||
+                "0"
             )
-          : 0
+          : 0;
 
       return {
         percentUsed: Math.min(Math.round((currentUsage / 1000) * 100), 100),
@@ -41,19 +46,22 @@ export async function checkUsageStatus(userId: string): Promise<UsageData> {
         isExceeded: false,
         currentUsage,
         limit: 1000,
-      }
+      };
     }
 
     // Get usage limit from user_stats (new method)
-    const limit = await getUserUsageLimit(userId)
-    logger.info('Using stored usage limit', { userId, limit })
+    const limit = await getUserUsageLimit(userId);
+    logger.info("Using stored usage limit", { userId, limit });
 
     // Get actual usage from the database
-    const statsRecords = await db.select().from(userStats).where(eq(userStats.userId, userId))
+    const statsRecords = await db
+      .select()
+      .from(userStats)
+      .where(eq(userStats.userId, userId));
 
     // If no stats record exists, create a default one
     if (statsRecords.length === 0) {
-      logger.info('No usage stats found for user', { userId, limit })
+      logger.info("No usage stats found for user", { userId, limit });
 
       return {
         percentUsed: 0,
@@ -61,29 +69,31 @@ export async function checkUsageStatus(userId: string): Promise<UsageData> {
         isExceeded: false,
         currentUsage: 0,
         limit,
-      }
+      };
     }
 
     // Get the current period cost from the user stats (use currentPeriodCost if available, fallback to totalCost)
     const currentUsage = Number.parseFloat(
-      statsRecords[0].currentPeriodCost?.toString() || statsRecords[0].totalCost.toString()
-    )
+      statsRecords[0].currentPeriodCost?.toString() ||
+        statsRecords[0].totalCost?.toString() ||
+        "0"
+    );
 
     // Calculate percentage used
-    const percentUsed = Math.min(Math.round((currentUsage / limit) * 100), 100)
+    const percentUsed = Math.min(Math.round((currentUsage / limit) * 100), 100);
 
     // Check if usage exceeds threshold or limit
-    const isWarning = percentUsed >= WARNING_THRESHOLD && percentUsed < 100
-    const isExceeded = currentUsage >= limit
+    const isWarning = percentUsed >= WARNING_THRESHOLD && percentUsed < 100;
+    const isExceeded = currentUsage >= limit;
 
-    logger.info('Final usage statistics', {
+    logger.info("Final usage statistics", {
       userId,
       currentUsage,
       limit,
       percentUsed,
       isWarning,
       isExceeded,
-    })
+    });
 
     return {
       percentUsed,
@@ -91,12 +101,15 @@ export async function checkUsageStatus(userId: string): Promise<UsageData> {
       isExceeded,
       currentUsage,
       limit,
-    }
+    };
   } catch (error) {
-    logger.error('Error checking usage status', {
-      error: error instanceof Error ? { message: error.message, stack: error.stack } : error,
+    logger.error("Error checking usage status", {
+      error:
+        error instanceof Error
+          ? { message: error.message, stack: error.stack }
+          : error,
       userId,
-    })
+    });
 
     // Return default values in case of error
     return {
@@ -105,7 +118,7 @@ export async function checkUsageStatus(userId: string): Promise<UsageData> {
       isExceeded: false,
       currentUsage: 0,
       limit: 0,
-    }
+    };
   }
 }
 
@@ -117,54 +130,54 @@ export async function checkAndNotifyUsage(userId: string): Promise<void> {
   try {
     // Skip usage notifications in development
     if (!isProd) {
-      return
+      return;
     }
 
-    const usageData = await checkUsageStatus(userId)
+    const usageData = await checkUsageStatus(userId);
 
     if (usageData.isExceeded) {
       // User has exceeded their limit
-      logger.warn('User has exceeded usage limits', {
+      logger.warn("User has exceeded usage limits", {
         userId,
         usage: usageData.currentUsage,
         limit: usageData.limit,
-      })
+      });
 
       // Dispatch event to show a UI notification
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         window.dispatchEvent(
-          new CustomEvent('usage-exceeded', {
+          new CustomEvent("usage-exceeded", {
             detail: { usageData },
           })
-        )
+        );
       }
     } else if (usageData.isWarning) {
       // User is approaching their limit
-      logger.info('User approaching usage limits', {
+      logger.info("User approaching usage limits", {
         userId,
         usage: usageData.currentUsage,
         limit: usageData.limit,
         percent: usageData.percentUsed,
-      })
+      });
 
       // Dispatch event to show a UI notification
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         window.dispatchEvent(
-          new CustomEvent('usage-warning', {
+          new CustomEvent("usage-warning", {
             detail: { usageData },
           })
-        )
+        );
 
         // Optionally open the subscription tab in settings
         window.dispatchEvent(
-          new CustomEvent('open-settings', {
-            detail: { tab: 'subscription' },
+          new CustomEvent("open-settings", {
+            detail: { tab: "subscription" },
           })
-        )
+        );
       }
     }
   } catch (error) {
-    logger.error('Error in usage notification system', { error, userId })
+    logger.error("Error in usage notification system", { error, userId });
   }
 }
 
@@ -176,10 +189,10 @@ export async function checkAndNotifyUsage(userId: string): Promise<void> {
  * @returns An object containing the exceeded status and usage details
  */
 export async function checkServerSideUsageLimits(userId: string): Promise<{
-  isExceeded: boolean
-  currentUsage: number
-  limit: number
-  message?: string
+  isExceeded: boolean;
+  currentUsage: number;
+  limit: number;
+  message?: string;
 }> {
   try {
     // In development, always allow execution
@@ -188,13 +201,13 @@ export async function checkServerSideUsageLimits(userId: string): Promise<{
         isExceeded: false,
         currentUsage: 0,
         limit: 1000,
-      }
+      };
     }
 
-    logger.info('Server-side checking usage limits for user', { userId })
+    logger.info("Server-side checking usage limits for user", { userId });
 
     // Get usage data using the same function we use for client-side
-    const usageData = await checkUsageStatus(userId)
+    const usageData = await checkUsageStatus(userId);
 
     return {
       isExceeded: usageData.isExceeded,
@@ -203,12 +216,15 @@ export async function checkServerSideUsageLimits(userId: string): Promise<{
       message: usageData.isExceeded
         ? `Usage limit exceeded: ${usageData.currentUsage.toFixed(2)}$ used of ${usageData.limit}$ limit. Please upgrade your plan to continue.`
         : undefined,
-    }
+    };
   } catch (error) {
-    logger.error('Error in server-side usage limit check', {
-      error: error instanceof Error ? { message: error.message, stack: error.stack } : error,
+    logger.error("Error in server-side usage limit check", {
+      error:
+        error instanceof Error
+          ? { message: error.message, stack: error.stack }
+          : error,
       userId,
-    })
+    });
 
     // Be conservative in case of error - allow execution but log the issue
     return {
@@ -216,6 +232,6 @@ export async function checkServerSideUsageLimits(userId: string): Promise<{
       currentUsage: 0,
       limit: 0,
       message: `Error checking usage limits: ${error instanceof Error ? error.message : String(error)}`,
-    }
+    };
   }
 }

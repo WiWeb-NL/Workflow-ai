@@ -1,4 +1,5 @@
 import {
+  Coins,
   CreditCard,
   KeyRound,
   KeySquare,
@@ -21,6 +22,7 @@ interface SettingsNavigationProps {
       | "account"
       | "credentials"
       | "apikeys"
+      | "flowai-tokens"
       | "subscription"
       | "team"
       | "privacy"
@@ -35,6 +37,7 @@ type NavigationItem = {
     | "account"
     | "credentials"
     | "apikeys"
+    | "flowai-tokens"
     | "subscription"
     | "team"
     | "privacy";
@@ -69,6 +72,11 @@ const allNavigationItems: NavigationItem[] = [
     id: "apikeys",
     label: "API Keys",
     icon: KeySquare,
+  },
+  {
+    id: "flowai-tokens",
+    label: "FlowAI Tokens",
+    icon: Coins,
   },
   // {
   //   id: 'privacy',

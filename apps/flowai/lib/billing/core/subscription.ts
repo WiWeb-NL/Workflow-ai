@@ -1,18 +1,18 @@
-import { and, eq, inArray } from 'drizzle-orm'
-import { isProd } from '@/lib/environment'
-import { createLogger } from '@/lib/logs/console-logger'
-import { db } from '@/db'
-import { member, subscription, userStats } from '@/db/schema'
-import { client } from '../../auth-client'
+import { and, eq, inArray } from "drizzle-orm";
+import { isProd } from "@/lib/environment";
+import { createLogger } from "@/lib/logs/console-logger";
+import { db } from "@/db";
+import { member, subscription, userStats } from "@/db/schema";
+import { client } from "../../auth-client";
 import {
   calculateDefaultUsageLimit,
   checkEnterprisePlan,
   checkProPlan,
   checkTeamPlan,
-} from '../subscriptions/utils'
-import type { UserSubscriptionState } from '../types'
+} from "../subscriptions/utils";
+import type { UserSubscriptionState } from "../types";
 
-const logger = createLogger('SubscriptionCore')
+const logger = createLogger("SubscriptionCore");
 
 /**
  * Core subscription management - single source of truth
@@ -29,43 +29,58 @@ export async function getHighestPrioritySubscription(userId: string) {
     const personalSubs = await db
       .select()
       .from(subscription)
-      .where(and(eq(subscription.referenceId, userId), eq(subscription.status, 'active')))
+      .where(
+        and(
+          eq(subscription.referenceId, userId),
+          eq(subscription.status, "active")
+        )
+      );
 
     // Get organization memberships
     const memberships = await db
       .select({ organizationId: member.organizationId })
       .from(member)
-      .where(eq(member.userId, userId))
+      .where(eq(member.userId, userId));
 
-    const orgIds = memberships.map((m: { organizationId: string }) => m.organizationId)
+    const orgIds = memberships.map(
+      (m: { organizationId: string }) => m.organizationId
+    );
 
     // Get organization subscriptions
-    let orgSubs: any[] = []
+    let orgSubs: any[] = [];
     if (orgIds.length > 0) {
       orgSubs = await db
         .select()
         .from(subscription)
-        .where(and(inArray(subscription.referenceId, orgIds), eq(subscription.status, 'active')))
+        .where(
+          and(
+            inArray(subscription.referenceId, orgIds),
+            eq(subscription.status, "active")
+          )
+        );
     }
 
-    const allSubs = [...personalSubs, ...orgSubs]
+    const allSubs = [...personalSubs, ...orgSubs];
 
-    if (allSubs.length === 0) return null
+    if (allSubs.length === 0) return null;
 
     // Return highest priority subscription
-    const enterpriseSub = allSubs.find((s) => checkEnterprisePlan(s))
-    if (enterpriseSub) return enterpriseSub
+    const enterpriseSub = allSubs.find((s) => checkEnterprisePlan(s));
+    if (enterpriseSub) return enterpriseSub;
 
-    const teamSub = allSubs.find((s) => checkTeamPlan(s))
-    if (teamSub) return teamSub
+    const teamSub = allSubs.find((s) => checkTeamPlan(s));
+    if (teamSub) return teamSub;
 
-    const proSub = allSubs.find((s) => checkProPlan(s))
-    if (proSub) return proSub
+    const proSub = allSubs.find((s) => checkProPlan(s));
+    if (proSub) return proSub;
 
-    return null
+    return null;
   } catch (error) {
-    logger.error('Error getting highest priority subscription', { error, userId })
-    return null
+    logger.error("Error getting highest priority subscription", {
+      error,
+      userId,
+    });
+    return null;
   }
 }
 
@@ -76,24 +91,27 @@ export async function isProPlan(userId: string): Promise<boolean> {
   try {
     // In development, enable Pro features for easier testing
     if (!isProd) {
-      return true
+      return true;
     }
 
-    const subscription = await getHighestPrioritySubscription(userId)
+    const subscription = await getHighestPrioritySubscription(userId);
     const isPro =
       subscription &&
       (checkProPlan(subscription) ||
         checkTeamPlan(subscription) ||
-        checkEnterprisePlan(subscription))
+        checkEnterprisePlan(subscription));
 
     if (isPro) {
-      logger.info('User has pro-level plan', { userId, plan: subscription.plan })
+      logger.info("User has pro-level plan", {
+        userId,
+        plan: subscription.plan,
+      });
     }
 
-    return !!isPro
+    return !!isPro;
   } catch (error) {
-    logger.error('Error checking pro plan status', { error, userId })
-    return false
+    logger.error("Error checking pro plan status", { error, userId });
+    return false;
   }
 }
 
@@ -103,21 +121,25 @@ export async function isProPlan(userId: string): Promise<boolean> {
 export async function isTeamPlan(userId: string): Promise<boolean> {
   try {
     if (!isProd) {
-      return true
+      return true;
     }
 
-    const subscription = await getHighestPrioritySubscription(userId)
+    const subscription = await getHighestPrioritySubscription(userId);
     const isTeam =
-      subscription && (checkTeamPlan(subscription) || checkEnterprisePlan(subscription))
+      subscription &&
+      (checkTeamPlan(subscription) || checkEnterprisePlan(subscription));
 
     if (isTeam) {
-      logger.info('User has team-level plan', { userId, plan: subscription.plan })
+      logger.info("User has team-level plan", {
+        userId,
+        plan: subscription.plan,
+      });
     }
 
-    return !!isTeam
+    return !!isTeam;
   } catch (error) {
-    logger.error('Error checking team plan status', { error, userId })
-    return false
+    logger.error("Error checking team plan status", { error, userId });
+    return false;
   }
 }
 
@@ -127,20 +149,23 @@ export async function isTeamPlan(userId: string): Promise<boolean> {
 export async function isEnterprisePlan(userId: string): Promise<boolean> {
   try {
     if (!isProd) {
-      return true
+      return true;
     }
 
-    const subscription = await getHighestPrioritySubscription(userId)
-    const isEnterprise = subscription && checkEnterprisePlan(subscription)
+    const subscription = await getHighestPrioritySubscription(userId);
+    const isEnterprise = subscription && checkEnterprisePlan(subscription);
 
     if (isEnterprise) {
-      logger.info('User has enterprise plan', { userId, plan: subscription.plan })
+      logger.info("User has enterprise plan", {
+        userId,
+        plan: subscription.plan,
+      });
     }
 
-    return !!isEnterprise
+    return !!isEnterprise;
   } catch (error) {
-    logger.error('Error checking enterprise plan status', { error, userId })
-    return false
+    logger.error("Error checking enterprise plan status", { error, userId });
+    return false;
   }
 }
 
@@ -150,43 +175,48 @@ export async function isEnterprisePlan(userId: string): Promise<boolean> {
 export async function hasExceededCostLimit(userId: string): Promise<boolean> {
   try {
     if (!isProd) {
-      return false
+      return false;
     }
 
-    const subscription = await getHighestPrioritySubscription(userId)
+    const subscription = await getHighestPrioritySubscription(userId);
 
     // Calculate usage limit
-    let limit = 5 // Default free tier limit
+    let limit = 5; // Default free tier limit
     if (subscription) {
-      limit = calculateDefaultUsageLimit(subscription)
-      logger.info('Using subscription-based limit', {
+      limit = calculateDefaultUsageLimit(subscription);
+      logger.info("Using subscription-based limit", {
         userId,
         plan: subscription.plan,
         seats: subscription.seats || 1,
         limit,
-      })
+      });
     } else {
-      logger.info('Using free tier limit', { userId, limit })
+      logger.info("Using free tier limit", { userId, limit });
     }
 
     // Get user stats to check current period usage
-    const statsRecords = await db.select().from(userStats).where(eq(userStats.userId, userId))
+    const statsRecords = await db
+      .select()
+      .from(userStats)
+      .where(eq(userStats.userId, userId));
 
     if (statsRecords.length === 0) {
-      return false
+      return false;
     }
 
     // Use current period cost instead of total cost for accurate billing period tracking
     const currentCost = Number.parseFloat(
-      statsRecords[0].currentPeriodCost?.toString() || statsRecords[0].totalCost.toString()
-    )
+      statsRecords[0].currentPeriodCost?.toString() ||
+        statsRecords[0].totalCost?.toString() ||
+        "0"
+    );
 
-    logger.info('Checking cost limit', { userId, currentCost, limit })
+    logger.info("Checking cost limit", { userId, currentCost, limit });
 
-    return currentCost >= limit
+    return currentCost >= limit;
   } catch (error) {
-    logger.error('Error checking cost limit', { error, userId })
-    return false // Be conservative in case of error
+    logger.error("Error checking cost limit", { error, userId });
+    return false; // Be conservative in case of error
   }
 }
 
@@ -196,25 +226,27 @@ export async function hasExceededCostLimit(userId: string): Promise<boolean> {
 export async function isSharingEnabled(userId: string): Promise<boolean> {
   try {
     if (!isProd) {
-      return true
+      return true;
     }
 
-    const subscription = await getHighestPrioritySubscription(userId)
+    const subscription = await getHighestPrioritySubscription(userId);
 
     if (!subscription) {
-      return false // Free users don't have sharing
+      return false; // Free users don't have sharing
     }
 
     // Use Better-Auth client to check feature flags
     const { data: subscriptions } = await client.subscription.list({
       query: { referenceId: subscription.referenceId },
-    })
+    });
 
-    const activeSubscription = subscriptions?.find((sub) => sub.status === 'active')
-    return !!activeSubscription?.limits?.sharingEnabled
+    const activeSubscription = subscriptions?.find(
+      (sub) => sub.status === "active"
+    );
+    return !!activeSubscription?.limits?.sharingEnabled;
   } catch (error) {
-    logger.error('Error checking sharing permission', { error, userId })
-    return false
+    logger.error("Error checking sharing permission", { error, userId });
+    return false;
   }
 }
 
@@ -224,53 +256,62 @@ export async function isSharingEnabled(userId: string): Promise<boolean> {
 export async function isMultiplayerEnabled(userId: string): Promise<boolean> {
   try {
     if (!isProd) {
-      return true
+      return true;
     }
 
-    const subscription = await getHighestPrioritySubscription(userId)
+    const subscription = await getHighestPrioritySubscription(userId);
 
     if (!subscription) {
-      return false // Free users don't have multiplayer
+      return false; // Free users don't have multiplayer
     }
 
     // Use Better-Auth client to check feature flags
     const { data: subscriptions } = await client.subscription.list({
       query: { referenceId: subscription.referenceId },
-    })
+    });
 
-    const activeSubscription = subscriptions?.find((sub) => sub.status === 'active')
-    return !!activeSubscription?.limits?.multiplayerEnabled
+    const activeSubscription = subscriptions?.find(
+      (sub) => sub.status === "active"
+    );
+    return !!activeSubscription?.limits?.multiplayerEnabled;
   } catch (error) {
-    logger.error('Error checking multiplayer permission', { error, userId })
-    return false
+    logger.error("Error checking multiplayer permission", { error, userId });
+    return false;
   }
 }
 
 /**
  * Check if workspace collaboration features are enabled for user
  */
-export async function isWorkspaceCollaborationEnabled(userId: string): Promise<boolean> {
+export async function isWorkspaceCollaborationEnabled(
+  userId: string
+): Promise<boolean> {
   try {
     if (!isProd) {
-      return true
+      return true;
     }
 
-    const subscription = await getHighestPrioritySubscription(userId)
+    const subscription = await getHighestPrioritySubscription(userId);
 
     if (!subscription) {
-      return false // Free users don't have workspace collaboration
+      return false; // Free users don't have workspace collaboration
     }
 
     // Use Better-Auth client to check feature flags
     const { data: subscriptions } = await client.subscription.list({
       query: { referenceId: subscription.referenceId },
-    })
+    });
 
-    const activeSubscription = subscriptions?.find((sub) => sub.status === 'active')
-    return !!activeSubscription?.limits?.workspaceCollaborationEnabled
+    const activeSubscription = subscriptions?.find(
+      (sub) => sub.status === "active"
+    );
+    return !!activeSubscription?.limits?.workspaceCollaborationEnabled;
   } catch (error) {
-    logger.error('Error checking workspace collaboration permission', { error, userId })
-    return false
+    logger.error("Error checking workspace collaboration permission", {
+      error,
+      userId,
+    });
+    return false;
   }
 }
 
@@ -278,13 +319,15 @@ export async function isWorkspaceCollaborationEnabled(userId: string): Promise<b
  * Get comprehensive subscription state for a user
  * Single function to get all subscription information
  */
-export async function getUserSubscriptionState(userId: string): Promise<UserSubscriptionState> {
+export async function getUserSubscriptionState(
+  userId: string
+): Promise<UserSubscriptionState> {
   try {
     // Get subscription and user stats in parallel to minimize DB calls
     const [subscription, statsRecords] = await Promise.all([
       getHighestPrioritySubscription(userId),
       db.select().from(userStats).where(eq(userStats.userId, userId)).limit(1),
-    ])
+    ]);
 
     // Determine plan types based on subscription (avoid redundant DB calls)
     const isPro =
@@ -292,61 +335,70 @@ export async function getUserSubscriptionState(userId: string): Promise<UserSubs
       (subscription &&
         (checkProPlan(subscription) ||
           checkTeamPlan(subscription) ||
-          checkEnterprisePlan(subscription)))
+          checkEnterprisePlan(subscription)));
     const isTeam =
       !isProd ||
-      (subscription && (checkTeamPlan(subscription) || checkEnterprisePlan(subscription)))
-    const isEnterprise = !isProd || (subscription && checkEnterprisePlan(subscription))
-    const isFree = !isPro && !isTeam && !isEnterprise
+      (subscription &&
+        (checkTeamPlan(subscription) || checkEnterprisePlan(subscription)));
+    const isEnterprise =
+      !isProd || (subscription && checkEnterprisePlan(subscription));
+    const isFree = !isPro && !isTeam && !isEnterprise;
 
     // Determine plan name
-    let planName = 'free'
-    if (isEnterprise) planName = 'enterprise'
-    else if (isTeam) planName = 'team'
-    else if (isPro) planName = 'pro'
+    let planName = "free";
+    if (isEnterprise) planName = "enterprise";
+    else if (isTeam) planName = "team";
+    else if (isPro) planName = "pro";
 
     // Check features based on subscription (avoid redundant better-auth calls)
-    let sharingEnabled = false
-    let multiplayerEnabled = false
-    let workspaceCollaborationEnabled = false
+    let sharingEnabled = false;
+    let multiplayerEnabled = false;
+    let workspaceCollaborationEnabled = false;
 
     if (!isProd || subscription) {
       if (!isProd) {
         // Development mode - enable all features
-        sharingEnabled = true
-        multiplayerEnabled = true
-        workspaceCollaborationEnabled = true
+        sharingEnabled = true;
+        multiplayerEnabled = true;
+        workspaceCollaborationEnabled = true;
       } else {
         // Production mode - check subscription features
         try {
           const { data: subscriptions } = await client.subscription.list({
             query: { referenceId: subscription.referenceId },
-          })
-          const activeSubscription = subscriptions?.find((sub) => sub.status === 'active')
+          });
+          const activeSubscription = subscriptions?.find(
+            (sub) => sub.status === "active"
+          );
 
-          sharingEnabled = !!activeSubscription?.limits?.sharingEnabled
-          multiplayerEnabled = !!activeSubscription?.limits?.multiplayerEnabled
+          sharingEnabled = !!activeSubscription?.limits?.sharingEnabled;
+          multiplayerEnabled = !!activeSubscription?.limits?.multiplayerEnabled;
           workspaceCollaborationEnabled =
-            !!activeSubscription?.limits?.workspaceCollaborationEnabled
+            !!activeSubscription?.limits?.workspaceCollaborationEnabled;
         } catch (error) {
-          logger.error('Error checking subscription features', { error, userId })
+          logger.error("Error checking subscription features", {
+            error,
+            userId,
+          });
           // Default to false on error
         }
       }
     }
 
     // Check cost limit using already-fetched user stats
-    let hasExceededLimit = false
+    let hasExceededLimit = false;
     if (isProd && statsRecords.length > 0) {
-      let limit = 5 // Default free tier limit
+      let limit = 5; // Default free tier limit
       if (subscription) {
-        limit = calculateDefaultUsageLimit(subscription)
+        limit = calculateDefaultUsageLimit(subscription);
       }
 
       const currentCost = Number.parseFloat(
-        statsRecords[0].currentPeriodCost?.toString() || statsRecords[0].totalCost.toString()
-      )
-      hasExceededLimit = currentCost >= limit
+        statsRecords[0].currentPeriodCost?.toString() ||
+          statsRecords[0].totalCost?.toString() ||
+          "0"
+      );
+      hasExceededLimit = currentCost >= limit;
     }
 
     return {
@@ -362,9 +414,9 @@ export async function getUserSubscriptionState(userId: string): Promise<UserSubs
       },
       hasExceededLimit,
       planName,
-    }
+    };
   } catch (error) {
-    logger.error('Error getting user subscription state', { error, userId })
+    logger.error("Error getting user subscription state", { error, userId });
 
     // Return safe defaults in case of error
     return {
@@ -379,7 +431,7 @@ export async function getUserSubscriptionState(userId: string): Promise<UserSubs
         workspaceCollaborationEnabled: false,
       },
       hasExceededLimit: false,
-      planName: 'free',
-    }
+      planName: "free",
+    };
   }
 }

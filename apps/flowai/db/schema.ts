@@ -541,15 +541,27 @@ export const userStats = pgTable("user_stats", {
     .default(0),
   totalChatExecutions: integer("total_chat_executions").notNull().default(0),
   totalTokensUsed: integer("total_tokens_used").notNull().default(0),
-  totalCost: decimal("total_cost").notNull().default("0"),
-  currentUsageLimit: decimal("current_usage_limit").notNull().default("5"), // Default $5 for free plan
+
+  // Legacy USD-based fields (kept for backward compatibility during migration)
+  totalCost: decimal("total_cost").default("0"),
+  currentUsageLimit: decimal("current_usage_limit").default("5"), // Default $5 for free plan
   usageLimitSetBy: text("usage_limit_set_by"), // User ID who set the limit (for team admin tracking)
   usageLimitUpdatedAt: timestamp("usage_limit_updated_at").defaultNow(),
-  // Billing period tracking
-  currentPeriodCost: decimal("current_period_cost").notNull().default("0"), // Usage in current billing period
+  currentPeriodCost: decimal("current_period_cost").default("0"), // Usage in current billing period
   billingPeriodStart: timestamp("billing_period_start").defaultNow(), // When current billing period started
   billingPeriodEnd: timestamp("billing_period_end"), // When current billing period ends
   lastPeriodCost: decimal("last_period_cost").default("0"), // Usage from previous billing period
+
+  // New FlowAI token-based fields
+  flowaiTokenBalance: integer("flowai_token_balance").notNull().default(0), // Current FlowAI token balance
+  totalFlowaiTokensSpent: integer("total_flowai_tokens_spent")
+    .notNull()
+    .default(0), // Lifetime tokens spent
+  currentPeriodTokensSpent: integer("current_period_tokens_spent")
+    .notNull()
+    .default(0), // Tokens spent in current period
+  tokenPurchaseHistory: json("token_purchase_history").default("[]"), // Purchase history for analytics
+
   lastActive: timestamp("last_active").notNull().defaultNow(),
 });
 
@@ -1142,3 +1154,70 @@ export const copilotChats = pgTable(
     updatedAtIdx: index("copilot_chats_updated_at_idx").on(table.updatedAt),
   })
 );
+
+// FlowAI Token System Tables
+export const flowaiTokenTransactions = pgTable(
+  "flowai_token_transactions",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    transactionType: text("transaction_type").notNull(), // 'purchase', 'spend', 'refund', 'bonus'
+    amount: integer("amount").notNull(), // positive for credits, negative for debits
+    balanceAfter: integer("balance_after").notNull(),
+    description: text("description"),
+    metadata: jsonb("metadata").default("{}"),
+    solanaTransactionSignature: text("solana_transaction_signature"),
+    workflowExecutionId: text("workflow_execution_id"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    userIdIdx: index("flowai_token_transactions_user_id_idx").on(table.userId),
+    typeIdx: index("flowai_token_transactions_type_idx").on(
+      table.transactionType
+    ),
+    createdAtIdx: index("flowai_token_transactions_created_at_idx").on(
+      table.createdAt
+    ),
+    solanaSignatureIdx: index(
+      "flowai_token_transactions_solana_signature_idx"
+    ).on(table.solanaTransactionSignature),
+  })
+);
+
+export const flowaiTokenPricing = pgTable("flowai_token_pricing", {
+  id: text("id").primaryKey(),
+  tokenAmount: integer("token_amount").notNull(),
+  solanaPriceLamports: text("solana_price_lamports").notNull(), // Store as text to handle bigint
+  usdEquivalent: decimal("usd_equivalent", { precision: 10, scale: 2 }), // For display purposes
+  bonusTokens: integer("bonus_tokens").notNull().default(0), // Extra tokens for bulk purchases
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+export const userSolanaWallets = pgTable("user_solana_wallets", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" })
+    .unique(),
+  walletAddress: text("wallet_address").notNull().unique(),
+  encryptedPrivateKey: text("encrypted_private_key"), // Encrypted with app secret
+  isPrimary: boolean("is_primary").notNull().default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// FlowAI Token System Types
+export type FlowaiTokenTransaction =
+  typeof flowaiTokenTransactions.$inferSelect;
+export type NewFlowaiTokenTransaction =
+  typeof flowaiTokenTransactions.$inferInsert;
+
+export type FlowaiTokenPricing = typeof flowaiTokenPricing.$inferSelect;
+export type NewFlowaiTokenPricing = typeof flowaiTokenPricing.$inferInsert;
+
+export type UserSolanaWallet = typeof userSolanaWallets.$inferSelect;
+export type NewUserSolanaWallet = typeof userSolanaWallets.$inferInsert;
